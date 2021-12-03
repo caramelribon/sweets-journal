@@ -1,12 +1,8 @@
 <template>
-  <div class="search-from-group">
-    <div class="text-xl text-center my-5">
-      お店の検索
-    </div>
-    <!-- 検索フォーム -->
-    <form class="search-form" @submit.prevent="findCloseBuyButtonPressed">
-      <!-- 緯度と経度の取得 -->
+  <div class="bg-beige">
+    <form class="search-form">
       <div class="search-form max-w-md mx-auto">
+        <!-- 現在地の緯度と経度 -->
         <div class="latlng-field md:flex md:items-center mb-6">
           <div class="md:w-1/3">
             <label
@@ -23,17 +19,16 @@
               focus:bg-white focus:border-gray-500"
               id="inline-full-name"
               type="text"
-              placeholder="Enter your address"
-              v-model="coordinates"
+              v-model="getLatLng"
               />
             <div class="absolute inset-y-0 right-0
             flex items-center px-2 text-gray-700 cursor-pointer"
             >
-              <i class="far fa-compass" @click="locatorButtonPressed"></i>
+              <i class="far fa-compass" @click="getCurrentLatLng"></i>
             </div>
           </div>
         </div>
-        <!-- ~m(km)周辺を検索するか選択 -->
+        <!-- 検索範囲を選択 -->
         <div class="latlng-field md:flex md:items-center mb-6">
           <div class="md:w-1/3">
             <label
@@ -63,7 +58,7 @@
             </div>
           </div>
         </div>
-        <!-- お店のカテゴリ -->
+        <!-- お店のカテゴリの選択 -->
         <div class="latlng-field md:flex md:items-center mb-6">
           <div class="md:w-1/3">
             <label
@@ -100,44 +95,47 @@
       shadow hover:shadow-lg
       font-medium transition transform hover:-translate-y-0.5 block mx-auto"
       type="submit"
+      @click.prevent="searchPlace"
       >
-        Search <i class="fas fa-search-location"></i>
+        Search Shop <i class="fas fa-search-location"></i>
       </button>
     </form>
-  <!-- 検索結果 -->
-    <div class="ui segment"  style="max-height:300px;">
-      <div class="ui divided items">
-          <div class="item" v-for="place in places" :key="place.id">
-              <div class="content">
-                  <div class="header">{{place.name}}</div>
-                  <div class="meta">{{place.vicinity}}</div>
-              </div>
-          </div>
-      </div>
+    <div id="map"></div>
+    <div v-for="place in places" :key="place.id">
+      {{ place.name }}
+      <img v-bind:src="place.photourl">
     </div>
   </div>
 </template>
 
 <script>
-const API_KEY = 'AIzaSyBkd3oEj98eAsy7WxQFNfy7EW6KdLZtVL8';
+import GoogleMapsApiLoader from 'google-maps-api-loader';
 
 export default {
   data() {
     return {
-      lat: 0,
-      lng: 0,
-      type: '',
+      google: null,
+      lat: '',
+      lng: '',
       radius: '',
+      type: '',
       places: [],
     };
   },
+  async mounted() {
+    this.google = await GoogleMapsApiLoader({
+      libraries: ['places'],
+      apiKey: 'AIzaSyBkd3oEj98eAsy7WxQFNfy7EW6KdLZtVL8',
+    });
+  },
   computed: {
-    coordinates() {
+    getLatLng() {
       return `${this.lat}, ${this.lng}`;
     },
   },
   methods: {
-    locatorButtonPressed() {
+    // 現在地の緯度と経度の取得
+    getCurrentLatLng() {
       navigator.geolocation.getCurrentPosition(this.success, this.error);
     },
     success(position) {
@@ -147,27 +145,35 @@ export default {
     error(err) {
       console.log(err.message);
     },
-    findCloseBuyButtonPressed() {
-      const getRequestURL = () => {
-        const parameters = {
-          key: API_KEY,
-          location: `${this.lat},${this.lng}`,
-          radius: `${this.radius}`,
-          language: 'ja',
-          type: `${this.type}`,
-        };
-        const url = new URL('https://maps.googleapis.com/maps/api/place/nearbysearch/json');
-        url.search = new URLSearchParams(parameters);
-        return url;
+    // 現在地周辺の地図とお店の取得
+    searchPlace() {
+      const currentlatlng = new this.google.maps.LatLng(this.lat, this.lng);
+      const map = new this.google.maps.Map(document.getElementById('map'), {
+        center: currentlatlng,
+        zoom: 15,
+      });
+      // 検索結果からお店の名前をplacesに入れる
+      const callback = (results, status) => {
+        if (status === this.google.maps.places.PlacesServiceStatus.OK) {
+          for (let i = 0; i < results.length; i += 1) {
+            const place = results[i];
+            const shopname = place.name;
+            const url = place.photos[0].getUrl({ maxWidth: 500, maxHeight: 500 });
+            const hairetsu = { name: shopname, photourl: url };
+            this.places.push(hairetsu);
+          }
+          console.log(this.places);
+        }
       };
-      const url = getRequestURL();
-      fetch(url)
-        .then((response) => response.json())
-        .then((data) => {
-          this.places = data.results;
-        }).catch((error) => {
-          console.log(error.message);
-        });
+      // 検索条件
+      const request = {
+        location: currentlatlng,
+        radius: this.radius,
+        type: [this.type],
+      };
+      // nearbySearchで検索
+      const service = new this.google.maps.places.PlacesService(map);
+      service.nearbySearch(request, callback);
     },
   },
 };
