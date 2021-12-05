@@ -1,28 +1,20 @@
-const colors = require('tailwindcss/colors');
-
 module.exports = {
-  purge: [],
+  purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      black: colors.black,
-      white: colors.white,
-      gray: colors.coolGray,
-      red: colors.red,
-      yellow: colors.amber,
-      green: colors.emerald,
-      blue: colors.blue,
-      indigo: colors.indigo,
-      purple: colors.violet,
-      pink: colors.pink,
-      // カスタムカラーを追加できる
-      beige: '#faeee7',
+    extend: {
+      colors: {
+        'beige': '#faeee7',
+        'lightblue': '#9dbeb9',
+        'pinky': '#ff8882',
+        'kon': '#194350',
+        'pink': '#ffc2b4',
+      },
     },
   },
   variants: {
     extend: {},
   },
   plugins: [],
-};
+}
+  

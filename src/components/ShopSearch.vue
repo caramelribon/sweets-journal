@@ -1,5 +1,6 @@
 <template>
-  <div class="bg-beige">
+  <div class="bg-pink">
+    <div class="my-5 text-gray-700 font-bold text-center text-2xl">Shop Serch</div>
     <form class="search-form">
       <div class="search-form max-w-md mx-auto">
         <!-- 現在地の緯度と経度 -->
@@ -97,14 +98,33 @@
       type="submit"
       @click.prevent="searchPlace"
       >
-        Search Shop <i class="fas fa-search-location"></i>
+        Search <i class="fas fa-search-location"></i>
       </button>
     </form>
     <div id="map"></div>
-    <div v-for="place in places" :key="place.id">
-      {{ place.name }}
-      <img v-bind:src="place.photourl">
-    </div>
+      <div class="flex p-5 items-start justify-center flex-row flex-wrap">
+        <div v-for="place in places" :key="place.id">
+          <!-- 1個目 -->
+          <div class="m-4 shopphoto">
+            <div class="nav-1 grid grid-cols-6 grid-rows-2">
+              <div class="bg-kon col-span-5 row-span-2">
+                <p class="shop-text text-white text-center m-2">{{ place.name }}</p>
+              </div>
+              <div class="bg-kon flex justify-center items-center">
+                <button>
+                  <i class="fas fa-store button-size text-white"></i>
+                </button>
+              </div>
+              <div class="bg-kon flex justify-center items-center">
+                <i class="fas fa-heart button-size text-white"></i>
+              </div>
+            </div>
+            <div class="shop-image">
+              <img v-bind:src="place.photourl" width="300" height="300">
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -158,7 +178,7 @@ export default {
           for (let i = 0; i < results.length; i += 1) {
             const place = results[i];
             const shopname = place.name;
-            const url = place.photos[0].getUrl({ maxWidth: 500, maxHeight: 500 });
+            const url = place.photos[0].getUrl({ width: 300, height: 400 });
             const hairetsu = { name: shopname, photourl: url };
             this.places.push(hairetsu);
           }
@@ -178,3 +198,22 @@ export default {
   },
 };
 </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
+.nav-1 {
+  width: 300px;
+  height: 80px;
+}
+.shopphoto {
+  -webkit-box-shadow: 0 5px 6px 1px #888;
+  -moz-box-shadow:0 5px 6px 1px #888;
+  box-shadow: 0 5px 6px 1px #888;
+}
+.shop-text {
+  font-family: 'Hachi Maru Pop', cursive;
+}
+.button-size {
+  font-size: 1.5em;
+}
+</style>
