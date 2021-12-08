@@ -1,9 +1,9 @@
 <template>
-  <div class="bg-pink">
-    <div class="my-5 text-gray-700 font-bold text-center text-2xl">Shop Serch</div>
+  <div>
+    <div class="py-5 text-gray-700 font-bold text-center text-2xl">Shop Serch</div>
     <form class="search-form">
       <div class="search-form max-w-md mx-auto">
-        <!-- 現在地の緯度と経度 -->
+        <!-- get current location -->
         <div class="latlng-field md:flex md:items-center mb-6">
           <div class="md:w-1/3">
             <label
@@ -29,7 +29,7 @@
             </div>
           </div>
         </div>
-        <!-- 検索範囲を選択 -->
+        <!-- area -->
         <div class="latlng-field md:flex md:items-center mb-6">
           <div class="md:w-1/3">
             <label
@@ -59,7 +59,7 @@
             </div>
           </div>
         </div>
-        <!-- お店のカテゴリの選択 -->
+        <!-- category -->
         <div class="latlng-field md:flex md:items-center mb-6">
           <div class="md:w-1/3">
             <label
@@ -89,7 +89,7 @@
           </div>
         </div>
       </div>
-      <!-- 検索ボタン -->
+      <!-- serch button -->
       <button
       class="text-white py-2 px-4 uppercase
       rounded bg-gray-500 hover:bg-gray-600
@@ -101,40 +101,60 @@
         Search <i class="fas fa-search-location"></i>
       </button>
     </form>
+    <!-- Shop Serch Results -->
     <div id="map"></div>
-      <div class="flex p-5 items-start justify-center flex-row flex-wrap">
+      <div id="shop" class="flex p-5 items-start justify-center flex-row flex-wrap">
         <div v-for="place in places" :key="place.id">
-          <!-- 1個目 -->
+          <!-- shop layout -->
           <div class="m-4 shopphoto">
-            <div class="nav-1 grid grid-cols-6 grid-rows-2">
-              <div class="bg-kon col-span-5 row-span-2">
-                <p class="shop-text text-white text-center m-2">{{ place.name }}</p>
-              </div>
-              <div class="bg-kon flex justify-center items-center">
-                <button>
-                  <i class="fas fa-store button-size text-white"></i>
-                </button>
-              </div>
-              <div class="bg-kon flex justify-center items-center">
-                <i class="fas fa-heart button-size text-white"></i>
-              </div>
-            </div>
+            <!-- shop image -->
             <div class="shop-image">
               <img v-bind:src="place.photourl" width="300" height="300">
             </div>
+            <!-- shop description and button(favorite and mark) -->
+            <div class="shop-description bg-kon">
+              <!-- shop name -->
+              <div class="shop-name flex justify-center items-center p-1">
+                <p class="shop-text text-white text-center">{{ place.name }}</p>
+              </div>
+              <!-- shop vicinity -->
+              <div class="shop-vicinity flex justify-center items-center p-1">
+                <p class="shop-text text-white text-center add-size">{{ place.add }}</p>
+              </div>
+              <!-- button-area-gap -->
+              <div class="button-area-gap"></div>
+              <!-- button (favorite and mark) -->
+              <div class="button-area grid grid-cols-6">
+                <div class="col-span-4"></div>
+                <!-- mark button -->
+                <div class="flex justify-center items-center">
+                  <button>
+                    <i class="fas fa-store button-size text-white"></i>
+                  </button>
+                </div>
+                <!-- favorite button -->
+                <div class="bg-kon flex justify-center items-center">
+                  <button @click="onFavorite(place)">
+                    <i class="fas fa-heart button-size text-white"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            </div>
           </div>
         </div>
-      </div>
   </div>
 </template>
 
 <script>
 import GoogleMapsApiLoader from 'google-maps-api-loader';
+import firebase from 'firebase/app';
 
 export default {
   data() {
     return {
       google: null,
+      google_shop: null,
       lat: '',
       lng: '',
       radius: '',
@@ -143,8 +163,13 @@ export default {
     };
   },
   async mounted() {
+    // 検索用のgoogle
     this.google = await GoogleMapsApiLoader({
       libraries: ['places'],
+      apiKey: 'AIzaSyBkd3oEj98eAsy7WxQFNfy7EW6KdLZtVL8',
+    });
+    // shopの詳細データを取得する用のgoogle
+    this.google_shop = await GoogleMapsApiLoader({
       apiKey: 'AIzaSyBkd3oEj98eAsy7WxQFNfy7EW6KdLZtVL8',
     });
   },
@@ -177,9 +202,16 @@ export default {
         if (status === this.google.maps.places.PlacesServiceStatus.OK) {
           for (let i = 0; i < results.length; i += 1) {
             const place = results[i];
+            const shopid = place.place_id;
             const shopname = place.name;
+            const shopadd = place.vicinity;
             const url = place.photos[0].getUrl({ width: 300, height: 400 });
-            const hairetsu = { name: shopname, photourl: url };
+            const hairetsu = {
+              id: shopid,
+              name: shopname,
+              add: shopadd,
+              photourl: url,
+            };
             this.places.push(hairetsu);
           }
           console.log(this.places);
@@ -195,15 +227,101 @@ export default {
       const service = new this.google.maps.places.PlacesService(map);
       service.nearbySearch(request, callback);
     },
+    onFavorite(place) {
+      const user = firebase.auth().currentUser;
+      const docRef = firebase
+        .firestore()
+        .collection('favorites')
+        .doc(user.uid)
+        .collection(place.id)
+        .doc('info');
+      docRef.set(place);
+      this.getShopInfomation(place.id);
+    },
+    getShopInfomation(id) {
+      const shop = new this.google_shop.maps.Map(document.getElementById('map'));
+      const request = {
+        placeId: id,
+      };
+      const callback = (result, status) => {
+        if (status === this.google_shop.maps.places.PlacesServiceStatus.OK) {
+          console.log(result);
+          const shopid = result.place_id;
+          const shopname = result.name;
+          const shopaddlong = result.formatted_address;
+          const shopaddshort = result.vicinity;
+          const shopmapurl = result.url;
+          const shopwebsite = result.website;
+          const shopallrating = result.rating;
+          const shopallratingnum = result.user_ratings_total;
+          // 口コミの取得
+          const shopratings = {
+            rating_1: result.reviews[0].rating,
+            rating_2: result.reviews[1].rating,
+            rating_3: result.reviews[2].rating,
+            rating_4: result.reviews[3].rating,
+            rating_5: result.reviews[4].rating,
+          };
+          const shopreviews = {
+            review_1: result.reviews[0].text,
+            review_2: result.reviews[1].text,
+            review_3: result.reviews[2].text,
+            review_4: result.reviews[3].text,
+            review_5: result.reviews[4].text,
+          };
+          // 写真を取得
+          const shopphotos = {
+            photo_1: result.photos[0].getUrl({ width: 300, height: 400 }),
+            photo_2: result.photos[1].getUrl({ width: 300, height: 400 }),
+            photo_3: result.photos[2].getUrl({ width: 300, height: 400 }),
+            photo_4: result.photos[3].getUrl({ width: 300, height: 400 }),
+            photo_5: result.photos[4].getUrl({ width: 300, height: 400 }),
+          };
+          const docRef = firebase
+            .firestore()
+            .collection('shops')
+            .doc(id);
+          docRef.set({
+            id: shopid,
+            name: shopname,
+            addlong: shopaddlong,
+            addshort: shopaddshort,
+            mapurl: shopmapurl,
+            website: shopwebsite,
+            allrating: shopallrating,
+            allratingnum: shopallratingnum,
+            favorite_count: '',
+            bookmark_count: '',
+          });
+          docRef.collection('other').doc('ratings').set(shopratings);
+          docRef.collection('other').doc('reviews').set(shopreviews);
+          docRef.collection('other').doc('photos').set(shopphotos);
+        }
+      };
+      const service = new this.google_shop.maps.places.PlacesService(shop);
+      service.getDetails(request, callback);
+    },
   },
 };
 </script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
-.nav-1 {
+.shop-name {
   width: 300px;
-  height: 80px;
+  height: 60px;
+}
+.shop-vicinity {
+  width: 300px;
+  height: 30px;
+}
+.button-area-gap {
+  width: 300px;
+  height: 5px;
+}
+.button-area {
+  width: 300px;
+  height: 40px;
 }
 .shopphoto {
   -webkit-box-shadow: 0 5px 6px 1px #888;
@@ -212,6 +330,9 @@ export default {
 }
 .shop-text {
   font-family: 'Hachi Maru Pop', cursive;
+}
+.add-size {
+  font-size: 5px;
 }
 .button-size {
   font-size: 1.5em;

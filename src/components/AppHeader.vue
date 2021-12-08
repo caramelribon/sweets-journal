@@ -1,55 +1,166 @@
 <template>
-  <div >
-  <nav id="header" class="w-full z-30 top-0 py-1">
-      <div class="w-full container mx-auto
-      flex flex-wrap items-center justify-between mt-0 px-6 py-3">
-        <label for="menu-toggle" class="cursor-pointer md:hidden block">
-          <svg class="fill-current text-gray-900"
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 20 20">
-            <title>menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+  <!-- navigation -->
+  <div class="navber">
+    <nav class="flex items-center justify-between flex-wrap bg-kon p-6">
+      <div class="flex items-center flex-shrink-0 text-white mr-6">
+        <span class="font-semibold text-xl tracking-tight">Sweets Journal</span>
+      </div>
+      <div class="block lg:hidden">
+        <button
+        class="flex items-center px-3 py-2 border rounded text-teal-200
+        border-teal-400 hover:text-white hover:border-white">
+          <svg
+          class="fill-current h-3 w-3"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg">
+            <title>Menu</title>
+            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
           </svg>
-        </label>
-        <input class="hidden" type="checkbox" id="menu-toggle" />
-        <div class="hidden md:flex md:items-center md:w-auto w-full order-3 md:order-1" id="menu">
-          <nav>
-            <ul class="md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0">
-              <li><a class="inline-block no-underline hover:text-black hover:underline py-2 px-4"
-              href="#">User Activity</a></li>
-            </ul>
-          </nav>
-        </div>
-        <div class="order-1 md:order-2">
-          <a class="flex items-center tracking-wide no-underline hover:no-underline
-          font-bold text-gray-800 text-xl" href="#">
-            Sweets Journal
+        </button>
+      </div>
+      <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+        <div class="text-sm lg:flex-grow">
+          <a href="#responsive-header"
+          class="block mt-4 lg:inline-block lg:mt-0 text-teal-200
+          hover:text-white mr-4">
+            About
+          </a>
+          <a href="#responsive-header"
+          class="block mt-4 lg:inline-block lg:mt-0 text-teal-200
+          hover:text-white mr-4"
+          v-if="currentUID !== null">
+            Profile
+          </a>
+          <a href="#responsive-header"
+          class="block mt-4 lg:inline-block lg:mt-0 text-teal-200
+          hover:text-white">
+            User Activity
           </a>
         </div>
-        <div class="order-2 md:order-3 flex items-center" id="nav-content">
-          <a class="inline-block no-underline hover:text-black" href="#">
-            <i class="far fa-user"></i>
-          </a>
+        <div v-if="currentUID !== null">
+          <!-- Login UserName -->
+          <div class="login-username px-1">
+            <button
+            class="inline-block text-sm px-4 py-2 leading-none border rounded text-white
+            border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+            type="button"
+            >
+              {{ username }}
+            </button>
+          </div>
+          <div class="logout">
+            <button
+            class="inline-block text-sm px-4 py-2 leading-none border rounded text-white
+            border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+            type="button"
+            @click="onClickLogOut">
+              Logout
+            </button>
+          </div>
+        </div>
+        <div v-else>
+          <div class="flex">
+            <!-- Sginup -->
+            <div class="signup px-1">
+              <button
+                class="inline-block text-sm px-4 py-2 leading-none border rounded text-white
+                border-white hover:border-transparent hover:text-teal-500 hover:bg-white
+                mt-4 lg:mt-0"
+                type="button"
+                @click="openSignupForm">
+                  Sginup
+              </button>
+              <signup-modal @close="closeSignupForm" v-if="signupmodal"></signup-modal>
+            </div>
+            <!-- Login -->
+            <div class="login">
+              <button
+                class="inline-block text-sm px-4 py-2 leading-none border rounded text-white
+                border-white hover:border-transparent hover:text-teal-500 hover:bg-white
+                mt-4 lg:mt-0"
+                type="button"
+                @click="openLoginForm">
+                  Login
+              </button>
+              <login-modal @close="closeLoginForm" v-if="loginmodal"></login-modal>
+            </div>
+          </div>
         </div>
       </div>
-  </nav>
+    </nav>
   </div>
 </template>
 
+<script>
+import firebase from 'firebase/app';
+import LoginModal from '@/components/LoginModal.vue';
+import SignupModal from '@/components/SignupModal.vue';
+
+export default {
+  components: { LoginModal, SignupModal },
+  data() {
+    return {
+      loginmodal: false,
+      signupmodal: false,
+      currentUID: null,
+      username: null,
+    };
+  },
+  async created() {
+    // ログイン状態の変化を監視する
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log('状態：ログイン中');
+        this.currentUID = user.uid;
+        const docRef = firebase.firestore().collection('users').doc(user.uid);
+        docRef.get()
+          .then((doc) => {
+            if (doc.exists) {
+              this.username = doc.data().username;
+            } else {
+              console.log('No such document!');
+            }
+          })
+          .catch((error) => {
+            console.log('エラー', error);
+          });
+      } else {
+        console.log('状態：ログアウト');
+        this.currentUID = null;
+      }
+    });
+  },
+  methods: {
+    openLoginForm() {
+      this.loginmodal = true;
+    },
+    closeLoginForm() {
+      this.loginmodal = false;
+    },
+    openSignupForm() {
+      this.signupmodal = true;
+    },
+    closeSignupForm() {
+      this.signupmodal = false;
+    },
+    onClickLogOut() {
+      firebase
+        .auth()
+        .signOut() // ログアウト実行
+        .then(() => {
+          // ログアウトに成功したときの処理
+          console.log('ログアウトしました');
+          this.loginmodal = false;
+          this.signupmodal = false;
+        })
+        .catch((error) => {
+          // ログアウトに失敗したときの処理
+          console.error('ログアウトエラー', error);
+        });
+    },
+  },
+};
+</script>
+
 <style>
-  .work-sans {
-    font-family: 'Work Sans', sans-serif;
-  }
-  #menu-toggle:checked + #menu {
-    display: block;
-  }
-  .hover\:grow {
-    transition: all 0.3s;
-    transform: scale(1);
-  }
-  .hover\:grow:hover {
-    transform: scale(1.02);
-  }
 </style>
