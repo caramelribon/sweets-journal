@@ -227,18 +227,80 @@ export default {
       const service = new this.google.maps.places.PlacesService(map);
       service.nearbySearch(request, callback);
     },
+    // お気に入り機能
     onFavorite(place) {
       const user = firebase.auth().currentUser;
+      const db = firebase.firestore();
+      // このお店がfavorites→user.uid→place.idにあるかどうか調べる
+      const query = db.collection('favorites')
+        .where('user_id', '==', user.uid)
+        .where('place_id', '==', place.id)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            // あったら、そのお店のお気に入りを解除し、favorite_countを-1にする
+            // favorites→user.uid→place.idを削除
+            query.docs.forEach(async (docdata) => {
+              await docdata.ref.delete();
+            });
+            // shops→shop.id→favorite_countを-1にする
+            const docFavRef = db.collection('shops').doc(place.id);
+            docFavRef.get().then((docFa) => {
+              if (docFa.exists) {
+                const favcount = docFa.data().favorite_count - 1;
+                docFavRef.update({
+                  favorite_count: favcount,
+                });
+              } else {
+                console.log('Error');
+              }
+            })
+              .catch((error) => {
+                console.log('エラーです。', error);
+              });
+          } else {
+            // なかったら、お気に入り登録とアクティビティ登録をする、confirmShopData()に進む
+            // お気に入り登録
+            db.collection('favorite').doc().set({
+              user_id: user.uid,
+              place_id: place.id,
+            });
+            this.onActivity(place.id, user.uid);
+            this.confirmShopData(place.id);
+          }
+        })
+        .catch((error) => {
+          console.log('エラーです。', error);
+        });
+    },
+    onActivity(placeId, userId) {
       const docRef = firebase
         .firestore()
-        .collection('favorites')
-        .doc(user.uid)
-        .collection(place.id)
-        .doc('info');
-      docRef.set(place);
-      this.getShopInfomation(place.id);
+        .collection('activities')
+        .doc();
+      docRef.set({
+        user_id: userId,
+        shop_id: placeId,
+        action: 'favorite',
+        create_at: firebase.firestore.FieldValue.serverTimestamp(),
+      });
     },
-    getShopInfomation(id) {
+    confirmShopData(placeId) {
+      const docRef = firebase.firestore().collection('shops').doc(placeId);
+      docRef.get().then((doc) => {
+        if (doc.exists) {
+          const favcount = doc.data().favorite_count + 1;
+          docRef.update({
+            favorite_count: favcount,
+          });
+        } else {
+          this.getShopData(placeId);
+        }
+      }).catch((error) => {
+        console.log('エラーです。', error);
+      });
+    },
+    getShopData(id) {
       const shop = new this.google_shop.maps.Map(document.getElementById('map'));
       const request = {
         placeId: id,
@@ -290,8 +352,8 @@ export default {
             website: shopwebsite,
             allrating: shopallrating,
             allratingnum: shopallratingnum,
-            favorite_count: '',
-            bookmark_count: '',
+            favorite_count: 1,
+            bookmark_count: 0,
           });
           docRef.collection('other').doc('ratings').set(shopratings);
           docRef.collection('other').doc('reviews').set(shopreviews);
