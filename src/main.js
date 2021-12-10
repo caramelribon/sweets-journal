@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import firebase from 'firebase/app';
 import App from './App.vue';
+import router from './router';
 import '@/assets/style/tailwind.css';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -20,5 +21,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 new Vue({
+  router,
   render: (h) => h(App),
 }).$mount('#app');

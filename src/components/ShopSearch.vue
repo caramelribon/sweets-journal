@@ -103,46 +103,46 @@
     </form>
     <!-- Shop Serch Results -->
     <div id="map"></div>
-      <div id="shop" class="flex p-5 items-start justify-center flex-row flex-wrap">
-        <div v-for="place in places" :key="place.id">
-          <!-- shop layout -->
-          <div class="m-4 shopphoto">
-            <!-- shop image -->
-            <div class="shop-image">
-              <img v-bind:src="place.photourl" width="300" height="300">
+    <div id="shop" class="flex p-5 items-start justify-center flex-row flex-wrap">
+      <div v-for="place in places" :key="place.id">
+        <!-- shop layout -->
+        <div class="m-4 shopphoto">
+          <!-- shop image -->
+          <div class="shop-image">
+            <img v-bind:src="place.photourl" width="300" height="300">
+          </div>
+          <!-- shop description and button(favorite and mark) -->
+          <div class="shop-description bg-kon">
+            <!-- shop name -->
+            <div class="shop-name flex justify-center items-center p-1">
+              <p class="shop-text text-white text-center">{{ place.name }}</p>
             </div>
-            <!-- shop description and button(favorite and mark) -->
-            <div class="shop-description bg-kon">
-              <!-- shop name -->
-              <div class="shop-name flex justify-center items-center p-1">
-                <p class="shop-text text-white text-center">{{ place.name }}</p>
-              </div>
-              <!-- shop vicinity -->
-              <div class="shop-vicinity flex justify-center items-center p-1">
-                <p class="shop-text text-white text-center add-size">{{ place.add }}</p>
-              </div>
-              <!-- button-area-gap -->
-              <div class="button-area-gap"></div>
-              <!-- button (favorite and mark) -->
-              <div class="button-area grid grid-cols-6">
-                <div class="col-span-4"></div>
-                <!-- mark button -->
-                <div class="flex justify-center items-center">
-                  <button>
-                    <i class="fas fa-store button-size text-white"></i>
-                  </button>
-                </div>
-                <!-- favorite button -->
-                <div class="bg-kon flex justify-center items-center">
-                  <button @click="onFavorite(place)">
-                    <i class="fas fa-heart button-size text-white"></i>
-                  </button>
-                </div>
-              </div>
+            <!-- shop vicinity -->
+            <div class="shop-vicinity flex justify-center items-center p-1">
+              <p class="shop-text text-white text-center add-size">{{ place.add }}</p>
             </div>
+            <!-- button-area-gap -->
+            <div class="button-area-gap"></div>
+            <!-- button (favorite and mark) -->
+            <div class="button-area grid grid-cols-6">
+              <div class="col-span-4"></div>
+              <!-- mark button -->
+              <div class="flex justify-center items-center">
+                <button>
+                  <i class="fas fa-store button-size text-white"></i>
+                </button>
+              </div>
+              <!-- favorite button -->
+              <div class="bg-kon flex justify-center items-center">
+                <button @click="onFavorite(place)">
+                  <i class="fas fa-heart button-size text-white"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -244,7 +244,7 @@ export default {
               await docdata.ref.delete();
             });
             // shops→shop.id→favorite_countを-1にする
-            const docFavRef = db.collection('shops').doc(place.id);
+            const docFavRef = db.collection('places').doc(place.id);
             docFavRef.get().then((docFa) => {
               if (docFa.exists) {
                 const favcount = docFa.data().favorite_count - 1;
@@ -261,7 +261,7 @@ export default {
           } else {
             // なかったら、お気に入り登録とアクティビティ登録をする、confirmShopData()に進む
             // お気に入り登録
-            db.collection('favorite').doc().set({
+            db.collection('favorites').doc().set({
               user_id: user.uid,
               place_id: place.id,
             });
@@ -280,13 +280,13 @@ export default {
         .doc();
       docRef.set({
         user_id: userId,
-        shop_id: placeId,
+        place_id: placeId,
         action: 'favorite',
         create_at: firebase.firestore.FieldValue.serverTimestamp(),
       });
     },
     confirmShopData(placeId) {
-      const docRef = firebase.firestore().collection('shops').doc(placeId);
+      const docRef = firebase.firestore().collection('places').doc(placeId);
       docRef.get().then((doc) => {
         if (doc.exists) {
           const favcount = doc.data().favorite_count + 1;
@@ -308,56 +308,38 @@ export default {
       const callback = (result, status) => {
         if (status === this.google_shop.maps.places.PlacesServiceStatus.OK) {
           console.log(result);
-          const shopid = result.place_id;
-          const shopname = result.name;
-          const shopaddlong = result.formatted_address;
-          const shopaddshort = result.vicinity;
-          const shopmapurl = result.url;
-          const shopwebsite = result.website;
-          const shopallrating = result.rating;
-          const shopallratingnum = result.user_ratings_total;
-          // 口コミの取得
-          const shopratings = {
+          // placesにデータを保存
+          const docRef = firebase
+            .firestore()
+            .collection('places')
+            .doc(id);
+          docRef.set({
+            id: result.place_id,
+            name: result.name,
+            add_long: result.formatted_address,
+            add_short: result.vicinity,
+            map_url: result.url,
+            website: result.website,
+            all_rating: result.rating,
+            all_rating_num: result.user_ratings_total,
+            favorite_count: 1,
+            bookmark_count: 0,
             rating_1: result.reviews[0].rating,
             rating_2: result.reviews[1].rating,
             rating_3: result.reviews[2].rating,
             rating_4: result.reviews[3].rating,
             rating_5: result.reviews[4].rating,
-          };
-          const shopreviews = {
             review_1: result.reviews[0].text,
             review_2: result.reviews[1].text,
             review_3: result.reviews[2].text,
             review_4: result.reviews[3].text,
             review_5: result.reviews[4].text,
-          };
-          // 写真を取得
-          const shopphotos = {
             photo_1: result.photos[0].getUrl({ width: 300, height: 400 }),
             photo_2: result.photos[1].getUrl({ width: 300, height: 400 }),
             photo_3: result.photos[2].getUrl({ width: 300, height: 400 }),
             photo_4: result.photos[3].getUrl({ width: 300, height: 400 }),
             photo_5: result.photos[4].getUrl({ width: 300, height: 400 }),
-          };
-          const docRef = firebase
-            .firestore()
-            .collection('shops')
-            .doc(id);
-          docRef.set({
-            id: shopid,
-            name: shopname,
-            addlong: shopaddlong,
-            addshort: shopaddshort,
-            mapurl: shopmapurl,
-            website: shopwebsite,
-            allrating: shopallrating,
-            allratingnum: shopallratingnum,
-            favorite_count: 1,
-            bookmark_count: 0,
           });
-          docRef.collection('other').doc('ratings').set(shopratings);
-          docRef.collection('other').doc('reviews').set(shopreviews);
-          docRef.collection('other').doc('photos').set(shopphotos);
         }
       };
       const service = new this.google_shop.maps.places.PlacesService(shop);
