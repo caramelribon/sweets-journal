@@ -68,28 +68,30 @@
     </div>
     <!-- Ranking -->
     <div class="ranking" v-if='ranking'>
-      <ul id="rankings">
-        <li v-for="ranking in rankings" :key="ranking.id">
-          <!-- shop layout -->
-          <div class="m-4">
-            <!-- shop image -->
-            <div class="shop-image">
-              <img v-bind:src="ranking.photo_1" width="300" height="300">
-            </div>
-            <!-- shop description and button(favorite and mark) -->
-            <div class="shop-description bg-kon">
-              <!-- shop name -->
-              <div class="shop-name flex justify-center items-center p-1">
-                <p class="shop-text text-white text-center">{{ ranking.name }}</p>
+      <swiper :options="swiperOption">
+        <swiper-slide v-for="ranking in rankings" :key="ranking.id">
+          <div class="flex p-5 items-start justify-center flex-row flex-wrap">
+            <!-- shop layout -->
+            <div class="m-4">
+              <!-- shop image -->
+              <div class="shop-image">
+                <img v-bind:src="ranking.photo_1" width="300" height="300">
               </div>
-              <!-- shop vicinity -->
-              <div class="shop-vicinity flex justify-center items-center p-1">
-                <p class="shop-text text-white text-center add-size">{{ ranking.add_short }}</p>
+              <!-- shop description and button(favorite and mark) -->
+              <div class="shop-description bg-kon">
+                <!-- shop name -->
+                <div class="shop-name flex justify-center items-center p-1">
+                  <p class="shop-text text-white text-center">{{ ranking.name }}</p>
+                </div>
+                <!-- shop vicinity -->
+                <div class="shop-vicinity flex justify-center items-center p-1">
+                  <p class="shop-text text-white text-center add-size">{{ ranking.add_short }}</p>
+                </div>
               </div>
             </div>
           </div>
-        </li>
-      </ul>
+        </swiper-slide>
+      </swiper>
     </div>
     <!-- Shop Serch Results -->
     <div id="map"></div>
@@ -158,6 +160,16 @@ export default {
       places: [],
       rankings: [],
       ranking: true,
+      swiperOption: {
+        speed: 1000,
+        spaceBetween: 30,
+        centeredSlides: true,
+        loop: true,
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+      },
     };
   },
   async mounted() {

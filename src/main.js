@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import VueAwesomeSwiper from 'vue-awesome-swiper';
 import firebase from 'firebase/app';
 import App from './App.vue';
 import router from './router';
@@ -6,8 +7,10 @@ import '@/assets/style/tailwind.css';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
+import 'swiper/css/swiper.css';
 
 Vue.config.productionTip = false;
+Vue.use(VueAwesomeSwiper);
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAzqarDWwEqwBOcqv0lka6btAplthkNWE4',
