@@ -45,7 +45,7 @@
               2.243-5 5-5h4c2.757 0 5 2.243 5 5v1H21z"></path>
             </svg>
           </button>
-          <span class="userinfo absolute block" v-if="userinfo">
+          <span class="userinfo absolute z-10" v-if="userinfo">
             <div class="userinfo">
               <div class="text-center mt-3 mx-3 border-b">
                 <i class="fas fa-user-circle fa-5x"></i>
@@ -118,7 +118,7 @@
               2.243-5 5-5h4c2.757 0 5 2.243 5 5v1H21z"></path>
             </svg>
           </button>
-          <span class="userinfo absolute" v-if="userinfo">
+          <span class="userinfo absolute z-10" v-if="userinfo">
             <div class="userinfo">
               <div class="text-center mt-3 mx-3 border-b">
                 <i class="fas fa-user-circle fa-5x"></i>
@@ -264,7 +264,5 @@ export default {
   top: 1.5%;
   content: '';
   position: absolute;
-  pointer-events: none;
-  z-index: -1;
 }
 </style>
