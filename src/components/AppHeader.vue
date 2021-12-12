@@ -1,7 +1,7 @@
 <template>
   <!-- navigation -->
   <div class="navber">
-    <nav class="flex items-center justify-between flex-wrap bg-kon p-6">
+    <nav class="flex items-center justify-between flex-wrap p-6">
       <div
       class="flex items-center flex-shrink-0 text-white mr-6"
       v-for="(item, index) in tops" :key="index">

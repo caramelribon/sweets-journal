@@ -1,106 +1,96 @@
 <template>
   <div>
-    <div class="py-5 text-gray-700 font-bold text-center text-2xl">Shop Serch</div>
-    <form class="search-form">
-      <div class="search-form max-w-md mx-auto">
-        <!-- get current location -->
-        <div class="latlng-field md:flex md:items-center mb-6">
-          <div class="md:w-1/3">
-            <label
-            class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-            for="inline-full-name"
-            >
-              Current Location
-            </label>
-          </div>
-          <div class="md:w-2/3 relative">
-            <input
-              class="bg-gray-200 appearance-none border-2 border-gray-200 rounded
-              w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none
-              focus:bg-white focus:border-gray-500"
-              id="inline-full-name"
-              type="text"
-              v-model="getLatLng"
-              />
-            <div class="absolute inset-y-0 right-0
-            flex items-center px-2 text-gray-700 cursor-pointer"
-            >
-              <i class="far fa-compass" @click="getCurrentLatLng"></i>
+    <div class="search">
+      <div class="search-form mx-auto my-2 rounded-lg shadow-md">
+        <form>
+          <div class="mx-auto flex justify-center items-center">
+            <!-- area -->
+            <div class="flex justify-center items-center">
+              <div class="relative">
+                <select
+                v-model="radius"
+                class="block appearance-none w-full
+                text-gray-700 py-3 px-4 pr-8 rounded-l leading-tight focus:outline-none
+                select"
+                >
+                  <option value="" disabled selected>Area</option>
+                  <option value="500">半径 500 m以内</option>
+                  <option value="1000">半径 1 km以内</option>
+                  <option value="3000">半径 3 km以内</option>
+                </select>
+                <div class="pointer-events-none absolute
+                inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757
+                    6.586 4.343 8z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <!-- category -->
+            <div class="flex justify-center items-center">
+              <div class="relative">
+                <select
+                v-model="type"
+                class="block appearance-none w-full
+                text-gray-700 py-3 px-4 pr-8 rounded-r leading-tight focus:outline-none
+                select"
+                >
+                  <option value="" disabled selected>Category</option>
+                  <option value="restaurant">Restaurant</option>
+                  <option value="cafe">Cafe</option>
+                </select>
+                <div class="pointer-events-none absolute
+                inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757
+                    6.586 4.343 8z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <!-- serch button -->
+            <div class="button">
+              <button
+              class="text-white pl-2 uppercase
+              rounded bg-none"
+              type="submit"
+              @click.prevent="getCurrentLatLng"
+              >
+                <i class="fas fa-search fa-2x"></i>
+              </button>
             </div>
           </div>
-        </div>
-        <!-- area -->
-        <div class="latlng-field md:flex md:items-center mb-6">
-          <div class="md:w-1/3">
-            <label
-            class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-            for="search-area">
-              Area
-            </label>
-          </div>
-          <div class="md:w-2/3 relative">
-            <select
-            v-model="radius"
-            class="block appearance-none w-full bg-gray-200 border-2 border-gray-200
-            text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none
-            focus:bg-white focus:border-gray-500" id="search-area"
-            >
-              <option value="500">半径 500 m以内</option>
-              <option value="1000">半径 1 km以内</option>
-              <option value="3000">半径 3 km以内</option>
-            </select>
-            <div class="pointer-events-none absolute
-            inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20">
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757
-                6.586 4.343 8z"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <!-- category -->
-        <div class="latlng-field md:flex md:items-center mb-6">
-          <div class="md:w-1/3">
-            <label
-            class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-            for="search-area">
-              Category
-            </label>
-          </div>
-          <div class="md:w-2/3 relative">
-            <select
-            v-model="type"
-            class="block appearance-none w-full bg-gray-200 border-2 border-gray-200
-            text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none
-            focus:bg-white focus:border-gray-500" id="search-area"
-            >
-              <option value="restaurant">Restaurant</option>
-              <option value="cafe">Cafe</option>
-            </select>
-            <div class="pointer-events-none absolute
-            inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20">
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757
-                6.586 4.343 8z"/>
-              </svg>
-            </div>
-          </div>
-        </div>
+        </form>
       </div>
-      <!-- serch button -->
-      <button
-      class="text-white py-2 px-4 uppercase
-      rounded bg-gray-500 hover:bg-gray-600
-      shadow hover:shadow-lg
-      font-medium transition transform hover:-translate-y-0.5 block mx-auto"
-      type="submit"
-      @click.prevent="searchPlace"
-      >
-        Search <i class="fas fa-search-location"></i>
-      </button>
-    </form>
+    </div>
+    <!-- Ranking -->
+    <div class="ranking" v-if='ranking'>
+      <ul id="rankings">
+        <li v-for="ranking in rankings" :key="ranking.id">
+          <!-- shop layout -->
+          <div class="m-4">
+            <!-- shop image -->
+            <div class="shop-image">
+              <img v-bind:src="ranking.photo_1" width="300" height="300">
+            </div>
+            <!-- shop description and button(favorite and mark) -->
+            <div class="shop-description bg-kon">
+              <!-- shop name -->
+              <div class="shop-name flex justify-center items-center p-1">
+                <p class="shop-text text-white text-center">{{ ranking.name }}</p>
+              </div>
+              <!-- shop vicinity -->
+              <div class="shop-vicinity flex justify-center items-center p-1">
+                <p class="shop-text text-white text-center add-size">{{ ranking.add_short }}</p>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
     <!-- Shop Serch Results -->
     <div id="map"></div>
     <div id="shop" class="flex p-5 items-start justify-center flex-row flex-wrap">
@@ -151,6 +141,12 @@ import GoogleMapsApiLoader from 'google-maps-api-loader';
 import firebase from 'firebase/app';
 
 export default {
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getRanking(); // 初期化処理
+      next();
+    });
+  },
   data() {
     return {
       google: null,
@@ -160,6 +156,8 @@ export default {
       radius: '',
       type: '',
       places: [],
+      rankings: [],
+      ranking: true,
     };
   },
   async mounted() {
@@ -184,14 +182,17 @@ export default {
       navigator.geolocation.getCurrentPosition(this.success, this.error);
     },
     success(position) {
+      this.ranking = false;
       this.lat = position.coords.latitude;
       this.lng = position.coords.longitude;
+      this.searchPlace();
     },
     error(err) {
       console.log(err.message);
     },
     // 現在地周辺の地図とお店の取得
     searchPlace() {
+      this.ranking = false;
       const currentlatlng = new this.google.maps.LatLng(this.lat, this.lng);
       const map = new this.google.maps.Map(document.getElementById('map'), {
         center: currentlatlng,
@@ -345,6 +346,19 @@ export default {
       const service = new this.google_shop.maps.places.PlacesService(shop);
       service.getDetails(request, callback);
     },
+    getRanking() {
+      firebase
+        .firestore()
+        .collection('places')
+        .orderBy('favorite_count', 'desc')
+        .limit(3)
+        .get()
+        .then((placeinfo) => {
+          placeinfo.forEach((doc) => {
+            this.rankings.push(doc.data());
+          });
+        });
+    },
   },
 };
 </script>
@@ -380,5 +394,34 @@ export default {
 }
 .button-size {
   font-size: 1.5em;
+}
+.search-form {
+  width: 350px;
+  padding: 7px;
+  margin: auto;
+  background-color: #D9ADAD;
+  border-radius: 20px;
+  -webkit-box-shadow: 0 5px 6px 1px #888;
+  -moz-box-shadow:0 5px 6px 1px #888;
+  box-shadow: 0 5px 6px 1px #888;
+}
+.select {
+  background-color: #D9ADAD;
+}
+#slider {
+  overflow: hidden;
+  width: 310px;
+  border: 1px solid #000;
+  margin: 10px auto;
+  padding: 0px;
+}
+#rankings {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+#photos li {
+  display: inline-box;
+  float: left;
 }
 </style>
