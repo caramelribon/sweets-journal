@@ -98,36 +98,34 @@
     <div id="shop" class="flex p-5 items-start justify-center flex-row flex-wrap">
       <div v-for="place in places" :key="place.id">
         <!-- shop layout -->
-        <div class="m-4 shopphoto">
+        <div class="m-4">
           <!-- shop image -->
           <div class="shop-image">
-            <img v-bind:src="place.photourl" width="300" height="300">
+            <div>
+              <img v-bind:src="place.photourl" width="300" height="300">
+            </div>
           </div>
           <!-- shop description and button(favorite and mark) -->
-          <div class="shop-description bg-kon">
+          <div class="shop-description">
             <!-- shop name -->
             <div class="shop-name flex justify-center items-center p-1">
-              <p class="shop-text text-white text-center">{{ place.name }}</p>
-            </div>
-            <!-- shop vicinity -->
-            <div class="shop-vicinity flex justify-center items-center p-1">
-              <p class="shop-text text-white text-center add-size">{{ place.add }}</p>
+              <p class="shop-text text-center">{{ place.name }}</p>
             </div>
             <!-- button-area-gap -->
             <div class="button-area-gap"></div>
             <!-- button (favorite and mark) -->
             <div class="button-area grid grid-cols-6">
               <div class="col-span-4"></div>
+              <!-- favorite button -->
+              <div class="flex justify-center items-center">
+                <button @click="onFavorite(place)">
+                  <i class="far fa-heart fa-lg"></i>
+                </button>
+              </div>
               <!-- mark button -->
               <div class="flex justify-center items-center">
                 <button>
-                  <i class="fas fa-store button-size text-white"></i>
-                </button>
-              </div>
-              <!-- favorite button -->
-              <div class="bg-kon flex justify-center items-center">
-                <button @click="onFavorite(place)">
-                  <i class="fas fa-heart button-size text-white"></i>
+                  <i class="far fa-bookmark fa-lg"></i>
                 </button>
               </div>
             </div>
@@ -218,12 +216,14 @@ export default {
             const shopid = place.place_id;
             const shopname = place.name;
             const shopadd = place.vicinity;
+            const shopwebsite = place.website;
             const url = place.photos[0].getUrl({ width: 300, height: 400 });
             const hairetsu = {
               id: shopid,
               name: shopname,
               add: shopadd,
               photourl: url,
+              webkit: shopwebsite,
             };
             this.places.push(hairetsu);
           }
@@ -381,22 +381,18 @@ export default {
   width: 300px;
   height: 60px;
 }
-.shop-vicinity {
-  width: 300px;
-  height: 30px;
-}
 .button-area-gap {
   width: 300px;
   height: 5px;
 }
-.button-area {
-  width: 300px;
-  height: 40px;
-}
-.shopphoto {
+.photo-image {
   -webkit-box-shadow: 0 5px 6px 1px #888;
   -moz-box-shadow:0 5px 6px 1px #888;
   box-shadow: 0 5px 6px 1px #888;
+}
+.button-area {
+  width: 300px;
+  height: 40px;
 }
 .shop-text {
   font-family: 'Hachi Maru Pop', cursive;

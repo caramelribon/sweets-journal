@@ -3,40 +3,42 @@
     <div class="flex p-5 items-start justify-center flex-row flex-wrap">
       <div v-for="activity in activities" :key="activity.id">
         <!-- shop layout -->
-        <div class="m-4">
-          <p>{{ activity.username }}が</p>
-          <p>{{ activity.createat.getFullYear() }}/{{ activity.createat.getMonth()+1 }}/{{
-          activity.createat.getDate() }} {{ activity.createat.getHours() }}:{{
-          activity.createat.getMinutes() }}:{{ activity.createat.getSeconds() }}</p>
+        <div class="my-10 mx-6">
+          <div class="shop-image relative">
+            <span class="absolute -top-14 -left-10">
+              <span class="cicle relative">
+                <span class="text-center top-9 absolute left-5">{{ activity.username }}が<br>
+                {{ activity.action }}しました<br>
+                <p class="text-xs m-1">{{ activity.createat.getFullYear() }}/
+                {{ activity.createat.getMonth()+1 }}/{{
+                activity.createat.getDate() }} {{ activity.createat.getHours() }}:{{
+                activity.createat.getMinutes() }}:{{ activity.createat.getSeconds() }}</p></span>
+              </span>
+            </span>
           <!-- shop image -->
-          <div class="shop-image">
-            <img v-bind:src="activity.photo1" width="300" height="300">
+              <img v-bind:src="activity.photo1" width="300" height="300">
           </div>
           <!-- shop description and button(favorite and mark) -->
-          <div class="shop-description bg-kon">
+          <div class="shop-description">
             <!-- shop name -->
             <div class="shop-name flex justify-center items-center p-1">
-              <p class="shop-text text-white text-center">{{ activity.placename }}</p>
-            </div>
-            <!-- shop vicinity -->
-            <div class="shop-vicinity flex justify-center items-center p-1">
-              <p class="shop-text text-white text-center add-size">{{ activity.addS }}</p>
+              <p class="shop-text text-center">{{ activity.placename }}</p>
             </div>
             <!-- button-area-gap -->
             <div class="button-area-gap"></div>
             <!-- button (favorite and mark) -->
             <div class="button-area grid grid-cols-6">
               <div class="col-span-4"></div>
+              <!-- favorite button -->
+              <div class="flex justify-center items-center">
+                <button @click="onFavorite(place)">
+                  <i class="far fa-heart fa-lg"></i>
+                </button>
+              </div>
               <!-- mark button -->
               <div class="flex justify-center items-center">
                 <button>
-                  <i class="fas fa-store button-size text-white"></i>
-                </button>
-              </div>
-              <!-- favorite button -->
-              <div class="bg-kon flex justify-center items-center">
-                <button>
-                  <i class="fas fa-heart button-size text-white"></i>
+                  <i class="far fa-bookmark fa-lg"></i>
                 </button>
               </div>
             </div>
@@ -115,8 +117,17 @@ export default {
               });
           });
         });
-      console.log(this.activities);
     },
   },
 };
 </script>
+
+<style>
+.cicle {
+  display: inline-block;
+  background-color: #D9ADAD;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+</style>
