@@ -78,7 +78,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .overlay {
     background: rgba(0, 0, 0, .8);
     position: fixed;

@@ -1,29 +1,29 @@
 <template>
   <!-- navigation -->
-  <div class="navber">
+  <header class="header w-full h-5">
     <!-- ログイン中 -->
-    <nav id="header" class="w-full z-30 top-0 py-1" v-if="currentUID !== null">
+    <nav id="header" v-if="currentUID !== null">
       <div
       class="w-full container mx-auto flex items-center
-      justify-between mt-0 px-6 py-3">
+      justify-between mt-0 px-3 py-3">
         <div class="flex">
-          <div class="font-bold text-xl mr-2"
-          v-for="(top, index) in tops" :key="index">
+          <div class="font-bold text-2xl mr-2"
+          v-for="(top, index) in tops" :key="`first-${index}`">
             <div class="flex">
               <router-link
-              class="block"
+              class="block moji"
               v-bind:to=top.path>
-                {{ top.title }}
+                <p class="moji">{{ top.title }}</p>
               </router-link>
             </div>
           </div>
           <div class="text-base"
-          v-for="(activity, index) in activities" :key="index">
-            <div class="flex">
+          v-for="(activity, index) in activities" :key="`second-${index}`">
+            <div class="flex mt-1 ml-4">
               <router-link
               class="block"
               v-bind:to=activity.path>
-                {{ activity.title }}
+                <p class="moji">{{ activity.title }}</p>
               </router-link>
             </div>
           </div>
@@ -45,31 +45,31 @@
               2.243-5 5-5h4c2.757 0 5 2.243 5 5v1H21z"></path>
             </svg>
           </button>
-          <span class="userinfo absolute z-10" v-if="userinfo">
+          <span class="userinfo absolute z-70" v-if="userinfo">
             <div class="userinfo">
               <div class="text-center mt-3 mx-3 border-b">
                 <i class="fas fa-user-circle fa-5x"></i>
-                <p class="text-center py-2">{{ username }}</p>
+                <p class="text-center py-2 mojip">{{ username }}</p>
               </div>
               <div class="button m-3 mx-5">
-                <div class="flex justify-between">
+                <div class="flex justify-center">
                   <!-- Profile -->
-                  <div class="signup" v-for="(item, index) in items" :key="index">
+                  <div class="signup mr-1" v-for="(item, index) in items" :key="`third-${index}`">
                     <router-link
-                      class="block text-sm px-4 py-2 leading-none border
+                      class="block text-sm px-2 py-2 leading-none border
                       rounded text-white hover:border-transparent hover:text-black
                       hover:bg-white
                       mt-4 lg:mt-0"
                       v-bind:to=item.path>
-                        {{ item.title }}
+                        <p class="moji">{{ item.title }}</p>
                     </router-link>
                   </div>
                   <!-- Logout -->
                   <div class="logout">
                     <button
-                      class="inline-block text-sm px-4 py-2 leading-none border rounded text-white
-                      border-white hover:border-transparent hover:text-teal-500 hover:bg-white
-                      mt-4 lg:mt-0"
+                      class="inline-block text-sm px-2 py-2 leading-none border rounded text-white
+                      hover:border-transparent hover:text-black hover:bg-white
+                      mt-4 lg:mt-0 moji"
                       type="button"
                       @click="onClickLogOut">
                         Logout
@@ -78,7 +78,7 @@
                 </div>
               </div>
               <div class="message">
-                <p class="m-3">Pfolieから登録したお気に入りのお店や気になるお店を見ることが
+                <p class="m-3 mojip text-sm">Pfolieから登録したお気に入りのお店や気になるお店を見ることが
                 できます^^ また、全ユーザのアクティビティがActivityから見れますよ♪</p>
               </div>
             </div>
@@ -87,17 +87,17 @@
       </div>
     </nav>
     <!-- 未ログイン -->
-    <nav id="header" class="w-full z-30 top-0 py-1" v-else>
+    <nav id="header" class="z-30" v-else>
       <div
       class="w-full container mx-auto flex items-center
-      justify-between mt-0 px-6 py-3">
-        <div class="font-bold text-xl"
+      justify-between mt-0 px-3 py-3">
+        <div class="font-bold text-2xl"
         v-for="(top, index) in tops" :key="index">
           <div class="flex">
             <router-link
             class="block"
             v-bind:to=top.path>
-              {{ top.title }}
+              <p class="moji">{{ top.title }}</p>
             </router-link>
           </div>
         </div>
@@ -122,16 +122,16 @@
             <div class="userinfo">
               <div class="text-center mt-3 mx-3 border-b">
                 <i class="fas fa-user-circle fa-5x"></i>
-                <p class="text-center py-2">ゲスト</p>
+                <p class="text-center py-2 moji">ゲスト</p>
               </div>
               <div class="button m-3 mx-5">
-                <div class="flex justify-between">
+                <div class="flex justify-center">
                   <!-- Sginup -->
-                  <div class="signup">
+                  <div class="signup mr-1">
                     <button
                       class="text-sm px-4 py-2 leading-none border rounded text-white
                       hover:border-transparent hover:text-black hover:bg-white
-                      mt-4 lg:mt-0 cursor-pointer"
+                      mt-4 lg:mt-0 cursor-pointer moji"
                       type="button"
                       @click="openSignupForm">
                         Sginup
@@ -143,7 +143,7 @@
                     <button
                       class="inline-block text-sm px-4 py-2 leading-none border rounded text-white
                       border-white hover:border-transparent hover:text-teal-500 hover:bg-white
-                      mt-4 lg:mt-0"
+                      mt-4 lg:mt-0 moji"
                       type="button"
                       @click="openLoginForm">
                         Login
@@ -153,7 +153,7 @@
                 </div>
               </div>
               <div class="message">
-                <p class="m-3">会員登録(無料)すれば、気に入ったお店を登録できたり、
+                <p class="m-3 mojip text-sm">会員登録(無料)すれば、気に入ったお店を登録できたり、
                 気になるお店をマークすることができます^^ また、全ユーザのアクティビティも見れますよ♪</p>
               </div>
             </div>
@@ -161,7 +161,7 @@
         </div>
       </div>
     </nav>
-  </div>
+  </header>
 </template>
 
 <script>
@@ -231,6 +231,7 @@ export default {
           console.log('ログアウトしました');
           this.loginmodal = false;
           this.signupmodal = false;
+          this.userinfo = false;
         })
         .catch((error) => {
           // ログアウトに失敗したときの処理
@@ -249,10 +250,17 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
+.moji {
+  font-family: 'Hachi Maru Pop', cursive;
+}
+.mojip {
+  font-family: 'Yomogi', cursive;
+}
 .userinfo {
   background-color: #D9ADAD;
   width: 200px;
-  height: 350px;
+  height: 320px;
   right: 150%;
   top: 0.5%;
 }
@@ -264,5 +272,8 @@ export default {
   top: 1.5%;
   content: '';
   position: absolute;
+}
+header {
+  position: fixed;
 }
 </style>

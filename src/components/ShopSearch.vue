@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="py-16">
     <div class="search">
       <div class="search-form mx-auto my-2 rounded-lg shadow-md">
-        <form>
+        <form class="mojip">
           <div class="mx-auto flex justify-center items-center">
             <!-- area -->
             <div class="flex justify-center items-center">
@@ -13,10 +13,10 @@
                 text-gray-700 py-3 px-4 pr-8 rounded-l leading-tight focus:outline-none
                 select"
                 >
-                  <option value="" disabled selected>Area</option>
-                  <option value="500">半径 500 m以内</option>
-                  <option value="1000">半径 1 km以内</option>
-                  <option value="3000">半径 3 km以内</option>
+                  <option value="" disabled selected class="mojip">Area</option>
+                  <option value="500" class="mojip">半径 500 m以内</option>
+                  <option value="1000" class="mojip">半径 1 km以内</option>
+                  <option value="3000" class="mojip">半径 3 km以内</option>
                 </select>
                 <div class="pointer-events-none absolute
                 inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -37,9 +37,9 @@
                 text-gray-700 py-3 px-4 pr-8 rounded-r leading-tight focus:outline-none
                 select"
                 >
-                  <option value="" disabled selected>Category</option>
-                  <option value="restaurant">Restaurant</option>
-                  <option value="cafe">Cafe</option>
+                  <option value="" disabled selected class="mojip">Category</option>
+                  <option value="restaurant" class="mojip">Restaurant</option>
+                  <option value="cafe" class="mojip">Cafe</option>
                 </select>
                 <div class="pointer-events-none absolute
                 inset-y-0 right-0 flex items-center px-2 text-gray-700">
