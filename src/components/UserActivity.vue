@@ -5,6 +5,7 @@
         <!-- shop layout -->
         <div class="my-10 mx-6">
           <div class="shop-image relative">
+            <!-- User Action -->
             <span class="absolute -top-14 -left-10">
               <span class="cicle relative">
                 <span class="text-center top-9 absolute left-5">{{ activity.username }}が<br>
@@ -15,8 +16,11 @@
                 activity.createat.getMinutes() }}:{{ activity.createat.getSeconds() }}</p></span>
               </span>
             </span>
-          <!-- shop image -->
+            <!-- shop image -->
+            <a @click="openShopInfo(activity)">
               <img v-bind:src="activity.photo1" width="300" height="300">
+            </a>
+            <info-modal @close="closeShopInfo" v-if="infomodal" :val="shopInfos"></info-modal>
           </div>
           <!-- shop description and button(favorite and mark) -->
           <div class="shop-description">
@@ -51,8 +55,10 @@
 
 <script>
 import firebase from 'firebase/app';
+import InfoModal from '@/components/InfoModal.vue';
 
 export default {
+  components: { InfoModal },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.getActivity(); // 初期化処理
@@ -62,6 +68,8 @@ export default {
   data() {
     return {
       activities: [],
+      infomodal: false,
+      shopInfos: '',
     };
   },
   methods: {
@@ -117,6 +125,13 @@ export default {
               });
           });
         });
+    },
+    openShopInfo(activity) {
+      this.infomodal = true;
+      this.shopInfos = activity;
+    },
+    closeShopInfo() {
+      this.infomodal = false;
     },
   },
 };
