@@ -156,12 +156,13 @@
 import GoogleMapsApiLoader from 'google-maps-api-loader';
 import firebase from 'firebase/app';
 import RinfoModal from '@/components/RinfoModal.vue';
+import { getRanking } from '@/services/firebaseService';
 
 export default {
   components: { RinfoModal },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.getRanking(); // 初期化処理
+      vm.createRanking(); // 初期化処理
       next();
     });
   },
@@ -235,14 +236,12 @@ export default {
             const shopid = place.place_id;
             const shopname = place.name;
             const shopadd = place.vicinity;
-            const shopwebsite = place.website;
             const url = place.photos[0].getUrl({ width: 300, height: 400 });
             const hairetsu = {
               id: shopid,
               name: shopname,
               add: shopadd,
               photourl: url,
-              webkit: shopwebsite,
             };
             this.places.push(hairetsu);
           }
@@ -377,18 +376,10 @@ export default {
       const service = new this.google_shop.maps.places.PlacesService(shop);
       service.getDetails(request, callback);
     },
-    getRanking() {
-      firebase
-        .firestore()
-        .collection('places')
-        .orderBy('favorite_count', 'desc')
-        .limit(3)
-        .get()
-        .then((placeinfo) => {
-          placeinfo.forEach((doc) => {
-            this.rankings.push(doc.data());
-          });
-        });
+    async createRanking() {
+      this.rankings = await getRanking().catch((err) => {
+        console.log('データを取得できませんでした', err);
+      });
     },
     openShopInfo(ranking) {
       this.infomodal = true;

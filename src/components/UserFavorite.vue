@@ -9,7 +9,7 @@
         <div class="m-4">
           <!-- shop image -->
           <div class="shop-image">
-            <a @click="openShopInfo(info)">
+            <a @click="openShopInfo(info)" class="cursor-pointer">
               <img v-bind:src="info.photo_1" width="300" height="300">
             </a>
             <rinfo-modal @close="closeShopInfo" v-if="infomodal" :val="shopInfos"></rinfo-modal>
@@ -48,12 +48,13 @@
 <script>
 import firebase from 'firebase/app';
 import RinfoModal from '@/components/RinfoModal.vue';
+import { getFavorite } from '@/services/firebaseService';
 
 export default {
   components: { RinfoModal },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.getUser(); // 初期化処理
+      vm.getData(); // 初期化処理
       next();
     });
   },
@@ -65,34 +66,14 @@ export default {
     };
   },
   methods: {
-    getUser() {
-      const db = firebase.firestore();
+    async getData() {
+      // ログインしているユーザのuidを取得
       const user = firebase.auth().currentUser;
       const userUID = user.uid;
-      db.collection('users').doc(userUID).get()
-        .then((doc) => {
-          if (doc.exists) {
-            this.username = doc.data().username;
-          } else {
-            console.log('No such document!');
-          }
-        })
-        .catch((error) => {
-          console.log('エラー', error);
-        });
-      this.getPlaceId(db, userUID);
-    },
-    getPlaceId(db, userUID) {
-      db.collection('favorites').where('user_id', '==', userUID).get()
-        .then((snapShot) => {
-          snapShot.forEach((doc) => {
-            const placeid = doc.data().place_id;
-            db.collection('places').doc(placeid).get()
-              .then((info) => {
-                this.infos.push(info.data());
-              });
-          });
-        });
+      // ログインユーザがお気に入りしたお店の情報を取得
+      this.infos = await getFavorite(userUID).catch((err) => {
+        console.log('データを取得できませんでした', err);
+      });
     },
     openShopInfo(info) {
       this.infomodal = true;

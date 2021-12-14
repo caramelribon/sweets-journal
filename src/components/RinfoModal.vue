@@ -3,14 +3,14 @@
     <div class="overlay" @click="$emit('close')">
       <div class="panel" @click.stop>
         <!-- Shop info -->
-        <div class="bg-white infomodal">
+        <div class="bg-none infomodal">
           <!-- shopname -->
           <div class="m-5">
             <div class="flex justify-between items-center">
-              <h1 class="text-2xl m-2">{{ val.name }}</h1>
-              <a v-bind:href="val.website">website</a>
+              <h1 class="text-2xl m-2 moji text-white">{{ val.name }}</h1>
+              <a v-bind:href="val.website" class="moji text-white">website</a>
             </div>
-            <p>{{ val.add_short }}</p>
+            <p class="moji text-white">{{ val.add_short }}</p>
           </div>
           <!-- shopphotos -->
           <div>
@@ -35,20 +35,22 @@
           </div>
           <!-- rating and review -->
           <div class="rating text-center m-3">
-            <p>Rating<i class="fas fa-star star"></i> : {{ val.all_rating }}</p>
+            <p class="moji text-white">
+              Rating<i class="fas fa-star star"></i> : {{ val.all_rating }}
+            </p>
           </div>
           <div class="mx-3">
             <swiper
             class="max-w-md flex justify-center"
             :options="swiperOptionReview"
             ref="mySwiper1">
-              <swiper-slide class="flex justify-center items-center text-xs">
+              <swiper-slide class="flex justify-center items-center text-xs text-white">
                 <p class="items-center">{{ val.review_1 }}</p>
               </swiper-slide>
-              <swiper-slide class="flex justify-center items-center text-xs">
+              <swiper-slide class="flex justify-center items-center text-xs text-white">
                 <p class="items-center">{{ val.review_2 }}</p>
               </swiper-slide>
-              <swiper-slide class="flex justify-center items-center text-xs">
+              <swiper-slide class="flex justify-center items-center text-xs text-white">
                 <p class="items-center">{{ val.review_3 }}</p>
               </swiper-slide>
             </swiper>
@@ -82,6 +84,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
+.moji {
+  font-family: 'Hachi Maru Pop', cursive;
+}
+.pmoji {
+  font-family: 'Yomogi', cursive;
+}
 .overlay {
     background: rgba(0, 0, 0, .8);
     position: fixed;
@@ -111,7 +120,6 @@ export default {
 }
 .infomodal {
   width: 450px;
-  height: 620px;
 }
 .star {
   color:#1da1f2;
