@@ -1,38 +1,40 @@
 <template>
   <div class="favorites">
+    <div class="py-16">
+      <p class="shop-text text-4xl text-center">Favorite Shop</p>
+    </div>
     <div class="flex p-5 items-start justify-center flex-row flex-wrap">
       <div v-for="info in infos" :key="info.id">
         <!-- shop layout -->
         <div class="m-4">
           <!-- shop image -->
           <div class="shop-image">
-            <img v-bind:src="info.photourl" width="300" height="300">
+            <a @click="openShopInfo(info)">
+              <img v-bind:src="info.photo_1" width="300" height="300">
+            </a>
+            <rinfo-modal @close="closeShopInfo" v-if="infomodal" :val="shopInfos"></rinfo-modal>
           </div>
           <!-- shop description and button(favorite and mark) -->
-          <div class="shop-description bg-kon">
+          <div class="shop-description">
             <!-- shop name -->
             <div class="shop-name flex justify-center items-center p-1">
-              <p class="shop-text text-white text-center">{{ info.name }}</p>
-            </div>
-            <!-- shop vicinity -->
-            <div class="shop-vicinity flex justify-center items-center p-1">
-              <p class="shop-text text-white text-center add-size">{{ info.add }}</p>
+              <p class="shop-text text-center">{{ info.name }}</p>
             </div>
             <!-- button-area-gap -->
             <div class="button-area-gap"></div>
             <!-- button (favorite and mark) -->
             <div class="button-area grid grid-cols-6">
               <div class="col-span-4"></div>
+              <!-- favorite button -->
+              <div class="flex justify-center items-center">
+                <button @click="onFavorite(place)">
+                  <i class="far fa-heart fa-lg"></i>
+                </button>
+              </div>
               <!-- mark button -->
               <div class="flex justify-center items-center">
                 <button>
-                  <i class="fas fa-store button-size text-white"></i>
-                </button>
-              </div>
-              <!-- favorite button -->
-              <div class="bg-kon flex justify-center items-center">
-                <button>
-                  <i class="fas fa-heart button-size text-white"></i>
+                  <i class="far fa-bookmark fa-lg"></i>
                 </button>
               </div>
             </div>
@@ -45,8 +47,10 @@
 
 <script>
 import firebase from 'firebase/app';
+import RinfoModal from '@/components/RinfoModal.vue';
 
 export default {
+  components: { RinfoModal },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.getUser(); // 初期化処理
@@ -57,6 +61,7 @@ export default {
     return {
       username: '',
       infos: [],
+      infomodal: false,
     };
   },
   methods: {
@@ -81,19 +86,20 @@ export default {
       db.collection('favorites').where('user_id', '==', userUID).get()
         .then((snapShot) => {
           snapShot.forEach((doc) => {
-            const id = doc.data().place_id;
-            db.collection('places').doc(id).get()
+            const placeid = doc.data().place_id;
+            db.collection('places').doc(placeid).get()
               .then((info) => {
-                const infos = {
-                  id: info.data().id,
-                  name: info.data().name,
-                  add: info.data().add_short,
-                  photourl: info.data().photo_1,
-                };
-                this.infos.push(infos);
+                this.infos.push(info.data());
               });
           });
         });
+    },
+    openShopInfo(info) {
+      this.infomodal = true;
+      this.shopInfos = info;
+    },
+    closeShopInfo() {
+      this.infomodal = false;
     },
   },
 };

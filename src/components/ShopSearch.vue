@@ -71,21 +71,37 @@
       <swiper :options="swiperOption">
         <swiper-slide v-for="ranking in rankings" :key="ranking.id">
           <div class="flex p-5 items-start justify-center flex-row flex-wrap">
-            <!-- shop layout -->
-            <div class="m-4">
-              <!-- shop image -->
-              <div class="shop-image">
-                <img v-bind:src="ranking.photo_1" width="300" height="300">
+            <div class="my-10 mx-6">
+              <div class="shop-image relative">
+                <!-- shop image -->
+                <a @click="openShopInfo(ranking)">
+                  <img v-bind:src="ranking.photo_1" width="300" height="300">
+                </a>
+                <rinfo-modal @close="closeShopInfo" v-if="infomodal" :val="shopInfos"></rinfo-modal>
               </div>
               <!-- shop description and button(favorite and mark) -->
-              <div class="shop-description bg-kon">
+              <div class="shop-description">
                 <!-- shop name -->
                 <div class="shop-name flex justify-center items-center p-1">
-                  <p class="shop-text text-white text-center">{{ ranking.name }}</p>
+                  <p class="shop-text text-center">{{ ranking.name }}</p>
                 </div>
-                <!-- shop vicinity -->
-                <div class="shop-vicinity flex justify-center items-center p-1">
-                  <p class="shop-text text-white text-center add-size">{{ ranking.add_short }}</p>
+                <!-- button-area-gap -->
+                <div class="button-area-gap"></div>
+                <!-- button (favorite and mark) -->
+                <div class="button-area grid grid-cols-6">
+                  <div class="col-span-4"></div>
+                  <!-- favorite button -->
+                  <div class="flex justify-center items-center">
+                    <button @click="onFavorite(place)">
+                      <i class="far fa-heart fa-lg"></i>
+                    </button>
+                  </div>
+                  <!-- mark button -->
+                  <div class="flex justify-center items-center">
+                    <button>
+                      <i class="far fa-bookmark fa-lg"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -139,8 +155,10 @@
 <script>
 import GoogleMapsApiLoader from 'google-maps-api-loader';
 import firebase from 'firebase/app';
+import RinfoModal from '@/components/RinfoModal.vue';
 
 export default {
+  components: { RinfoModal },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.getRanking(); // 初期化処理
@@ -168,17 +186,18 @@ export default {
           disableOnInteraction: false,
         },
       },
+      infomodal: false,
     };
   },
   async mounted() {
     // 検索用のgoogle
     this.google = await GoogleMapsApiLoader({
       libraries: ['places'],
-      apiKey: 'AIzaSyBkd3oEj98eAsy7WxQFNfy7EW6KdLZtVL8',
+      apiKey: process.env.VUE_APP_GOOGLEMAPS_APIKEY,
     });
     // shopの詳細データを取得する用のgoogle
     this.google_shop = await GoogleMapsApiLoader({
-      apiKey: 'AIzaSyBkd3oEj98eAsy7WxQFNfy7EW6KdLZtVL8',
+      apiKey: process.env.VUE_APP_GOOGLEMAPS_APIKEY,
     });
   },
   computed: {
@@ -370,6 +389,13 @@ export default {
             this.rankings.push(doc.data());
           });
         });
+    },
+    openShopInfo(ranking) {
+      this.infomodal = true;
+      this.shopInfos = ranking;
+    },
+    closeShopInfo() {
+      this.infomodal = false;
     },
   },
 };

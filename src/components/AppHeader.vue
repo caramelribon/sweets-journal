@@ -66,19 +66,21 @@
                   </div>
                   <!-- Logout -->
                   <div class="logout">
-                    <button
-                      class="inline-block text-sm px-2 py-2 leading-none border rounded text-white
-                      hover:border-transparent hover:text-black hover:bg-white
-                      mt-4 lg:mt-0 moji"
-                      type="button"
-                      @click="onClickLogOut">
-                        Logout
-                    </button>
+                    <router-link to="/">
+                      <button
+                        class="inline-block text-sm px-2 py-2 leading-none border rounded text-white
+                        hover:border-transparent hover:text-black hover:bg-white
+                        mt-4 lg:mt-0 moji"
+                        type="button"
+                        @click="onClickLogOut">
+                          Logout
+                      </button>
+                    </router-link>
                   </div>
                 </div>
               </div>
               <div class="message">
-                <p class="m-3 mojip text-sm">Pfolieから登録したお気に入りのお店や気になるお店を見ることが
+                <p class="m-3 mojip text-sm">Profileから登録したお気に入りのお店や気になるお店を見ることが
                 できます^^ また、全ユーザのアクティビティがActivityから見れますよ♪</p>
               </div>
             </div>

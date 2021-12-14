@@ -1,5 +1,13 @@
 <template>
-  <div class="favorites">
+  <div class="activities">
+    <div class="py-16">
+      <p class="shop-text text-4xl text-center">User Activity</p>
+    </div>
+    <button
+    class="wrap row justify-center"
+    v-if="pagingToken"
+    @click="nextPaging();"
+    >次のページ</button>
     <div class="flex p-5 items-start justify-center flex-row flex-wrap">
       <div v-for="activity in activities" :key="activity.id">
         <!-- shop layout -->
@@ -61,7 +69,7 @@ export default {
   components: { InfoModal },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.getActivity(); // 初期化処理
+      vm.getAllData(4, ''); // 初期化処理
       next();
     });
   },
@@ -70,15 +78,30 @@ export default {
       activities: [],
       infomodal: false,
       shopInfos: '',
+      pagingToken: '',
+      nextPageToken: '',
+      BuffData: '',
     };
   },
   methods: {
-    getActivity() {
+    async getAllData(limit, pagingToken) {
       const db = firebase.firestore();
-      // activitiesからuser_id, place_id, action, create_atを取得する
-      db.collection('activities').orderBy('create_at', 'desc').get()
-        .then((snapShot) => {
-          snapShot.forEach((doc) => {
+      let nextToken = '';
+      const infos = [];
+      let query = db.collection('activities').orderBy('create_at', 'desc').limit(limit);
+      if (pagingToken !== '') {
+        const [seconds, nanoseconds] = pagingToken.split(':');
+        const timestamp = new firebase.firestore.Timestamp(seconds, nanoseconds);
+        query = query.startAfter(timestamp);
+      }
+      const result = await query.get().then((snapshot) => {
+        if (snapshot.docs.length >= limit) {
+          const last = snapshot.docs[snapshot.docs.length - 1];
+          const lastData = last.data();
+          const time = lastData.create_at;
+          console.log(time);
+          nextToken = `${time.seconds}:${time.nanoseconds}`;
+          snapshot.forEach((doc) => {
             const userid = doc.data().user_id;
             const placeid = doc.data().place_id;
             const useraction = doc.data().action;
@@ -90,6 +113,10 @@ export default {
                 // 取得したplace_idからplaceの情報を取得
                 db.collection('places').doc(placeid).get()
                   .then((placeinfo) => {
+                    if (!placeinfo.data()) {
+                      return;
+                    }
+                    console.log(placeinfo.data());
                     const placeName = placeinfo.data().name;
                     const placeAdds = placeinfo.data().add_short;
                     const placeAddl = placeinfo.data().add_long;
@@ -103,7 +130,7 @@ export default {
                     const placeReview1 = placeinfo.data().review_1;
                     const placeReview2 = placeinfo.data().review_2;
                     const placeReview3 = placeinfo.data().review_3;
-                    this.activities.push({
+                    infos.push({
                       action: useraction,
                       createat: createtime,
                       username: userName,
@@ -124,7 +151,18 @@ export default {
                   });
               });
           });
-        });
+        }
+        this.BuffData = infos;
+        this.nextPageToken = nextToken;
+      }).catch((err) => {
+        console.log('エラーが発見されました：データ取得時', err);
+      });
+      return result;
+    },
+    async nextPaging() {
+      await this.getAllData(3, this.pagingToken);
+      this.activities = this.activities.concat(this.BuffData);
+      this.pagingToken = this.nextPageToken;
     },
     openShopInfo(activity) {
       this.infomodal = true;
@@ -138,11 +176,42 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
 .cicle {
   display: inline-block;
   background-color: #D9ADAD;
   width: 150px;
   height: 150px;
   border-radius: 50%;
+}
+.shop-name {
+  width: 300px;
+  height: 60px;
+}
+.shop-vicinity {
+  width: 300px;
+  height: 30px;
+}
+.button-area-gap {
+  width: 300px;
+  height: 5px;
+}
+.button-area {
+  width: 300px;
+  height: 40px;
+}
+.shopphoto {
+  -webkit-box-shadow: 0 5px 6px 1px #888;
+  -moz-box-shadow:0 5px 6px 1px #888;
+  box-shadow: 0 5px 6px 1px #888;
+}
+.shop-text {
+  font-family: 'Hachi Maru Pop', cursive;
+}
+.add-size {
+  font-size: 5px;
+}
+.button-size {
+  font-size: 1.5em;
 }
 </style>
