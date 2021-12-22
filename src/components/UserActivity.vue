@@ -3,13 +3,8 @@
     <div class="py-16">
       <p class="shop-text text-4xl text-center">User Activity</p>
     </div>
-    <button
-    class="wrap row justify-center"
-    v-if="pagingToken"
-    @click="nextPaging();"
-    >次のページ</button>
     <div class="flex p-5 items-start justify-center flex-row flex-wrap">
-      <div v-for="activity in activities" :key="activity.id">
+      <div v-for="(activity, index) in activities" :key="index">
         <!-- shop layout -->
         <div class="my-10 mx-6">
           <div class="shop-image relative">
@@ -18,10 +13,7 @@
               <span class="cicle relative">
                 <span class="text-center top-9 absolute left-5">{{ activity.username }}が<br>
                 {{ activity.action }}しました<br>
-                <p class="text-xs m-1">{{ activity.createat.getFullYear() }}/
-                {{ activity.createat.getMonth()+1 }}/{{
-                activity.createat.getDate() }} {{ activity.createat.getHours() }}:{{
-                activity.createat.getMinutes() }}:{{ activity.createat.getSeconds() }}</p></span>
+                <p class="text-xs m-1">{{ activity.createat }}</p></span>
               </span>
             </span>
             <!-- shop image -->
@@ -58,111 +50,66 @@
         </div>
       </div>
     </div>
+    <div class="flex justify-center items-center p-5">
+      <button
+      v-if="pagingToken != null"
+      class="bg-blue-500
+      hover:bg-blue-700 text-white
+      font-bold py-2 px-4 rounded"
+      @click="nextPage">
+        次
+      </button>
+    </div>
+    <div class="flex justify-center items-center p-5">
+      <button @click = "check">
+        Check
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase/app';
+// import firebase from 'firebase/app';
 import InfoModal from '@/components/InfoModal.vue';
+import { getActivity } from '@/services/firebaseService';
 
 export default {
   components: { InfoModal },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.getAllData(4, ''); // 初期化処理
+      vm.getData(); // 初期化処理
       next();
     });
   },
   data() {
     return {
       activities: [],
+      nextData: [],
       infomodal: false,
       shopInfos: '',
-      pagingToken: '',
-      nextPageToken: '',
-      BuffData: '',
+      pagingToken: null,
     };
   },
   methods: {
-    async getAllData(limit, pagingToken) {
-      const db = firebase.firestore();
-      let nextToken = '';
-      const infos = [];
-      let query = db.collection('activities').orderBy('create_at', 'desc').limit(limit);
-      if (pagingToken !== '') {
-        const [seconds, nanoseconds] = pagingToken.split(':');
-        const timestamp = new firebase.firestore.Timestamp(seconds, nanoseconds);
-        query = query.startAfter(timestamp);
-      }
-      const result = await query.get().then((snapshot) => {
-        if (snapshot.docs.length >= limit) {
-          const last = snapshot.docs[snapshot.docs.length - 1];
-          const lastData = last.data();
-          const time = lastData.create_at;
-          console.log(time);
-          nextToken = `${time.seconds}:${time.nanoseconds}`;
-          snapshot.forEach((doc) => {
-            const userid = doc.data().user_id;
-            const placeid = doc.data().place_id;
-            const useraction = doc.data().action;
-            const createtime = doc.data().create_at.toDate();
-            // 取得したuser_idからusernameを取得
-            db.collection('users').doc(userid).get()
-              .then((userinfo) => {
-                const userName = userinfo.data().username;
-                // 取得したplace_idからplaceの情報を取得
-                db.collection('places').doc(placeid).get()
-                  .then((placeinfo) => {
-                    if (!placeinfo.data()) {
-                      return;
-                    }
-                    console.log(placeinfo.data());
-                    const placeName = placeinfo.data().name;
-                    const placeAdds = placeinfo.data().add_short;
-                    const placeAddl = placeinfo.data().add_long;
-                    const placePhoto1 = placeinfo.data().photo_1;
-                    const placePhoto2 = placeinfo.data().photo_2;
-                    const placePhoto3 = placeinfo.data().photo_3;
-                    const placePhoto4 = placeinfo.data().photo_4;
-                    const placePhoto5 = placeinfo.data().photo_5;
-                    const placeWebsite = placeinfo.data().website;
-                    const placeRating = placeinfo.data().all_rating;
-                    const placeReview1 = placeinfo.data().review_1;
-                    const placeReview2 = placeinfo.data().review_2;
-                    const placeReview3 = placeinfo.data().review_3;
-                    infos.push({
-                      action: useraction,
-                      createat: createtime,
-                      username: userName,
-                      placename: placeName,
-                      addL: placeAddl,
-                      addS: placeAdds,
-                      photo1: placePhoto1,
-                      photo2: placePhoto2,
-                      photo3: placePhoto3,
-                      photo4: placePhoto4,
-                      photo5: placePhoto5,
-                      website: placeWebsite,
-                      rating: placeRating,
-                      review1: placeReview1,
-                      review2: placeReview2,
-                      review3: placeReview3,
-                    });
-                  });
-              });
-          });
-        }
-        this.BuffData = infos;
-        this.nextPageToken = nextToken;
-      }).catch((err) => {
-        console.log('エラーが発見されました：データ取得時', err);
-      });
-      return result;
+    // ページを開いたときに初めに3件取得する
+    async getData() {
+      let data = [];
+      data = await getActivity(3, this.pagingToken);
+      console.log('getData called');
+      console.log(data);
+      this.activities = data.BuffData;
+      this.pagingToken = data.nextPageToken;
     },
-    async nextPaging() {
-      await this.getAllData(3, this.pagingToken);
-      this.activities = this.activities.concat(this.BuffData);
-      this.pagingToken = this.nextPageToken;
+    // 次のボタンを押したら、さらに1件取得
+    async nextPage() {
+      await getActivity(3, this.pagingToken)
+        .then((data) => {
+          this.activities = this.activities.concat(data.BuffData);
+          this.pagingToken = data.nextPageToken;
+        });
+      // this.nextData = nextdata.BuffData;
+      // console.log(this.nextData);
+      // this.pagingToken = nextdata.nextPageToken;
     },
     openShopInfo(activity) {
       this.infomodal = true;
@@ -170,6 +117,10 @@ export default {
     },
     closeShopInfo() {
       this.infomodal = false;
+    },
+    check() {
+      console.log(this.nextData);
+      console.log(this.nextData.length);
     },
   },
 };

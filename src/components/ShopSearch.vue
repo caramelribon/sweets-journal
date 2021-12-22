@@ -112,7 +112,7 @@
     <!-- Shop Serch Results -->
     <div id="map"></div>
     <div id="shop" class="flex p-5 items-start justify-center flex-row flex-wrap">
-      <div v-for="place in places" :key="place.id">
+      <div v-for="(place, index) in places" :key="index">
         <!-- shop layout -->
         <div class="m-4">
           <!-- shop image -->
@@ -237,6 +237,9 @@ export default {
             const shopname = place.name;
             const shopadd = place.vicinity;
             const url = place.photos[0].getUrl({ width: 300, height: 400 });
+            if (!url) {
+              return;
+            }
             const hairetsu = {
               id: shopid,
               name: shopname,
@@ -347,19 +350,11 @@ export default {
           docRef.set({
             id: result.place_id,
             name: result.name,
-            add_long: result.formatted_address,
             add_short: result.vicinity,
-            map_url: result.url,
             website: result.website,
             all_rating: result.rating,
-            all_rating_num: result.user_ratings_total,
             favorite_count: 1,
             bookmark_count: 0,
-            rating_1: result.reviews[0].rating,
-            rating_2: result.reviews[1].rating,
-            rating_3: result.reviews[2].rating,
-            rating_4: result.reviews[3].rating,
-            rating_5: result.reviews[4].rating,
             review_1: result.reviews[0].text,
             review_2: result.reviews[1].text,
             review_3: result.reviews[2].text,
@@ -377,6 +372,7 @@ export default {
       service.getDetails(request, callback);
     },
     async createRanking() {
+      // Ranking上位のお店の情報を取得
       this.rankings = await getRanking().catch((err) => {
         console.log('データを取得できませんでした', err);
       });

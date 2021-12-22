@@ -17,6 +17,7 @@
     "swiper": "^5.4.5",
     "vue": "^2.6.11",
     "vue-awesome-swiper": "^4.1.1",
+    "vue-infinite-loading": "^2.4.5",
     "vue-js-modal": "^2.0.1",
     "vue-router": "^3.5.3",
     "vue2-google-maps": "^0.10.7"

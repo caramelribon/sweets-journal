@@ -21,7 +21,8 @@
           v-for="(activity, index) in activities" :key="`second-${index}`">
             <div class="flex mt-1 ml-4">
               <router-link
-              class="block"
+              class="block bg-blue-500 hover:bg-blue-700 text-white
+              font-bold py-2 px-4 rounded"
               v-bind:to=activity.path>
                 <p class="moji">{{ activity.title }}</p>
               </router-link>
