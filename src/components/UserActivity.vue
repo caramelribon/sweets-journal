@@ -50,20 +50,8 @@
         </div>
       </div>
     </div>
-    <div class="flex justify-center items-center p-5">
-      <button
-      v-if="pagingToken != null"
-      class="bg-blue-500
-      hover:bg-blue-700 text-white
-      font-bold py-2 px-4 rounded"
-      @click="nextPage">
-        次
-      </button>
-    </div>
-    <div class="flex justify-center items-center p-5">
-      <button @click = "check">
-        Check
-      </button>
+    <div class="loader-wrap" v-show="loading">
+      <div class="text">取得中...</div>
     </div>
   </div>
 </template>
@@ -88,6 +76,20 @@ export default {
       infomodal: false,
       shopInfos: '',
       pagingToken: null,
+      // ロード中のアニメーション
+      loading: false,
+      // 非同期で取得中 通常: false, 通信中: true
+      itemLoading: false,
+    };
+  },
+  mounted() {
+    window.onscroll = () => {
+      // 一定位置以上スクロールされればtrueを返す
+      const bottomOfWindow = document.documentElement.scrollTop
+      + window.innerHeight >= document.documentElement.offsetHeight;
+      if (bottomOfWindow) {
+        this.nextPage();
+      }
     };
   },
   methods: {
@@ -102,14 +104,27 @@ export default {
     },
     // 次のボタンを押したら、さらに1件取得
     async nextPage() {
+      // 読込中は再読み込み防止
+      if (this.itemLoading) return;
+      // 取得データがもう存在しない場合は行わない
+      if (this.isLastPage) return;
+      // 次のデータを取得
       await getActivity(3, this.pagingToken)
         .then((data) => {
           this.activities = this.activities.concat(data.BuffData);
           this.pagingToken = data.nextPageToken;
+          // ローディングアニメーション非表示
+          this.loading = false;
+          // 読込中 false
+          this.itemLoading = false;
+        }).catch((error) => {
+          // エラー出力
+          console.log('データを取得できませんでした。', error);
+          // ローディングアニメーション非表示
+          this.loading = false;
+          // 読込中 false
+          this.itemLoading = false;
         });
-      // this.nextData = nextdata.BuffData;
-      // console.log(this.nextData);
-      // this.pagingToken = nextdata.nextPageToken;
     },
     openShopInfo(activity) {
       this.infomodal = true;
@@ -117,10 +132,6 @@ export default {
     },
     closeShopInfo() {
       this.infomodal = false;
-    },
-    check() {
-      console.log(this.nextData);
-      console.log(this.nextData.length);
     },
   },
 };
