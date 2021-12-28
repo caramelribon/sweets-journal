@@ -53,11 +53,14 @@
     <div class="loader-wrap" v-show="loading">
       <div class="text">取得中...</div>
     </div>
+    <div class="loader-wrap" v-show="noData">
+      <div class="text">no data</div>
+    </div>
   </div>
 </template>
 
 <script>
-// import firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import InfoModal from '@/components/InfoModal.vue';
 import { getActivity } from '@/services/firebaseService';
 
@@ -80,6 +83,10 @@ export default {
       loading: false,
       // 非同期で取得中 通常: false, 通信中: true
       itemLoading: false,
+      // データがあるかどうか
+      nodata: false,
+      // Activityデータの数
+      dataCount: '',
     };
   },
   mounted() {
@@ -88,31 +95,57 @@ export default {
       const bottomOfWindow = document.documentElement.scrollTop
       + window.innerHeight >= document.documentElement.offsetHeight;
       if (bottomOfWindow) {
-        this.nextPage();
+        if (this.dataCount >= 5) {
+          // データが5件以上あるときは、5件づつ取得する
+          this.loading = true;
+          this.nextPage(5);
+        } else if (this.dataCount < 5 && this.dataCount > 0) {
+          // データが5件より少なかったら、残りのデータを取得する
+          this.loading = true;
+          this.nextPage(this.dataCount);
+        } else if (this.dataCount === 0) {
+          this.noData();
+        } else {
+          this.noData();
+        }
       }
     };
   },
   methods: {
     // ページを開いたときに初めに3件取得する
     async getData() {
+      // データ数の取得
+      const activityAllData = [];
+      // let datacount = null;
+      firebase.firestore().collection('activities').get().then((snapShot) => {
+        snapShot.forEach((doc) => {
+          activityAllData.push(doc.data());
+          this.dataCount += 1;
+        });
+      });
+      console.log(this.dataCount);
+      // 最初のデータの取得
       let data = [];
-      data = await getActivity(3, this.pagingToken);
+      data = await getActivity(5, this.pagingToken);
       console.log('getData called');
       console.log(data);
       this.activities = data.BuffData;
       this.pagingToken = data.nextPageToken;
+      this.dataCount -= 5;
     },
     // 次のボタンを押したら、さらに1件取得
-    async nextPage() {
+    async nextPage(num) {
       // 読込中は再読み込み防止
       if (this.itemLoading) return;
       // 取得データがもう存在しない場合は行わない
       if (this.isLastPage) return;
       // 次のデータを取得
-      await getActivity(3, this.pagingToken)
+      await getActivity(num, this.pagingToken)
         .then((data) => {
           this.activities = this.activities.concat(data.BuffData);
           this.pagingToken = data.nextPageToken;
+          this.dataCount -= num;
+          console.log(this.dataCount);
           // ローディングアニメーション非表示
           this.loading = false;
           // 読込中 false
@@ -132,6 +165,9 @@ export default {
     },
     closeShopInfo() {
       this.infomodal = false;
+    },
+    noData() {
+      this.nodata = true;
     },
   },
 };
