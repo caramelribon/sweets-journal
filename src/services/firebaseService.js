@@ -121,7 +121,7 @@ export async function getActivity(limit, pagingToken) {
         // 全ての詳細データが取得するまで待つ
         const infos = await Promise.all(infoPromises);
 
-        console.log(infos, nextToken);
+        // console.log(infos, nextToken);
         resolve({ BuffData: infos, nextPageToken: nextToken });
       })
       .catch((err) => {

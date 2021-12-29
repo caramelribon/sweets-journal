@@ -308,8 +308,8 @@ export default {
         });
     },
     onActivity(placeId, userId) {
-      const docRef = firebase
-        .firestore()
+      const db = firebase.firestore();
+      const docRef = db
         .collection('activities')
         .doc();
       docRef.set({
@@ -317,6 +317,15 @@ export default {
         place_id: placeId,
         action: 'favorite',
         create_at: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+      const actRef = db
+        .collection('activityCount')
+        .doc('count');
+      actRef.get().then((doc) => {
+        const actCount = doc.data().activityCount + 1;
+        actRef.update({
+          activityCount: actCount,
+        });
       });
     },
     confirmShopData(placeId) {

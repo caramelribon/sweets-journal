@@ -86,7 +86,7 @@ export default {
       // データがあるかどうか
       nodata: false,
       // Activityデータの数
-      dataCount: '',
+      dataCount: 1,
     };
   },
   mounted() {
@@ -112,26 +112,23 @@ export default {
     };
   },
   methods: {
-    // ページを開いたときに初めに3件取得する
+    // ページを開いたときに数件取得する
     async getData() {
       // データ数の取得
-      const activityAllData = [];
-      // let datacount = null;
-      firebase.firestore().collection('activities').get().then((snapShot) => {
-        snapShot.forEach((doc) => {
-          activityAllData.push(doc.data());
-          this.dataCount += 1;
-        });
+      const docRef = await firebase.firestore().collection('activityCount').doc('count');
+      docRef.get().then((doc) => {
+        this.dataCount = doc.data().activityCount;
       });
       console.log(this.dataCount);
       // 最初のデータの取得
       let data = [];
       data = await getActivity(5, this.pagingToken);
-      console.log('getData called');
+      // console.log('getData called');
       console.log(data);
       this.activities = data.BuffData;
       this.pagingToken = data.nextPageToken;
       this.dataCount -= 5;
+      console.log(this.dataCount);
     },
     // 次のボタンを押したら、さらに1件取得
     async nextPage(num) {
