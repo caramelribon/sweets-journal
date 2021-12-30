@@ -50,6 +50,7 @@
         </div>
       </div>
     </div>
+    <div id="observe_element" class="m-2">ここを監視中</div>
     <div class="loader-wrap" v-show="loading">
       <div class="text">取得中...</div>
     </div>
@@ -87,9 +88,21 @@ export default {
       nodata: false,
       // Activityデータの数
       dataCount: 1,
+      // Intersection Obsever
+      observer: null,
     };
   },
   mounted() {
+    const options = {
+      rootMargin: '0px',
+      threshold: 0.1,
+    };
+    this.observer = new IntersectionObserver(this.infiniteScroll, options);
+    // 監視される要素をtargetにする
+    const target = document.getElementById('observe_element');
+    // 監視対象を監視している
+    this.observer.observe(target);
+    /* Intersection Observerを使わない場合
     window.onscroll = () => {
       // 一定位置以上スクロールされればtrueを返す
       const bottomOfWindow = document.documentElement.scrollTop
@@ -110,6 +123,7 @@ export default {
         }
       }
     };
+    */
   },
   methods: {
     // ページを開いたときに数件取得する
@@ -117,7 +131,7 @@ export default {
       // データ数の取得
       const docRef = await firebase.firestore().collection('activityCount').doc('count');
       docRef.get().then((doc) => {
-        this.dataCount = doc.data().activityCount;
+        this.dataCount = doc.data().activityCount + 1;
       });
       console.log(this.dataCount);
       // 最初のデータの取得
@@ -129,6 +143,22 @@ export default {
       this.pagingToken = data.nextPageToken;
       this.dataCount -= 5;
       console.log(this.dataCount);
+    },
+    // 無限スクロールによるデータの追加の仕方
+    infiniteScroll() {
+      if (this.dataCount >= 5) {
+        // データが5件以上あるときは、5件づつ取得する
+        this.loading = true;
+        this.nextPage(5);
+      } else if (this.dataCount < 5 && this.dataCount > 0) {
+        // データが5件より少なかったら、残りのデータを取得する
+        this.loading = true;
+        this.nextPage(this.dataCount);
+      } else if (this.dataCount === 0) {
+        this.noData();
+      } else {
+        this.noData();
+      }
     },
     // 次のボタンを押したら、さらに1件取得
     async nextPage(num) {
