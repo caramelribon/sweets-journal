@@ -134,8 +134,17 @@
               <div class="col-span-4"></div>
               <!-- favorite button -->
               <div class="flex justify-center items-center">
-                <button @click="onFavorite(place)" :disabled="isActive">
+                <button
+                @click="onFavorite(place)"
+                :disabled="isActive"
+                v-if="userLikedPlaceId.indexOf(place.id) === -1">
                   <i class="far fa-heart fa-lg"></i>
+                </button>
+                <button
+                @click="offFavorite(place)"
+                :disabled="isActive"
+                v-else>
+                  <i class="fas fa-heart fa-lg liked"></i>
                 </button>
               </div>
               <!-- mark button -->
@@ -189,14 +198,29 @@ export default {
       },
       infomodal: false,
       isActive: true,
+      userLikedPlaceId: [],
+      currentUID: null,
     };
   },
   async mounted() {
     // ログイン状態の変化を監視する
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
+        this.currentUID = user.uid;
         // console.log('状態：ログイン中');
         this.isActive = false;
+        // ログインユーザがいいねしているplaceのidを取得
+        await firebase.firestore().collection('favorites').where('user_id', '==', user.uid)
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((docPlaceId) => {
+              this.userLikedPlaceId.push(docPlaceId.data().place_id);
+            });
+          })
+          .catch((error) => {
+            console.log('Error getting documents: ', error);
+          });
+        console.log(this.userLikedPlaceId);
       } else {
         // console.log('状態：ログアウト');
         this.isActive = true;
@@ -274,11 +298,12 @@ export default {
     },
     // お気に入り機能
     onFavorite(place) {
-      const user = firebase.auth().currentUser;
-      const db = firebase.firestore();
+      // userLikedPlaceIdにplace.idを追加する
+      this.userLikedPlaceId.push(place.id);
       // このお店がfavorites→user.uid→place.idにあるかどうか調べる
+      const db = firebase.firestore();
       const query = db.collection('favorites')
-        .where('user_id', '==', user.uid)
+        .where('user_id', '==', this.currentUID)
         .where('place_id', '==', place.id)
         .get()
         .then((doc) => {
@@ -307,10 +332,10 @@ export default {
             // なかったら、お気に入り登録とアクティビティ登録をする、confirmShopData()に進む
             // お気に入り登録
             db.collection('favorites').doc().set({
-              user_id: user.uid,
+              user_id: this.currentUID,
               place_id: place.id,
             });
-            this.onActivity(place.id, user.uid);
+            this.onActivity(place.id, this.currentUID);
             this.confirmShopData(place.id);
           }
         })
@@ -397,6 +422,45 @@ export default {
         console.log('データを取得できませんでした', err);
       });
     },
+    offFavorite(place) {
+      // userLikedPlaceIdから削除する
+      this.userLikedPlaceId = this.userLikedPlaceId.filter((id) => id !== place.id);
+      // favoriteのコレクションから削除する
+      firebase.firestore().collection('favorites')
+        .where('user_id', '==', this.currentUID)
+        .where('place_id', '==', place.id)
+        .get()
+        .then((snapShot) => {
+          snapShot.forEach(async (doc) => {
+            if (doc.exists) {
+              // あったら、そのお店のお気に入りを解除し、favorite_countを-1にする
+              // favorites→user.uid→place.idを削除
+              await doc.ref.delete();
+              console.log('削除しました');
+              // shops→shop.id→favorite_countを-1にする
+              const docFavRef = firebase.firestore().collection('places').doc(place.id);
+              docFavRef.get().then((docFa) => {
+                if (docFa.exists) {
+                  const favcount = docFa.data().favorite_count - 1;
+                  docFavRef.update({
+                    favorite_count: favcount,
+                  });
+                } else {
+                  console.log('Error');
+                }
+              })
+                .catch((error) => {
+                  console.log('エラーです。', error);
+                });
+            } else {
+              console.log('データがないです');
+            }
+          });
+        })
+        .catch((error) => {
+          console.log('エラーです。', error);
+        });
+    },
     openShopInfo(ranking) {
       this.infomodal = true;
       this.shopInfos = ranking;
@@ -467,5 +531,8 @@ export default {
 }
 button:disabled {
   opacity: .4;
+}
+.liked {
+  color: #ff8882;
 }
 </style>
