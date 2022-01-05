@@ -134,7 +134,7 @@
               <div class="col-span-4"></div>
               <!-- favorite button -->
               <div class="flex justify-center items-center">
-                <button @click="onFavorite(place)">
+                <button @click="onFavorite(place)" :disabled="isActive">
                   <i class="far fa-heart fa-lg"></i>
                 </button>
               </div>
@@ -188,9 +188,20 @@ export default {
         },
       },
       infomodal: false,
+      isActive: true,
     };
   },
   async mounted() {
+    // ログイン状態の変化を監視する
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // console.log('状態：ログイン中');
+        this.isActive = false;
+      } else {
+        // console.log('状態：ログアウト');
+        this.isActive = true;
+      }
+    });
     // 検索用のgoogle
     this.google = await GoogleMapsApiLoader({
       libraries: ['places'],
@@ -453,5 +464,8 @@ export default {
 #photos li {
   display: inline-box;
   float: left;
+}
+button:disabled {
+  opacity: .4;
 }
 </style>
