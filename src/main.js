@@ -9,6 +9,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 import 'swiper/css/swiper.css';
+import 'animate.css';
 
 Vue.config.productionTip = false;
 Vue.use(VueAwesomeSwiper);

@@ -4,11 +4,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'beige': '#faeee7',
-        'lightblue': '#9dbeb9',
-        'pinky': '#ff8882',
-        'kon': '#194350',
-        'pink': '#ffc2b4',
+        'beige': '#f2ebe5',
+        'lightblue': '#dddae3',
+        'lightpink': '#c6ada6',
+        'navyblue': '#4f5666',
+        'navypink': '#a76e63',
       },
     },
   },
