@@ -2,186 +2,109 @@
   <div class="py-16 bg-beige">
     <!-- search area (検索エリア) -->
     <div class="search-area">
-      <div
-        class=
-         "search-form
-          mx-auto
-          my-2
-          rounded-lg
-          shadow-md"
-      >
+      <div class="search-form
+                  mx-auto my-2
+                  rounded-lg
+                  shadow-md">
         <!-- serch form (検索フォーム) -->
         <form class="mojip">
-          <div
-            class=
-             "flex
-              justify-center
-              items-center
-              mx-auto"
-          >
+          <div class="flex justify-center items-center
+                      mx-auto">
             <!-- area (現在地周辺の範囲) -->
-            <div
-              class=
-               "area
-                flex
-                justify-center
-                items-center"
-            >
+            <div class="area
+                        flex justify-center items-center">
               <div class="relative">
                 <!-- select box (セレクトボックス) -->
                 <select
                   v-model="radius"
-                  class=
-                   "select
-                    block
-                    appearance-none
-                    w-full
-                    leading-tight
-                    px-4
-                    py-3
-                    pr-8
-                    rounded-l
-                    text-gray-700
-                    focus:outline-none"
-                >
+                  class="select
+                         block appearance-none
+                         w-full
+                         leading-tight
+                         px-4 py-3 pr-8
+                         rounded-l
+                         text-gray-700
+                         focus:outline-none">
                   <option
                     value=""
                     disabled selected
-                    class="mojip"
-                  >
-                    Area
+                    class="mojip">Area
                   </option>
                   <option
                     value="500"
-                    class="mojip"
-                  >
-                    半径 500 m以内
+                    class="mojip">半径 500 m以内
                   </option>
                   <option
                     value="1000"
-                    class="mojip"
-                  >
-                    半径 1 km以内
+                    class="mojip">半径 1 km以内
                   </option>
                   <option
                     value="3000"
-                    class="mojip"
-                  >
-                    半径 3 km以内
+                    class="mojip">半径 3 km以内
                   </option>
                 </select>
                 <!-- v icon (vのアイコン) -->
-                <div
-                  class=
-                   "v-icon
-                    flex
-                    items-center
-                    absolute
-                    inset-y-0
-                    right-0
-                    px-2
-                    text-gray-700
-                    pointer-events-none"
-                >
+                <div class="v-icon
+                            flex items-center
+                            absolute
+                            inset-y-0 right-0
+                            px-2
+                            text-gray-700
+                            pointer-events-none">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
-                    class=
-                     "w-4
-                      h-4
-                      fill-current"
-                  >
-                    <path
-                      d=
-                       "M9.293
-                        12.95l.707.707L15.657
-                        8l-1.414-1.414L10
-                        10.828
-                        5.757
-                        6.586
-                        4.343
-                        8z"
-                    />
+                    class="w-4 h-4 fill-current">
+                    <path d="M9.293 12.95l.707.707L15.657
+                            8l-1.414-1.414L10 10.828
+                            5.757 6.586 4.343 8z"/>
                   </svg>
                 </div>
               </div>
             </div>
             <!-- category (お店のジャンル) -->
-            <div
-              class=
-               "flex
-                justify-center
-                items-center"
-            >
+            <div class="flex justify-center items-center">
               <div class="relative">
                 <!-- select box (セレクトボックス) -->
                 <select
                   v-model="type"
-                  class=
-                   "select
-                    block
-                    appearance-none
-                    w-full
-                    leading-tight
-                    px-4
-                    py-3
-                    pr-8
-                    rounded-r
-                    text-gray-700
-                    focus:outline-none"
-                >
+                  class="select
+                         block appearance-none
+                         w-full
+                         leading-tight
+                         px-4 py-3 pr-8
+                         rounded-r
+                         text-gray-700
+                         focus:outline-none">
                   <option
                     value=""
                     disabled selected
-                    class="mojip"
-                  >
-                    Category
+                    class="mojip">Category
                   </option>
                   <option
                     value="restaurant"
-                    class="mojip"
-                  >
-                    Restaurant
+                    class="mojip">Restaurant
                   </option>
                   <option
                     value="cafe"
-                    class="mojip"
-                  >
-                    Cafe
+                    class="mojip">Cafe
                   </option>
                 </select>
                 <!-- v icon (vのアイコン) -->
-                <div
-                  class=
-                   "v-icon
-                    flex
-                    items-center
-                    absolute
-                    inset-y-0
-                    right-0
-                    px-2
-                    text-gray-700
-                    pointer-events-none"
-                >
+                <div class="v-icon
+                            flex items-center
+                            absolute
+                            inset-y-0 right-0
+                            px-2
+                            text-gray-700
+                            pointer-events-none">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
-                    class=
-                     "w-4
-                      h-4
-                      fill-current"
-                  >
-                    <path
-                      d=
-                       "M9.293
-                        12.95l.707.707L15.657
-                        8l-1.414-1.414L10
-                        10.828
-                        5.757
-                        6.586
-                        4.343
-                        8z"
-                    />
+                    class="w-4 h-4 fill-current">
+                    <path d="M9.293 12.95l.707.707L15.657
+                             8l-1.414-1.414L10 10.828
+                             5.757 6.586 4.343 8z"/>
                   </svg>
                 </div>
               </div>
@@ -189,16 +112,13 @@
             <!-- serch button (検索ボタン) -->
             <div class="search-button">
               <button
-              type="submit"
-              @click.prevent="getCurrentLatLng"
-              class=
-               "search-icon
-                rounded
-                pl-2
-                bg-none
-                text-white
-                uppercase"
-              >
+                type="submit"
+                @click.prevent="getCurrentLatLng"
+                class="search-icon
+                       rounded pl-2
+                       bg-none
+                       text-white
+                       uppercase">
                 <!-- search icon (検索アイコン) -->
                 <i class="fas fa-search fa-2x"></i>
               </button>
@@ -210,94 +130,56 @@
     <!-- Ranking (ランキング) -->
     <div
       v-if="ranking"
-      class="ranking"
-    >
+      class="ranking">
       <swiper :options="swiperOption">
         <swiper-slide
           v-for="ranking in rankings"
-          :key="ranking.id"
-        >
-          <div
-            class=
-             "flex
-              flex-row
-              flex-wrap
-              justify-center
-              items-start
-              p-5"
-          >
-            <div
-              class=
-               "mx-6
-                my-10"
-            >
-              <div
-                class=
-                 "shop-image
-                  relative"
-              >
+          :key="ranking.id">
+          <div class="flex flex-row flex-wrap
+                      justify-center items-start
+                      p-5">
+            <div class="mx-6 my-10">
+              <div class="shop-image
+                          relative">
                 <!-- place image (お店の写真) -->
                 <a @click="openShopInfo(ranking)">
                   <img
                     v-bind:src="ranking.photo_1"
                     width="300"
-                    height="300"
-                  >
+                    height="300">
                 </a>
                 <!-- place description (お店の詳細情報) -->
                 <rinfo-modal
                   v-if="infomodal"
                   :val="shopInfos"
-                  @close="closeShopInfo"
-                ></rinfo-modal>
+                  @close="closeShopInfo">
+                </rinfo-modal>
               </div>
               <!-- place name and button(favorite and mark) (お店の名前とお気に入り＆気になるボタン) -->
               <div>
                 <!-- place name (お店の名前) -->
-                <div
-                  class=
-                   "place-name
-                    flex
-                    justify-center
-                    items-center
-                    p-1"
-                >
-                  <p
-                    class=
-                     "shop-text
-                      text-center"
-                  >
+                <div class="place-name
+                            flex justify-center items-center
+                            p-1">
+                  <p class="shop-text
+                            text-center">
                     {{ ranking.name }}
                   </p>
                 </div>
                 <!-- button-area-gap -->
                 <div class="button-area-gap"></div>
                 <!-- button (favorite and mark) -->
-                <div
-                  class=
-                    "button-area
-                     grid
-                     grid-cols-6"
-                >
+                <div class="button-area
+                            grid grid-cols-6">
                   <div class="col-span-4"></div>
                   <!-- favorite button -->
-                  <div
-                    class=
-                     "flex
-                      justify-center
-                      items-center"
-                  >
+                  <div class="flex justify-center items-center">
                     <button @click="onFavorite(place)">
                       <i class="far fa-heart fa-lg"></i>
                     </button>
                   </div>
                   <!-- mark button -->
-                  <div
-                    class=
-                     "flex
-                      justify-center
-                      items-center"
-                  >
+                  <div class="flex justify-center items-center">
                     <button>
                       <i class="far fa-bookmark fa-lg"></i>
                     </button>

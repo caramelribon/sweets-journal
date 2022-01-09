@@ -1,147 +1,191 @@
 <template>
   <!-- header (ヘッダー) -->
   <header class="header w-full h-5">
-    <nav id="header" class="z-30">
+    <nav
+      id="header"
+      class="z-30"
+    >
       <div
-      class="w-full container mx-auto flex items-center
-      justify-end mt-0 px-3 py-3">
-        <div>
-          <!-- Menu Button (メニューボタン) -->
-          <div class="container">
-            <input type="checkbox" id="actionMenuButton" @click="closeBalloon"/>
-            <div class="actions-menu">
-              <!-- Home Button (ホームボタン) -->
-              <button class="btn btn--home bg-navyblue">
-                <router-link
-                  to='/'
-                  class="block"
-                >
-                    <i class="fas fa-home b-home"></i>
-                </router-link>
-              </button>
-              <!-- User Button (ユーザボタン) -->
-              <button
-                class="btn btn--user bg-lightpink relative"
-                @click="showBalloon"
+        class="flex justify-end items-center
+               container
+               w-full
+               mx-auto mt-0 px-0 py-3"
+      >
+        <!-- Menu Button (メニューボタン) -->
+        <div class="menu">
+          <input
+            type="checkbox"
+            id="actionMenuButton"
+            @click="closeBalloon"
+          />
+          <div class="actions-menu">
+            <!-- Home Button (ホームボタン) -->
+            <button
+              class="btn btn--home
+                     bg-navyblue"
+            >
+              <router-link
+                to='/'
+                class="block"
               >
-                <i class="fas fa-user b-user"></i>
-              </button>
-              <span
-                v-if="userinfo"
-                class=
-                 "userinfo
-                  absolute
-                  z-10
-                  animate__animated
-                  animate__fadeIn
-                  animate__faster"
-              >
-                <!-- ログイン時 -->
-                <div v-if="currentUID !== null">
-                  <div class="userinfo">
-                    <div class="text-center mt-2 mx-3 border-b">
-                      <i class="fas fa-user-circle fa-4x user-icon"></i>
-                      <p class="text-center py-1 moji text-navyblue">{{ username }}</p>
-                    </div>
-                    <div class="button mt-2 mx-3">
-                      <div class="flex justify-center items-center">
-                        <!-- Profile -->
-                        <div
-                          v-for="(rink, index) in rinks"
-                          :key="`first-${index}`"
-                          class="signup mr-1"
-                        >
-                          <router-link
-                            class="block text-xs px-2 py-2 leading-none border
-                            rounded text-white hover:border-transparent hover:text-navyblue
-                            hover:bg-white"
-                            v-bind:to=rink.path>
-                              <p class="moji">{{ rink.title }}</p>
-                          </router-link>
-                        </div>
-                        <!-- Logout -->
-                        <div class="logout">
-                          <router-link to="/">
-                            <button
-                              class=
-                               "inline-block text-xs px-2 py-2 leading-none border
-                                rounded text-white
-                                hover:border-transparent hover:text-navyblue
-                                hover:bg-white
-                                moji"
-                              type="button"
-                              @click="onClickLogOut">
-                                Logout
-                            </button>
-                          </router-link>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="my-1 mx-2">
-                      <p class="text-navyblue text-xs">
-                        Thank you for logging in!<br>
-                        Please enjoy this app!!
-                      </p>
-                    </div>
+                  <i class="fas fa-home b-home"></i>
+              </router-link>
+            </button>
+            <!-- User Button (ユーザボタン) -->
+            <button
+              class="btn btn--user
+                     bg-lightpink
+                     relative"
+              @click="openBalloon"
+            >
+              <i class="b-user fas fa-user"></i>
+            </button>
+            <span
+              v-if="userinfo"
+              class="userinfo
+                     absolute
+                     z-10
+                     animate__animated animate__fadeIn animate__faster"
+            >
+              <!-- ログイン時 -->
+              <div v-if="currentUID !== null">
+                <div class="userinfo">
+                  <!-- Login User Name (ユーザの名前) -->
+                  <div
+                    class="mt-2 mx-3
+                           border-b
+                           text-center"
+                  >
+                    <i class="user-icon fas fa-user-circle fa-4x"></i>
+                    <p
+                      class="text-center
+                             py-1
+                             text-navyblue moji"
+                    >
+                      {{ username }}
+                    </p>
                   </div>
-                </div>
-                <!-- 未ログイン時 -->
-                <div v-else>
-                  <div class="userinfo">
-                    <div class="text-center mt-2 mx-3 border-b">
-                      <i class="fas fa-user-circle fa-4x user-icon"></i>
-                      <p class="text-center py-1 moji text-navyblue">ゲスト</p>
-                    </div>
-                    <div class="button mt-2 mx-3">
-                      <div class="flex justify-center items-center">
-                        <!-- Sginup -->
-                        <div class="signup mr-1">
-                          <button
-                            class="text-xs px-2 py-2 leading-none border rounded text-white
-                            hover:border-transparent hover:text-navyblue hover:bg-white
-                            cursor-pointer moji"
-                            type="button"
-                            @click="openSignupForm">
-                              Sginup
-                          </button>
-                          <signup-modal @close="closeSignupForm" v-if="signupmodal"></signup-modal>
-                        </div>
-                        <!-- Login -->
-                        <div class="login">
+                  <!-- Button Area (ボタンエリア) -->
+                  <div class="button mt-2 mx-3">
+                    <div class="flex justify-center items-center">
+                      <!-- User Profile (ユーザのプロフィールに繋がるボタン) -->
+                      <div
+                        v-for="(rink, index) in rinks"
+                        :key="`first-${index}`"
+                        class="signup mr-1"
+                      >
+                        <router-link
+                          class="block
+                                 leading-none border rounded
+                                 px-2 py-2
+                                 text-xs text-white
+                                 hover:border-transparent hover:text-navyblue hover:bg-white"
+                          v-bind:to=rink.path
+                        >
+                            <p class="moji">{{ rink.title }}</p>
+                        </router-link>
+                      </div>
+                      <!-- Logout (ログアウトボタン) -->
+                      <div class="logout">
+                        <router-link to="/">
                           <button
                             class=
-                            "inline-block
-                            text-xs px-2 py-2 leading-none border rounded text-white
-                            border-white hover:border-transparent hover:text-navyblue
-                            hover:bg-white
-                            moji"
+                             "inline-block
+                              leading-none border rounded
+                              px-2 py-2
+                              text-xs text-white moji
+                              hover:border-transparent hover:text-navyblue hover:bg-white"
                             type="button"
-                            @click="openLoginForm">
-                              Login
+                            @click="onClickLogOut"
+                          >
+                              Logout
                           </button>
-                          <login-modal @close="closeLoginForm" v-if="loginmodal"></login-modal>
-                        </div>
+                        </router-link>
                       </div>
                     </div>
-                    <div class="my-1 mx-2">
-                      <p class="text-navyblue text-xs">
-                        Please try to register as a member (free of charge).
-                      </p>
-                    </div>
+                  </div>
+                  <!-- Message to LoginUser (ユーザへのメッセージ) -->
+                  <div class="mx-2 my-1">
+                    <p class="text-xs text-navyblue">
+                      Thank you for logging in!<br>
+                      Please enjoy this app!!
+                    </p>
                   </div>
                 </div>
-              </span>
-              <!-- Activity Button (アクティビティボタン) -->
-              <button class="btn btn--activity bg-navypink">
-                <router-link
-                  to="/activity"
-                  class="block"
-                >
-                    <i class="fas fa-apple-alt b-activity"></i>
-                </router-link>
-              </button>
-              <label for="actionMenuButton" class="btn btn--large btn--menu"/>
-            </div>
+              </div>
+              <!-- 未ログイン時 -->
+              <div v-else>
+                <div class="userinfo">
+                  <!-- Guest User (ゲストユーザの印) -->
+                  <div class="text-center
+                              mt-2 mx-3
+                              border-b"
+                  >
+                    <i class="user-icon fas fa-user-circle fa-4x"></i>
+                    <p class="text-center
+                              py-1
+                              text-navyblue moji"
+                    >
+                      ゲスト
+                    </p>
+                  </div>
+                  <!-- Buuton Area (ボタンエリア) -->
+                  <div class="button mt-2 mx-3">
+                    <div class="flex justify-center items-center">
+                      <!-- Sginup Button (サインインボタン) -->
+                      <div class="signup mr-1">
+                        <button
+                          class="leading-none border rounded
+                                 px-2 py-2
+                                 text-xs text-white moji
+                                 hover:border-transparent hover:text-navyblue hover:bg-white
+                                 cursor-pointer"
+                          type="button"
+                          @click="openSignupForm"
+                        >
+                            Sginup
+                        </button>
+                        <signup-modal
+                          v-if="signupmodal"
+                          @close="closeSignupForm"></signup-modal>
+                      </div>
+                      <!-- Login Button (ログインボタン) -->
+                      <div class="login">
+                        <button
+                          class="inline-block
+                                 leading-none border border-white rounded
+                                 px-2 py-2
+                                 text-xs text-white moji
+                                 hover:border-transparent hover:text-navyblue hover:bg-white"
+                          type="button"
+                          @click="openLoginForm">
+                            Login
+                        </button>
+                        <login-modal
+                          v-if="loginmodal"
+                          @close="closeLoginForm"></login-modal>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Message to Guest User (ゲストユーザへのメッセージ) -->
+                  <div class="my-1 mx-2">
+                    <p class="text-navyblue text-xs">
+                      Please try to register as a member (free of charge).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </span>
+            <!-- Activity Button (アクティビティボタン) -->
+            <button class="btn btn--activity bg-navypink">
+              <router-link
+                to="/activity"
+                class="block"
+              >
+                  <i class="fas fa-apple-alt b-activity"></i>
+              </router-link>
+            </button>
+            <label for="actionMenuButton" class="btn btn--large btn--menu"/>
           </div>
         </div>
       </div>
@@ -158,12 +202,12 @@ export default {
   components: { LoginModal, SignupModal },
   data() {
     return {
-      rinks: [{ title: 'Profile', path: '/profile' }],
-      loginmodal: false,
-      signupmodal: false,
       currentUID: null,
-      username: null,
+      loginmodal: false,
+      rinks: [{ title: 'Profile', path: '/profile' }],
+      signupmodal: false,
       userinfo: false,
+      username: null,
     };
   },
   async created() {
@@ -191,18 +235,18 @@ export default {
     });
   },
   methods: {
-    openLoginForm() {
-      this.loginmodal = true;
-    },
-    closeLoginForm() {
-      this.loginmodal = false;
-      this.userinfo = false;
-    },
     openSignupForm() {
       this.signupmodal = true;
     },
     closeSignupForm() {
       this.signupmodal = false;
+      this.userinfo = false;
+    },
+    openLoginForm() {
+      this.loginmodal = true;
+    },
+    closeLoginForm() {
+      this.loginmodal = false;
       this.userinfo = false;
     },
     onClickLogOut() {
@@ -221,7 +265,7 @@ export default {
           console.error('ログアウトエラー', error);
         });
     },
-    showBalloon() {
+    openBalloon() {
       if (this.userinfo === false) {
         this.userinfo = true;
       } else {
@@ -239,12 +283,6 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
-.moji {
-  font-family: 'Hachi Maru Pop', cursive;
-}
-.mojip {
-  font-family: 'Yomogi', cursive;
-}
 .userinfo {
   background-color: #c6ada6;
   width: 150px;
@@ -338,9 +376,6 @@ input[type="checkbox"] {
 #actionMenuButton:checked + .actions-menu > .btn--home {
   left: -70px;
 }
-.container {
-  position: relative;
-}
 .b-home {
   color: #f2ebe5;
 }
@@ -350,7 +385,16 @@ input[type="checkbox"] {
 .b-activity {
   color: #f2ebe5;
 }
+.container {
+  position: relative;
+}
 .user-icon {
   color: #4f5666;
+}
+.moji {
+  font-family: 'Hachi Maru Pop', cursive;
+}
+.mojip {
+  font-family: 'Yomogi', cursive;
 }
 </style>
