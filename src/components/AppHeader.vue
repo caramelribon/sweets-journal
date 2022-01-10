@@ -3,31 +3,26 @@
   <header class="header w-full h-5">
     <nav
       id="header"
-      class="z-30"
-    >
+      class="z-30">
       <div
         class="flex justify-end items-center
                container
                w-full
-               mx-auto mt-0 px-0 py-3"
-      >
+               mx-auto mt-0 px-0 py-3">
         <!-- Menu Button (メニューボタン) -->
         <div class="menu">
           <input
             type="checkbox"
             id="actionMenuButton"
-            @click="closeBalloon"
-          />
+            @click="closeBalloon"/>
           <div class="actions-menu">
             <!-- Home Button (ホームボタン) -->
             <button
               class="btn btn--home
-                     bg-navyblue"
-            >
+                     bg-navyblue">
               <router-link
                 to='/'
-                class="block"
-              >
+                class="block">
                   <i class="fas fa-home b-home"></i>
               </router-link>
             </button>
@@ -36,8 +31,7 @@
               class="btn btn--user
                      bg-lightpink
                      relative"
-              @click="openBalloon"
-            >
+              @click="openBalloon">
               <i class="b-user fas fa-user"></i>
             </button>
             <span
@@ -45,8 +39,7 @@
               class="userinfo
                      absolute
                      z-10
-                     animate__animated animate__fadeIn animate__faster"
-            >
+                     animate__animated animate__fadeIn animate__faster">
               <!-- ログイン時 -->
               <div v-if="currentUID !== null">
                 <div class="userinfo">
@@ -54,14 +47,12 @@
                   <div
                     class="mt-2 mx-3
                            border-b
-                           text-center"
-                  >
+                           text-center">
                     <i class="user-icon fas fa-user-circle fa-4x"></i>
                     <p
                       class="text-center
                              py-1
-                             text-navyblue moji"
-                    >
+                             text-navyblue moji">
                       {{ username }}
                     </p>
                   </div>
@@ -72,16 +63,14 @@
                       <div
                         v-for="(rink, index) in rinks"
                         :key="`first-${index}`"
-                        class="signup mr-1"
-                      >
+                        class="signup mr-1">
                         <router-link
                           class="block
                                  leading-none border rounded
                                  px-2 py-2
                                  text-xs text-white
                                  hover:border-transparent hover:text-navyblue hover:bg-white"
-                          v-bind:to=rink.path
-                        >
+                          v-bind:to=rink.path>
                             <p class="moji">{{ rink.title }}</p>
                         </router-link>
                       </div>
@@ -96,8 +85,7 @@
                               text-xs text-white moji
                               hover:border-transparent hover:text-navyblue hover:bg-white"
                             type="button"
-                            @click="onClickLogOut"
-                          >
+                            @click="onClickLogOut">
                               Logout
                           </button>
                         </router-link>
@@ -119,13 +107,11 @@
                   <!-- Guest User (ゲストユーザの印) -->
                   <div class="text-center
                               mt-2 mx-3
-                              border-b"
-                  >
+                              border-b">
                     <i class="user-icon fas fa-user-circle fa-4x"></i>
                     <p class="text-center
                               py-1
-                              text-navyblue moji"
-                    >
+                              text-navyblue moji">
                       ゲスト
                     </p>
                   </div>
@@ -141,8 +127,7 @@
                                  hover:border-transparent hover:text-navyblue hover:bg-white
                                  cursor-pointer"
                           type="button"
-                          @click="openSignupForm"
-                        >
+                          @click="openSignupForm">
                             Sginup
                         </button>
                         <signup-modal
@@ -180,8 +165,7 @@
             <button class="btn btn--activity bg-navypink">
               <router-link
                 to="/activity"
-                class="block"
-              >
+                class="block">
                   <i class="fas fa-apple-alt b-activity"></i>
               </router-link>
             </button>
