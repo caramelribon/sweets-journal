@@ -7,45 +7,35 @@
         <!-- Login Form -->
         <div class="login">
           <div class="w-full max-w-xm">
-            <form>
-              <h1 class="m-2">LOGIN</h1>
-              <div class="group mb-4">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
-                <input
-                  v-model="usermail"
-                  required
-                  type="text"
-                  id="email"
-                  placeholder="E-Mail"/>
-                <label for="email"></label>
-              </div>
-              <div class="group mb-6">
-                <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-                <input
-                  v-model="userpass"
-                  required
-                  type="password"
-                  id="password"
-                  placeholder="Password"/>
-                <label for="password"></label>
-              </div>
-              <div class="flex items-center justify-center">
-                <button
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
-                focus:outline-none focus:shadow-outline"
-                type="button"
-                @click="onClickLogIn">
-                  Login
-                </button>
-              </div>
-            </form>
+            <h1 class="m-2">LOGIN</h1>
+            <div class="group mb-4">
+              <i class="fa fa-envelope" aria-hidden="true"></i>
+              <input
+                v-model="usermail"
+                required
+                type="text"
+                id="email"
+                placeholder="E-Mail"/>
+              <label for="email"></label>
+            </div>
+            <div class="group mb-6">
+              <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+              <input
+                v-model="userpass"
+                required
+                type="password"
+                id="password"
+                placeholder="Password"/>
+              <label for="password"></label>
+            </div>
+            <input type="submit" value="LOGIN" @click="onClickLogIn"/>
           </div>
         </div>
         <div class="register">
           <label class="button-open" for="switch-open"></label>
           <label class="button-close" for="switch-close"></label>
           <div class="inner">
-            <h1>REGISTER</h1>
+            <h1 classs="beige">REGISTER</h1>
             <div class="group"><i class="fa fa-user" aria-hidden="true"></i>
               <input type="text" id="name" placeholder="Name"/>
               <label for="name"></label>
@@ -58,15 +48,7 @@
               <input type="password" id="password" placeholder="Password"/>
               <label for="password"></label>
             </div>
-            <div class="flex items-center justify-center">
-              <button
-              class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded
-              focus:outline-none focus:shadow-outline"
-              type="button"
-              @click="onClickSignUp">
-                Signup
-              </button>
-            </div>
+            <input type="submit" value="REGISTER" @click="onClickSignUp"/>
           </div>
         </div>
       </div>
@@ -132,7 +114,7 @@ export default {
 
 <style lang="scss" scoped>
 .overlay {
-  background: rgba(0, 0, 0, .8);
+  background: rgba(0,0,0,0.7);
   position: fixed;
   width: 100%;
   height: 100%;
@@ -146,10 +128,10 @@ export default {
 .login .group input[type=text], .login .group input[type=password] {
   width: 100%;
   border: none;
-  color: #aaabb0;
+  color: #363a46; /*入力した文字の色*/
   padding: 14px 10px 14px 45px;
   margin-top: 20px;
-  background: #33374a;
+  background: #afaaa6; /*loginの入力フォーム*/
   z-index: 2;
   font-family: "Lato", sans-serif;
   font-size: 12px;
@@ -164,10 +146,10 @@ export default {
 .register .group input[type=text], .register .group input[type=password] {
   width: 100%;
   border: none;
-  color: #ffffff;
+  color: #f2ebe5; /*文字を入力したときの文字の色*/
   padding: 14px 10px 14px 45px;
   margin-top: 20px;
-  background: #f47471;
+  background: #a15c4e; /*registerの入力フォームの背景*/
   z-index: 2;
   font-family: "Lato", sans-serif;
   font-weight: 300;
@@ -175,17 +157,33 @@ export default {
   letter-spacing: 1px;
   position: relative;
 }
+.login .group input[type=text]::-moz-placeholder,
+.login .group input[type=password]::-moz-placeholder {
+  color: #727886;
+}
+.login .group input[type=text]:-ms-input-placeholder,
+.login .group input[type=password]:-ms-input-placeholder {
+  color: #727886;
+}
+.login .group input[type=text]::placeholder,
+.login .group input[type=password]::placeholder {
+  color: #727886;
+}
+.login .group input[type=text]:focus + label::before,
+.login .group input[type=password]:focus + label::before {
+  width: 100%;
+}
 .register .group input[type=text]::-moz-placeholder,
 .register .group input[type=password]::-moz-placeholder {
-  color: #ffffff;
+  color: #c4b3af;
 }
 .register .group input[type=text]:-ms-input-placeholder,
 .register .group input[type=password]:-ms-input-placeholder {
-  color: #ffffff;
+  color: #c4b3af;
 }
 .register .group input[type=text]::placeholder,
 .register .group input[type=password]::placeholder {
-  color: #ffffff;
+  color: #c4b3af;
 }
 .register .group input[type=text]:focus + label::before,
 .register .group input[type=password]:focus + label::before {
@@ -318,7 +316,7 @@ input {
 .panel .login {
   width: 300px;
   height: 380px;
-  background: #292c3b;
+  background: #96928f;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -329,8 +327,8 @@ input {
   transition: filter 0.5s;
 }
 .panel .login input[type=submit] {
-  border: #f25d59 solid 1px;
-  color: #f25d59;
+  border: #3d424f solid 1px;
+  color: #3d424f;
 }
 .panel .register {
   transform: translateX(-140px);
@@ -351,7 +349,7 @@ input {
   position: absolute;
   width: 2px;
   height: 100%;
-  background: #ffffff;
+  background: #ffffff; /*バツのひとつ*/
   left: 10px;
 }
 .panel .register .button-open::after, .panel .register .button-close::after {
@@ -359,14 +357,14 @@ input {
   position: absolute;
   width: 2px;
   height: 100%;
-  background: #ffffff;
+  background: #ffffff; /*バツのひとつ*/
   left: 10px;
   transform: rotate(90deg);
 }
 .panel .register .inner {
   filter: blur(5px);
-  background: #f25d59;
-  box-shadow: 5px 14px 20px 0 #f68b88;
+  background: #8d5145; /*registerの背景8d5145*/
+  box-shadow: 5px 14px 20px 0 #986055; /*影の色*/
   width: 100%;
   width: 340px;
   height: 440px;
@@ -377,51 +375,15 @@ input {
   transition: filter 0.5s;
 }
 .panel .register input[type=submit] {
-  border: #ffffff solid 1px;
-  color: #ffffff;
-}
-.register h1 {
-  text-align: center;
-  font-weight: 100;
-  letter-spacing: 2px;
-  margin-top: 0;
-  color: #ffffff;
-}
-.register .group {
-  width: 100%;
-  position: relative;
-}
-.register .group i {
-  color: #ffffff;
-  position: absolute;
-  top: 36px;
-  left: 15px;
-  z-index: 3;
-  font-size: 13px;
-  opacity: 0.8;
-}
-.register .group label {
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 45px;
-  z-index: 1;
-  background: #f69492;
-  top: 19px;
-}
-.register .group label::before {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 100%;
-  background: #f04641;
-  transition: width 0.5s;
+  border: #d5bdb9 solid 1px;
+  color: #d5bdb9;
 }
 .login h1 {
   text-align: center;
   font-weight: 100;
   letter-spacing: 2px;
   margin-top: 0;
+  color: #3d424f; /*Loginの文字色*/
 }
 
 .login .group {
@@ -429,7 +391,7 @@ input {
   width: 100%;
 }
 .login .group i {
-  color: #f25d59;
+  color: #3d424f; /*navypinkアイコンの色*/
   position: absolute;
   top: 36px;
   left: 15px;
@@ -441,9 +403,9 @@ input {
   display: block;
   position: absolute;
   width: 100%;
-  height: 45px;
+  height: 48px;
   z-index: 1;
-  background: #42475f;
+  background: #c0bab6; /*beige入力フォームの上線(入力する前)*/
   top: 19px;
 }
 .login .group label::before {
@@ -451,10 +413,46 @@ input {
   position: absolute;
   width: 0;
   height: 100%;
-  background: #f25d59;
+  background: #4f5666; /*navypink入力フォームの上線(入力した後)*/
   transition: width 0.5s;
 }
-
+.register h1 {
+  text-align: center;
+  font-weight: 100;
+  letter-spacing: 2px;
+  margin-top: 0;
+  color: #d5bdb9;
+}
+.register .group {
+  width: 100%;
+  position: relative;
+}
+.register .group i {
+  color: #d5bdb9;
+  position: absolute;
+  top: 36px;
+  left: 15px;
+  z-index: 3;
+  font-size: 13px;
+  opacity: 0.8;
+}
+.register .group label {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 48px;
+  z-index: 1;
+  background: #ae6354; /*beige入力フォームの上線(入力する前)*/
+  top: 19px;
+}
+.register .group label::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 100%;
+  background: #d5bdb9; /*navypink入力フォームの上線(入力した後)*/
+  transition: width 0.5s;
+}
 .button-close {
   visibility: hidden;
 }
