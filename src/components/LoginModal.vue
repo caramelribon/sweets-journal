@@ -15,7 +15,8 @@
                 required
                 type="text"
                 id="email"
-                placeholder="E-Mail"/>
+                placeholder="E-Mail"
+                name="mailLogin"/>
               <label for="email"></label>
             </div>
             <div class="group mb-6">
@@ -25,10 +26,11 @@
                 required
                 type="password"
                 id="password"
-                placeholder="Password"/>
+                placeholder="Password"
+                name="pswLogin"/>
               <label for="password"></label>
             </div>
-            <input type="submit" value="LOGIN"/>
+            <input type="submit" value="LOGIN" @click="onClickLogIn"/>
             <label class="button-open" for="switch-open">
               SIGN UP
               <i class="fa fa-user-plus" aria-hidden="true"></i>
@@ -346,18 +348,6 @@ input {
   z-index: 1;
   transition: filter 0.5s;
 }
-/*
-.panel .login::before {
-  content: "";
-  position: absolute;
-  top: 300px;
-  right: 20px;
-  display: block;
-  width: 110px;
-  height: 50px;
-  background: #ffffff;
-}
-*/
 .panel .login input[type=submit] {
   border: #3d424f solid 1px;
   color: #3d424f;
@@ -561,5 +551,40 @@ input[type=radio] {
   100% {
       transform: translateY(5px);
   }
+}
+.error-message {
+  display: inline-block;
+  position: absolute;
+  left: -5px;
+  bottom: -35px;
+  background: rgba(215, 102, 102, 0.9);
+  padding: 0.8em;
+  z-index: 2;
+  color: #FFF;
+  font-size: 13px;
+  font-size: 0.8125rem;
+  border-radius: 0.25em;
+  visibility: hidden;
+  /* prevent click and touch events */
+  pointer-events: none;
+  opacity: 0;
+  -webkit-transition: opacity 0.2s 0, visibility 0 0.2s;
+  -moz-transition: opacity 0.2s 0, visibility 0 0.2s;
+  transition: opacity 0.2s 0, visibility 0 0.2s;
+}
+.error-message::after {
+  /* triangle */
+  content: "";
+  position: absolute;
+  left: 22px;
+  bottom: 100%;
+  height: 0;
+  width: 0;
+  border-bottom: 8px solid rgba(215, 102, 102, 0.9);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+}
+.msgShow {
+  visibility: visible;
 }
 </style>

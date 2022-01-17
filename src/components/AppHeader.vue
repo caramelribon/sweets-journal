@@ -199,6 +199,7 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         console.log('状態：ログイン中');
+        // alert('Login');
         this.currentUID = user.uid;
         const docRef = firebase.firestore().collection('users').doc(user.uid);
         docRef.get()
