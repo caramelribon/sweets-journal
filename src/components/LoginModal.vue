@@ -5,7 +5,7 @@
         <input type="radio" id="switch-open" name="switch"/>
         <input type="radio" id="switch-close" name="switch"/>
         <!-- Login Form -->
-        <div class="login">
+        <div class="login is-active">
           <div class="w-full max-w-xm">
             <h1 class="m-2">LOGIN</h1>
             <div class="group mb-4">
@@ -28,27 +28,33 @@
                 placeholder="Password"/>
               <label for="password"></label>
             </div>
-            <input type="submit" value="LOGIN" @click="onClickLogIn"/>
+            <input type="submit" value="LOGIN"/>
+            <label class="button-open" for="switch-open">
+              SIGN UP
+              <i class="fa fa-user-plus" aria-hidden="true"></i>
+            </label>
           </div>
         </div>
-        <div class="register">
-          <label class="button-open" for="switch-open"></label>
-          <label class="button-close" for="switch-close"></label>
+        <div class="register is-active">
+          <label class="button-close" for="switch-close">
+            LOGIN
+            <i class="fas fa-user-check" aria-hidden="true"></i>
+          </label>
           <div class="inner">
             <h1 classs="beige">REGISTER</h1>
             <div class="group"><i class="fa fa-user" aria-hidden="true"></i>
-              <input type="text" id="name" placeholder="Name"/>
+              <input type="text" id="name" v-model="userName" placeholder="Name"/>
               <label for="name"></label>
             </div>
             <div class="group"><i class="fa fa-envelope" aria-hidden="true"></i>
-              <input type="text" id="email" placeholder="E-Mail"/>
+              <input type="text" id="email" v-model="userMail" placeholder="E-Mail"/>
               <label for="email"></label>
             </div>
             <div class="group"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
-              <input type="password" id="password" placeholder="Password"/>
+              <input type="password" id="password" v-model="userPass" placeholder="Password"/>
               <label for="password"></label>
             </div>
-            <input type="submit" value="REGISTER" @click="onClickSignUp"/>
+            <input type="submit" value="REGISTER"/>
           </div>
         </div>
       </div>
@@ -64,6 +70,9 @@ export default {
     return {
       usermail: '',
       userpass: '',
+      userMail: '',
+      userPass: '',
+      userName: '',
     };
   },
   methods: {
@@ -83,22 +92,22 @@ export default {
     onClickSignUp() {
       firebase
         .auth()
-        .createUserWithEmailAndPassword(this.usermail, this.userpass)
+        .createUserWithEmailAndPassword(this.userMail, this.userPass)
         .then(() => {
           // 登録に成功したときの処理
           console.log('登録しました');
           // Usernameの登録
           const user = firebase.auth().currentUser;
           user.updateProfile({
-            displayName: this.username,
+            displayName: this.userName,
           })
             .then(() => {
               // データベースへの登録
               const db = firebase.firestore();
               db.collection('users').doc(user.uid).set({
                 uid: user.uid,
-                emial: this.usermail,
-                username: this.username,
+                emial: this.userMail,
+                username: this.userName,
                 created_at: firebase.firestore.FieldValue.serverTimestamp(),
               });
             });
@@ -189,9 +198,20 @@ export default {
 .register .group input[type=password]:focus + label::before {
   width: 100%;
 }
-.panel .register input[type=submit], .panel .login input[type=submit] {
+.panel .login input[type=submit] {
   align-self: flex-start;
-  margin-top: 20px;
+  margin-top: 5px;
+  padding: 10px 0;
+  width: 150px;
+  background: transparent;
+  border-radius: 0 50px 50px 0;
+  border-left: none !important;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+.panel .register input[type=submit] {
+  align-self: flex-start;
+  margin-top: 30px;
   padding: 10px 0;
   width: 150px;
   background: transparent;
@@ -326,6 +346,18 @@ input {
   z-index: 1;
   transition: filter 0.5s;
 }
+/*
+.panel .login::before {
+  content: "";
+  position: absolute;
+  top: 300px;
+  right: 20px;
+  display: block;
+  width: 110px;
+  height: 50px;
+  background: #ffffff;
+}
+*/
 .panel .login input[type=submit] {
   border: #3d424f solid 1px;
   color: #3d424f;
@@ -334,32 +366,41 @@ input {
   transform: translateX(-140px);
   position: relative;
 }
-.panel .register .button-open, .panel .register .button-close {
+.panel .login .button-open {
   position: absolute;
-  width: 20px;
-  height: 20px;
-  top: 15px;
+  width: 110px;
+  height: 50px;
+  padding: 10px 5px;
+  background: none;
+  border: #3d424f solid 1px;
+  color: #3d424f;
+  top: 270px;
   right: 15px;
   cursor: pointer;
   transition: transform 0.4s;
   z-index: 9;
+  text-align: center;
+  transition: all 0.2s linear;
+  margin: 7% auto;
+  letter-spacing: 0.05em;
 }
-.panel .register .button-open::before, .panel .register .button-close::before {
-  content: "";
+.panel .register .button-close {
   position: absolute;
-  width: 2px;
-  height: 100%;
-  background: #ffffff; /*バツのひとつ*/
-  left: 10px;
-}
-.panel .register .button-open::after, .panel .register .button-close::after {
-  content: "";
-  position: absolute;
-  width: 2px;
-  height: 100%;
-  background: #ffffff; /*バツのひとつ*/
-  left: 10px;
-  transform: rotate(90deg);
+  width: 110px;
+  height: 50px;
+  padding: 10px 5px;
+  background: none;
+  border: #d5bdb9 solid 1px;
+  color: #d5bdb9;
+  top: 320px;
+  right: 30px;
+  cursor: pointer;
+  transition: transform 0.4s;
+  z-index: 9;
+  text-align: center;
+  transition: all 0.2s linear;
+  margin: 7% auto;
+  letter-spacing: 0.05em;
 }
 .panel .register .inner {
   filter: blur(5px);
@@ -381,6 +422,7 @@ input {
 .login h1 {
   text-align: center;
   font-weight: 100;
+  font-size: 30px;
   letter-spacing: 2px;
   margin-top: 0;
   color: #3d424f; /*Loginの文字色*/
@@ -434,7 +476,6 @@ input {
   left: 15px;
   z-index: 3;
   font-size: 13px;
-  opacity: 0.8;
 }
 .register .group label {
   display: block;
@@ -456,7 +497,6 @@ input {
 .button-close {
   visibility: hidden;
 }
-
 input[id=switch-open]:checked ~ .login {
   filter: blur(5px);
   -webkit-animation: loginOpen forwards 0.8s;
@@ -471,13 +511,10 @@ input[id=switch-open]:checked ~ .register > .inner {
 }
 input[id=switch-open]:checked ~ .register .button-open {
   visibility: hidden;
-  transform: rotate(45deg);
 }
 input[id=switch-open]:checked ~ .register .button-close {
   visibility: visible;
-  transform: rotate(45deg);
 }
-
 input[id=switch-close]:checked ~ .login {
   -webkit-animation: loginClose forwards 0.8s;
           animation: loginClose forwards 0.8s;
@@ -489,8 +526,40 @@ input[id=switch-close]:checked ~ .register {
 input[id=switch-close]:checked ~ .register > .inner {
   filter: blur(5px);
 }
-
 input[type=radio] {
   display: none;
+}
+/* button hover Animation */
+.panel .login input[type=submit]:hover {
+  background-color: #afaaa6;
+  transition: background 0.5s
+}
+.panel .login .button-open:hover {
+  transform: translatey(3px);
+  box-shadow: none;
+  background-color: #afaaa6;
+}
+.panel .login .button-open:hover {
+  animation: ani9 0.4s ease-in-out infinite alternate;
+}
+.panel .register input[type=submit]:hover {
+  background-color: #a15c4e;
+  transition: background 0.5s
+}
+.panel .register .button-close:hover {
+  transform: translatey(3px);
+  box-shadow: none;
+  background-color: #a15c4e;
+}
+.panel .register .button-close:hover {
+  animation: ani9 0.4s ease-in-out infinite alternate;
+}
+@keyframes ani9 {
+  0% {
+      transform: translateY(3px);
+  }
+  100% {
+      transform: translateY(5px);
+  }
 }
 </style>
