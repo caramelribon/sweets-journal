@@ -1,20 +1,81 @@
 <template>
-  <div class="py-16 bg-beige">
-    <!-- search area (検索エリア) -->
+  <div class="bg-beige">
+    <!-- design -->
+    <div
+      class="grid
+             grid-cols-1
+             sm:grid-cols-2
+             md:grid-cols-3
+             lg:grid-cols-4
+             xl:grid-cols-6">
+      <!-- title -->
+      <div
+        class="sm:col-span-2
+               md:col-span-4
+               lg:col-span-0
+               xl:col-span-4
+               bg-lightpink
+               h-80">
+        <p class="sweets absolute">Sweets</p>
+        <p class="journal absolute mt-44 ml-72">Journal</p>
+      </div>
+      <div class="sm:col-span-1 md:col-span-2 lg:col-span-2 xl:col-span-2 bg-none h-80">
+        <span class="chocolate-navypink">sweets</span>
+      </div>
+      <!-- About -->
+      <div
+        class="sm:col-span-2
+               md:col-span-1
+               lg:col-span-2
+               xl:col-span-2
+               bg-lightblue
+               h-40
+               flex
+               justify-center
+               items-center">
+        <p class="txt text-navyblue text-7xl absolute bg-ltblue m-10">Ranking</p>
+      </div>
+      <div
+        class="sm:col-span-2 md:col-span-1 lg:col-span-2 xl:col-span-1
+               bg-navyblue h-40 flex justify-center items-center">
+      </div>
+      <div class="sm:col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-3 bg-navyblue h-40">
+        <p class="txt text-lightpink text-3xl mx-5 my-2">
+          Welcome to the Sweets Journal !!<br>
+          With this app, you can find shops around your current location.<br>
+          Click here for details of this app →
+          <button class="">About</button>
+        </p>
+      </div>
+      <!-- Ranking
+      <div class="sm:col-span-2 md:col-span-1 lg:col-span-2 xl:col-span-3 bg-navygray h-40">
+        <p class="txt text-beige text-3xl mx-5 my-2">
+          We are displaying the top 5 shops in the ranking
+          of your favorite shops and shops you care about^^♪
+        </p>
+      </div>
+      <div
+        class="sm:col-span-2 md:col-span-1 lg:col-span-2 xl:col-span-1
+               bg-navygray h-40 flex justify-center items-center">
+        <p class="txt text-6xl text-beige">
+          Ranking
+        </p>
+      </div>
+      <div class="sm:col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-2 bg-none h-40"></div>
+      -->
+    </div>
+    <!-- search area (検索エリア)
     <div class="search-area">
       <div class="search-form
                   mx-auto my-2
                   rounded-lg
                   shadow-md">
-        <!-- serch form (検索フォーム) -->
         <form class="mojip">
           <div class="flex justify-center items-center
                       mx-auto">
-            <!-- area (現在地周辺の範囲) -->
             <div class="area
                         flex justify-center items-center">
               <div class="relative">
-                <!-- select box (セレクトボックス) -->
                 <select
                   v-model="radius"
                   class="select
@@ -43,7 +104,6 @@
                     class="mojip">半径 3 km以内
                   </option>
                 </select>
-                <!-- v icon (vのアイコン) -->
                 <div class="v-icon
                             flex items-center
                             absolute
@@ -62,10 +122,8 @@
                 </div>
               </div>
             </div>
-            <!-- category (お店のジャンル) -->
             <div class="flex justify-center items-center">
               <div class="relative">
-                <!-- select box (セレクトボックス) -->
                 <select
                   v-model="type"
                   class="select
@@ -90,7 +148,6 @@
                     class="mojip">Cafe
                   </option>
                 </select>
-                <!-- v icon (vのアイコン) -->
                 <div class="v-icon
                             flex items-center
                             absolute
@@ -109,7 +166,6 @@
                 </div>
               </div>
             </div>
-            <!-- serch button (検索ボタン) -->
             <div class="search-button">
               <button
                 type="submit"
@@ -119,7 +175,6 @@
                        bg-none
                        text-white
                        uppercase">
-                <!-- search icon (検索アイコン) -->
                 <i class="fas fa-search fa-2x"></i>
               </button>
             </div>
@@ -127,10 +182,11 @@
         </form>
       </div>
     </div>
+    -->
     <!-- Ranking (ランキング) -->
     <div
       v-if="ranking"
-      class="ranking">
+      class="ranking bg-lightblue">
       <swiper :options="swiperOption">
         <swiper-slide
           v-for="ranking in rankings"
@@ -191,6 +247,40 @@
         </swiper-slide>
       </swiper>
     </div>
+    <!-- title -->
+    <div class="title bg-navypink">
+      <div class="flex justify-center items-center">
+        <p class="swt">Sweets</p>
+      </div>
+      <div class="flex justify-center items-center">
+        <p class="jnl">Journal</p>
+      </div>
+    </div>
+    <!-- About -->
+    <div class="about bg-beige">
+      <p class="abt text-center p-10">About</p>
+      <div class="grid grid-cols-7 h-auto">
+        <div class="col-span-3 bg-none"></div>
+        <div class="col-span-4 bg-none">
+          <p class="text-nvybrown text-4xl txt mt-12 mb-8 mx-24 title-abt">
+            Welcome to the Sweets Journal
+          </p>
+          <div class="flex justify-center items-center mx-24 mb-10">
+            <p class="text-nvybrown text-2xl txt-about">
+              Sweets Journalでは、旅先で現在地周辺のカフェやレストランを見つけることができます。<br>
+              また、会員登録をすることで、旅先で見つけたお店や、
+              行けなかったけど気になったお店を簡単に保存することができます。<br>
+              そして、皆が登録したお店をみることもできるので、
+              他の会員がどんなお店に注目しているのかもわかります。<br>
+              ぜひ、皆さんの旅先でお店を探したり、素敵なお店を保存したりしてみてください。
+            </p>
+          </div>
+          <button class="text-nvybrown text-3xl ml-24 mb-32">More</button>
+        </div>
+      </div>
+    </div>
+    <!-- Search -->
+    <!-- Ranking -->
     <!-- Place Serch Results (検索結果)-->
     <div id="map"></div>
     <div id="shop" class="flex p-5 items-start justify-center flex-row flex-wrap">
@@ -556,6 +646,209 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Antic+Didone&family=Elsie&family=Italiana&family=Kaisei+Decol:wght@400;500;700&family=Lobster&family=Lora:wght@400;700&display=swap');
+.lobster {
+  font-family: 'Antic Didone', serif;
+}
+.sweets {
+  font-size: 160px;
+  font-family: 'Lora', serif;
+  color: #4f5666;
+  padding: 0;
+  margin-left: 50px;
+  line-height: 150px;
+  text-shadow:
+    1px 1px #4a5160,
+    2px 2px #474e5d,
+    3px 3px #444a58,
+    4px 4px #404654,
+    5px 5px #3e4451,
+    6px 6px #333843,
+    7px 7px 4px #2f343e;
+}
+.journal {
+  font-size: 160px;
+  font-family: 'Lora', serif;
+  color: #4f5666;
+  padding: 0;
+  margin-right: 70px;
+  text-align: right;
+  line-height: 100px;
+  text-shadow:
+    1px 1px #4a5160,
+    2px 2px #474e5d,
+    3px 3px #444a58,
+    4px 4px #404654,
+    5px 5px #3e4451,
+    6px 6px #333843,
+    7px 7px 4px #2f343e;
+}
+.title {
+  height: 750px;
+  background-color: #a76e63;
+  background: linear-gradient(to right, #ab766b, #9f6054, #945447);
+}
+.swt {
+  text-transform: Uppercase;
+  font-size: 200px;
+  color: #a76e63;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #966258,
+               0 2px #8d5c53,
+               0 3px #885950,
+               0 4px #80544b,
+               0 5px #7b5148,
+               0 6px #744c44,
+               0 7px #6f4841,
+               0 8px #68433c,
+               0 9px #5f3e37,
+               0 10px 8px #523530;
+}
+.jnl {
+  text-transform: Uppercase;
+  font-size: 200px;
+  color: #a76e63;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #966258,
+               0 2px #8d5c53,
+               0 3px #885950,
+               0 4px #80544b,
+               0 5px #7b5148,
+               0 6px #744c44,
+               0 7px #6f4841,
+               0 8px #68433c,
+               0 9px #5f3e37,
+               0 10px 8px #523530;
+}
+.about {
+  background-color: #f2ebe5;
+  background: linear-gradient(to right, #f2ebe5, #eee5de, #eae2da);
+}
+
+.abt {
+  font-size: 100px;
+  color: #f2ebe5;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #dfd8d3,
+               0 2px #d1cac5,
+               0 3px #c2bcb7,
+               0 4px #b8b2ac,
+               0 5px #b1aba6,
+               0 6px #aaa49f,
+               0 7px #a19b96,
+               0 8px #99938e,
+               0 9px #918b86,
+               0 10px 8px #88837e;
+}
+.title-abt {
+  font-family: 'Lora', serif;
+  font-weight: bold;
+}
+.txt {
+  font-family: 'Antic Didone', serif;
+}
+.txt-about {
+  font-family: 'Kaisei Decol', serif;
+  font-weight: medium;
+}
+.chocolate {
+  box-sizing: border-box;
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  border: solid 12px;
+  border-color: #804535 #3c1a11 #2c100a #6a3b2b;
+  background-color: #6f3c2f;
+  color: #6a3a2d;
+  text-shadow: 0 1px rgba(255,255,255,0.3), 0 -1px rgba(0,0,0,0.4);
+  box-shadow: -1px 4px 8px rgba(0,0,0,0.3);
+  font-family: 'Lobster', serif;
+  font-size: 90px;
+  text-align: center;
+}
+.chocolate::before ,
+.chocolate::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  display: block;
+  border-radius: 2px;
+  border-style: solid;
+  pointer-events: none;
+}
+.chocolate::before {
+  z-index: 1;
+  border-width: 15px;
+  border-radius: 2px;
+  border-color: #291617 #662e1f #99604c #65413b;
+  color: rgba(0,0,0,0.2);
+  box-shadow: 4px 4px 4px inset;
+}
+.chocolate::after {
+  z-index: 2;
+  margin: -3px;
+  border-radius: 2px;
+  border-width: 10px;
+  border-color: #985d4d #885041 #885041 #985d4d;
+  color: rgba(255,255,255,0.3);
+  box-shadow: -1px -1px 1.4px,-1px -1px 1.4px inset;
+}
+.chocolate-navypink {
+  box-sizing: border-box;
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  border: solid 12px;
+  border-color: #b87466 #7d4439 #703a30 #9e6459;
+  background-color: #a76e63;
+  color: #a56d62;
+  text-shadow: 0 1px rgba(255,255,255,0.3), 0 -1px rgba(0,0,0,0.4);
+  box-shadow: -1px 4px 8px rgba(0,0,0,0.3);
+  font-family: 'Lobster', serif;
+  font-size: 90px;
+  text-align: center;
+}
+.chocolate-navypink::before ,
+.chocolate-navypink::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  display: block;
+  border-radius: 2px;
+  border-style: solid;
+  pointer-events: none;
+}
+.chocolate-navypink::before {
+  z-index: 1;
+  border-width: 15px;
+  border-radius: 2px;
+  border-color: #5d4743 #a5675c #c68f85 #977068;
+  color: rgba(0,0,0,0.2);
+  box-shadow: 4px 4px 4px inset;
+}
+.chocolate-navypink::after {
+  z-index: 2;
+  margin: -3px;
+  border-radius: 2px;
+  border-width: 10px;
+  border-color: #c68c81 #b98075 #b68177 #d39c91;
+  color: rgba(255,255,255,0.3);
+  box-shadow: -1px -1px 1.4px,-1px -1px 1.4px inset;
+}
+
 .place-name {
   width: 300px;
   height: 60px;
