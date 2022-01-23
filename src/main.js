@@ -10,6 +10,11 @@ import 'firebase/firestore';
 import 'firebase/storage';
 import 'swiper/css/swiper.css';
 import 'animate.css';
+import jQuery from 'jquery';
+
+global.jquery = jQuery;
+global.$ = jQuery;
+window.$ = window.jQuery = require('jquery');
 
 Vue.config.productionTip = false;
 Vue.use(VueAwesomeSwiper);
