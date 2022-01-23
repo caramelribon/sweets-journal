@@ -13,7 +13,7 @@ module.exports = {
         'navygray': '#6d6d6d',
         'lightgreen': '#969687',
         'ltblue': '#d2d0d8',
-        'nvybrown': '#84544b',
+        'nvybrown': '#754035',
       },
     },
   },

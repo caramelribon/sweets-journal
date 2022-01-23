@@ -21,7 +21,8 @@
     "vue-infinite-loading": "^2.4.5",
     "vue-js-modal": "^2.0.1",
     "vue-router": "^3.5.3",
-    "vue2-google-maps": "^0.10.7"
+    "vue2-google-maps": "^0.10.7",
+    "waypoints": "^4.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

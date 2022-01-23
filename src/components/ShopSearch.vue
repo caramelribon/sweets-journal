@@ -1,272 +1,25 @@
 <template>
   <div class="bg-beige">
-    <!-- design -->
-    <div
-      class="grid
-             grid-cols-1
-             sm:grid-cols-2
-             md:grid-cols-3
-             lg:grid-cols-4
-             xl:grid-cols-6">
-      <!-- title -->
-      <div
-        class="sm:col-span-2
-               md:col-span-4
-               lg:col-span-0
-               xl:col-span-4
-               bg-lightpink
-               h-80">
-        <p class="sweets absolute">Sweets</p>
-        <p class="journal absolute mt-44 ml-72">Journal</p>
-      </div>
-      <div class="sm:col-span-1 md:col-span-2 lg:col-span-2 xl:col-span-2 bg-none h-80">
-        <span class="chocolate-navypink">sweets</span>
-      </div>
-      <!-- About -->
-      <div
-        class="sm:col-span-2
-               md:col-span-1
-               lg:col-span-2
-               xl:col-span-2
-               bg-lightblue
-               h-40
-               flex
-               justify-center
-               items-center">
-        <p class="txt text-navyblue text-7xl absolute bg-ltblue m-10">Ranking</p>
-      </div>
-      <div
-        class="sm:col-span-2 md:col-span-1 lg:col-span-2 xl:col-span-1
-               bg-navyblue h-40 flex justify-center items-center">
-      </div>
-      <div class="sm:col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-3 bg-navyblue h-40">
-        <p class="txt text-lightpink text-3xl mx-5 my-2">
-          Welcome to the Sweets Journal !!<br>
-          With this app, you can find shops around your current location.<br>
-          Click here for details of this app →
-          <button class="">About</button>
-        </p>
-      </div>
-      <!-- Ranking
-      <div class="sm:col-span-2 md:col-span-1 lg:col-span-2 xl:col-span-3 bg-navygray h-40">
-        <p class="txt text-beige text-3xl mx-5 my-2">
-          We are displaying the top 5 shops in the ranking
-          of your favorite shops and shops you care about^^♪
-        </p>
-      </div>
-      <div
-        class="sm:col-span-2 md:col-span-1 lg:col-span-2 xl:col-span-1
-               bg-navygray h-40 flex justify-center items-center">
-        <p class="txt text-6xl text-beige">
-          Ranking
-        </p>
-      </div>
-      <div class="sm:col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-2 bg-none h-40"></div>
-      -->
-    </div>
-    <!-- search area (検索エリア)
-    <div class="search-area">
-      <div class="search-form
-                  mx-auto my-2
-                  rounded-lg
-                  shadow-md">
-        <form class="mojip">
-          <div class="flex justify-center items-center
-                      mx-auto">
-            <div class="area
-                        flex justify-center items-center">
-              <div class="relative">
-                <select
-                  v-model="radius"
-                  class="select
-                         block appearance-none
-                         w-full
-                         leading-tight
-                         px-4 py-3 pr-8
-                         rounded-l
-                         text-gray-700
-                         focus:outline-none">
-                  <option
-                    value=""
-                    disabled selected
-                    class="mojip">Area
-                  </option>
-                  <option
-                    value="500"
-                    class="mojip">半径 500 m以内
-                  </option>
-                  <option
-                    value="1000"
-                    class="mojip">半径 1 km以内
-                  </option>
-                  <option
-                    value="3000"
-                    class="mojip">半径 3 km以内
-                  </option>
-                </select>
-                <div class="v-icon
-                            flex items-center
-                            absolute
-                            inset-y-0 right-0
-                            px-2
-                            text-gray-700
-                            pointer-events-none">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    class="w-4 h-4 fill-current">
-                    <path d="M9.293 12.95l.707.707L15.657
-                            8l-1.414-1.414L10 10.828
-                            5.757 6.586 4.343 8z"/>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="flex justify-center items-center">
-              <div class="relative">
-                <select
-                  v-model="type"
-                  class="select
-                         block appearance-none
-                         w-full
-                         leading-tight
-                         px-4 py-3 pr-8
-                         rounded-r
-                         text-gray-700
-                         focus:outline-none">
-                  <option
-                    value=""
-                    disabled selected
-                    class="mojip">Category
-                  </option>
-                  <option
-                    value="restaurant"
-                    class="mojip">Restaurant
-                  </option>
-                  <option
-                    value="cafe"
-                    class="mojip">Cafe
-                  </option>
-                </select>
-                <div class="v-icon
-                            flex items-center
-                            absolute
-                            inset-y-0 right-0
-                            px-2
-                            text-gray-700
-                            pointer-events-none">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    class="w-4 h-4 fill-current">
-                    <path d="M9.293 12.95l.707.707L15.657
-                             8l-1.414-1.414L10 10.828
-                             5.757 6.586 4.343 8z"/>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="search-button">
-              <button
-                type="submit"
-                @click.prevent="getCurrentLatLng"
-                class="search-icon
-                       rounded pl-2
-                       bg-none
-                       text-white
-                       uppercase">
-                <i class="fas fa-search fa-2x"></i>
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    -->
-    <!-- Ranking (ランキング) -->
-    <div
-      v-if="ranking"
-      class="ranking bg-lightblue">
-      <swiper :options="swiperOption">
-        <swiper-slide
-          v-for="ranking in rankings"
-          :key="ranking.id">
-          <div class="flex flex-row flex-wrap
-                      justify-center items-start
-                      p-5">
-            <div class="mx-6 my-10">
-              <div class="shop-image
-                          relative">
-                <!-- place image (お店の写真) -->
-                <a @click="openShopInfo(ranking)">
-                  <img
-                    v-bind:src="ranking.photo_1"
-                    width="300"
-                    height="300">
-                </a>
-                <!-- place description (お店の詳細情報) -->
-                <rinfo-modal
-                  v-if="infomodal"
-                  :val="shopInfos"
-                  @close="closeShopInfo">
-                </rinfo-modal>
-              </div>
-              <!-- place name and button(favorite and mark) (お店の名前とお気に入り＆気になるボタン) -->
-              <div>
-                <!-- place name (お店の名前) -->
-                <div class="place-name
-                            flex justify-center items-center
-                            p-1">
-                  <p class="shop-text
-                            text-center">
-                    {{ ranking.name }}
-                  </p>
-                </div>
-                <!-- button-area-gap -->
-                <div class="button-area-gap"></div>
-                <!-- button (favorite and mark) -->
-                <div class="button-area
-                            grid grid-cols-6">
-                  <div class="col-span-4"></div>
-                  <!-- favorite button -->
-                  <div class="flex justify-center items-center">
-                    <button @click="onFavorite(place)">
-                      <i class="far fa-heart fa-lg"></i>
-                    </button>
-                  </div>
-                  <!-- mark button -->
-                  <div class="flex justify-center items-center">
-                    <button>
-                      <i class="far fa-bookmark fa-lg"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </swiper-slide>
-      </swiper>
-    </div>
     <!-- title -->
-    <div class="title bg-navypink">
-      <div class="flex justify-center items-center">
+    <div class="h-auto navypink-bg">
+      <div class="flex justify-center items-center pt-20">
         <p class="swt">Sweets</p>
       </div>
-      <div class="flex justify-center items-center">
+      <div class="flex justify-center items-center pb-20">
         <p class="jnl">Journal</p>
       </div>
     </div>
     <!-- About -->
-    <div class="about bg-beige">
-      <p class="abt text-center p-10">About</p>
+    <div class="beige-bg">
+      <p class="small-title-beige text-center p-10">About</p>
       <div class="grid grid-cols-7 h-auto">
         <div class="col-span-3 bg-none"></div>
-        <div class="col-span-4 bg-none">
-          <p class="text-nvybrown text-4xl txt mt-12 mb-8 mx-24 title-abt">
+        <div class="col-span-4 bg-none animate__animated invisible">
+          <p class="text-nvybrown text-4xl mt-12 mb-8 mx-24 lora-bold">
             Welcome to the Sweets Journal
           </p>
           <div class="flex justify-center items-center mx-24 mb-10">
-            <p class="text-nvybrown text-2xl txt-about">
+            <p class="text-nvybrown text-2xl kaisei-medium">
               Sweets Journalでは、旅先で現在地周辺のカフェやレストランを見つけることができます。<br>
               また、会員登録をすることで、旅先で見つけたお店や、
               行けなかったけど気になったお店を簡単に保存することができます。<br>
@@ -275,15 +28,234 @@
               ぜひ、皆さんの旅先でお店を探したり、素敵なお店を保存したりしてみてください。
             </p>
           </div>
-          <button class="text-nvybrown text-3xl ml-24 mb-32">More</button>
+          <button
+            class="text-nvybrown text-3xl ml-24 mb-32"
+            @click.prevent="Try()">
+            More
+          </button>
         </div>
       </div>
     </div>
     <!-- Search -->
-    <!-- Ranking -->
+    <div class="navypink-bg h-auto">
+      <p class="small-title-navypink text-center p-10">Search</p>
+      <div class="grid grid-rows-2 h-auto animate__animated invisible">
+        <div class="row-span-1">
+          <p class="text-beige text-2xl text-center mt-10 mb-12 kaisei-medium">
+            旅先で、現在地周辺のお店を探してみてください
+          </p>
+        </div>
+        <div class="row-span-1 bg-none">
+          <!-- search area (検索エリア) -->
+          <div class="search-area">
+            <div class="search-form
+                        mx-auto my-2
+                        rounded-lg
+                        shadow-md">
+              <form class="mojip">
+                <div class="flex justify-center items-center
+                            mx-auto">
+                  <div class="area
+                              flex justify-center items-center">
+                    <div class="relative">
+                      <select
+                        v-model="radius"
+                        class="select
+                               block appearance-none
+                               w-full
+                               leading-tight
+                               px-4 py-3 pr-8
+                               rounded-l
+                               text-gray-700
+                               focus:outline-none">
+                        <option
+                          value=""
+                          disabled selected
+                          class="mojip">Area
+                        </option>
+                        <option
+                          value="500"
+                          class="mojip">半径 500 m以内
+                        </option>
+                        <option
+                          value="1000"
+                          class="mojip">半径 1 km以内
+                        </option>
+                        <option
+                          value="3000"
+                          class="mojip">半径 3 km以内
+                        </option>
+                      </select>
+                      <div class="v-icon
+                                  flex items-center
+                                  absolute
+                                  inset-y-0 right-0
+                                  px-2
+                                  text-gray-700
+                                  pointer-events-none">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          class="w-4 h-4 fill-current">
+                          <path d="M9.293 12.95l.707.707L15.657
+                                  8l-1.414-1.414L10 10.828
+                                  5.757 6.586 4.343 8z"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex justify-center items-center">
+                    <div class="relative">
+                      <select
+                        v-model="type"
+                        class="select
+                               block appearance-none
+                               w-full
+                               leading-tight
+                               px-4 py-3 pr-8
+                               rounded-r
+                               text-gray-700
+                               focus:outline-none">
+                        <option
+                          value=""
+                          disabled selected
+                          class="mojip">Category
+                        </option>
+                        <option
+                          value="restaurant"
+                          class="mojip">Restaurant
+                        </option>
+                        <option
+                          value="cafe"
+                          class="mojip">Cafe
+                        </option>
+                      </select>
+                      <div class="v-icon
+                                  flex items-center
+                                  absolute
+                                  inset-y-0 right-0
+                                  px-2
+                                  text-gray-700
+                                  pointer-events-none">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          class="w-4 h-4 fill-current">
+                          <path d="M9.293 12.95l.707.707L15.657
+                                   8l-1.414-1.414L10 10.828
+                                   5.757 6.586 4.343 8z"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="search-button">
+                    <button
+                      type="submit"
+                      @click.prevent="getCurrentLatLng"
+                      class="search-icon
+                             rounded pl-2
+                             bg-none
+                             text-white
+                             uppercase">
+                      <i class="fas fa-search fa-2x"></i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Ranking (ランキング) -->
+    <div class="beige-bg h-auto">
+      <p class="small-title-beige text-center p-10">Ranking</p>
+      <div class="animate__animated invisible">
+        <div class="grid grid-rows-2 h-auto">
+          <div class="row-span-1">
+            <p class="text-nvybrown text-2xl text-center mt-10 mb-12 kaisei-medium">
+              お気に入りのお店ランキングと気になるお店ランキングです
+            </p>
+          </div>
+          <div class="row-span-1 bg-none"></div>
+        </div>
+        <div
+        v-if="ranking"
+        class="ranking">
+        <swiper :options="swiperOption">
+          <swiper-slide
+            v-for="ranking in rankings"
+            :key="ranking.id">
+            <div class="flex flex-row flex-wrap
+                        justify-center items-start
+                        p-5">
+              <div class="mx-6 my-10">
+                <div class="shop-image
+                            relative">
+                  <!-- place image (お店の写真) -->
+                  <a @click="openShopInfo(ranking)">
+                    <img
+                      v-bind:src="ranking.photo_1"
+                      width="300"
+                      height="300">
+                  </a>
+                  <!-- place description (お店の詳細情報) -->
+                  <rinfo-modal
+                    v-if="infomodal"
+                    :val="shopInfos"
+                    @close="closeShopInfo">
+                  </rinfo-modal>
+                </div>
+                <!-- place name and button(favorite and mark) (お店の名前とお気に入り＆気になるボタン) -->
+                <div>
+                  <!-- place name (お店の名前) -->
+                  <div class="place-name
+                              flex justify-center items-center
+                              p-1">
+                    <p class="shop-text
+                              text-center">
+                      {{ ranking.name }}
+                    </p>
+                  </div>
+                  <!-- button-area-gap -->
+                  <div class="button-area-gap"></div>
+                  <!-- button (favorite and mark) -->
+                  <div class="button-area
+                              grid grid-cols-6">
+                    <div class="col-span-4"></div>
+                    <!-- favorite button -->
+                    <div class="flex justify-center items-center">
+                      <button @click="onFavorite(place)">
+                        <i class="far fa-heart fa-lg"></i>
+                      </button>
+                    </div>
+                    <!-- mark button -->
+                    <div class="flex justify-center items-center">
+                      <button>
+                        <i class="far fa-bookmark fa-lg"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </swiper-slide>
+        </swiper>
+    </div>
+      </div>
+    </div>
     <!-- Place Serch Results (検索結果)-->
     <div id="map"></div>
-    <div id="shop" class="flex p-5 items-start justify-center flex-row flex-wrap">
+    <div
+      id="shop"
+      class="flex
+             justify-center
+             items-start
+             flex-row
+             flex-wrap
+             beige-bg
+             p-5
+             h-auto">
       <div v-for="(place, index) in places" :key="index">
         <!-- shop layout -->
         <div class="m-4">
@@ -329,6 +301,13 @@
           </div>
         </div>
       </div>
+    </div>
+    <!-- CopyRight -->
+    <div class="navypink-bg h-auto">
+      <p class="text-beige text-center p-5 lora">
+        <i class="far fa-copyright copyright"></i>
+        2022 Wakana T
+      </p>
     </div>
   </div>
 </template>
@@ -407,15 +386,30 @@ export default {
     this.google_shop = await GoogleMapsApiLoader({
       apiKey: process.env.VUE_APP_GOOGLEMAPS_APIKEY,
     });
-  },
-  computed: {
-    getLatLng() {
-      return `${this.lat}, ${this.lng}`;
-    },
+    this.waypoints();
   },
   methods: {
+    waypoints() {
+      const elem = this.$el.querySelectorAll('.animate__animated');
+      elem.forEach((x) => {
+        this.waypoint = new window.Waypoint({
+          element: x,
+          handler: () => {
+            x.classList.remove('invisible');
+            x.classList.add('visible');
+            x.classList.add('animate__fadeInUp');
+          },
+          offset: '80%',
+        });
+      });
+    },
     // 現在地の緯度と経度の取得
-    getCurrentLatLng() {
+    async getCurrentLatLng() {
+      // 検索用のgoogle
+      this.google = await GoogleMapsApiLoader({
+        libraries: ['places'],
+        apiKey: process.env.VUE_APP_GOOGLEMAPS_APIKEY,
+      });
       navigator.geolocation.getCurrentPosition(this.success, this.error);
     },
     success(position) {
@@ -440,13 +434,20 @@ export default {
         if (status === this.google.maps.places.PlacesServiceStatus.OK) {
           for (let i = 0; i < results.length; i += 1) {
             const place = results[i];
+            const shopname = place.name;
+            console.log(shopname);
+            const photos = place.photos;
+            const photourl = photos[0].getUrl({ width: 300, height: 400 });
+            console.log(photourl);
+            /*
+            photos.forEach((data) => {
+              const url = data.getUrl({ width: 300, height: 400 });
+            });
+            */
+            /*
             const shopid = place.place_id;
             const shopname = place.name;
             const shopadd = place.vicinity;
-            const url = place.photos[0].getUrl({ width: 300, height: 400 });
-            if (!url) {
-              return;
-            }
             const hairetsu = {
               id: shopid,
               name: shopname,
@@ -454,6 +455,7 @@ export default {
               photourl: url,
             };
             this.places.push(hairetsu);
+            */
           }
           console.log(this.places);
         }
@@ -468,6 +470,7 @@ export default {
       const service = new this.google.maps.places.PlacesService(map);
       service.nearbySearch(request, callback);
     },
+    /*
     // お気に入り機能
     onFavorite(place) {
       // userLikedPlaceIdにplace.idを追加する
@@ -588,12 +591,14 @@ export default {
       const service = new this.google_shop.maps.places.PlacesService(shop);
       service.getDetails(request, callback);
     },
+    */
     async createRanking() {
       // Ranking上位のお店の情報を取得
       this.rankings = await getRanking().catch((err) => {
         console.log('データを取得できませんでした', err);
       });
     },
+    /*
     offFavorite(place) {
       // userLikedPlaceIdから削除する
       this.userLikedPlaceId = this.userLikedPlaceId.filter((id) => id !== place.id);
@@ -633,6 +638,7 @@ export default {
           console.log('エラーです。', error);
         });
     },
+    */
     openShopInfo(ranking) {
       this.infomodal = true;
       this.shopInfos = ranking;
@@ -647,9 +653,6 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Antic+Didone&family=Elsie&family=Italiana&family=Kaisei+Decol:wght@400;500;700&family=Lobster&family=Lora:wght@400;700&display=swap');
-.lobster {
-  font-family: 'Antic Didone', serif;
-}
 .sweets {
   font-size: 160px;
   font-family: 'Lora', serif;
@@ -682,11 +685,6 @@ export default {
     5px 5px #3e4451,
     6px 6px #333843,
     7px 7px 4px #2f343e;
-}
-.title {
-  height: 750px;
-  background-color: #a76e63;
-  background: linear-gradient(to right, #ab766b, #9f6054, #945447);
 }
 .swt {
   text-transform: Uppercase;
@@ -722,12 +720,15 @@ export default {
                0 9px #5f3e37,
                0 10px 8px #523530;
 }
-.about {
+.navypink-bg {
+  background-color: #a76e63;
+  background: linear-gradient(to right, #ab766b, #9f6054, #945447);
+}
+.beige-bg {
   background-color: #f2ebe5;
   background: linear-gradient(to right, #f2ebe5, #eee5de, #eae2da);
 }
-
-.abt {
+.small-title-beige {
   font-size: 100px;
   color: #f2ebe5;
   font-family: 'Lora', serif;
@@ -743,16 +744,38 @@ export default {
                0 9px #918b86,
                0 10px 8px #88837e;
 }
-.title-abt {
+.small-title-navypink {
+  font-size: 100px;
+  color: #a76e63;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #966258,
+               0 2px #8d5c53,
+               0 3px #885950,
+               0 4px #80544b,
+               0 5px #7b5148,
+               0 6px #744c44,
+               0 7px #6f4841,
+               0 8px #68433c,
+               0 9px #5f3e37,
+               0 10px 8px #523530;
+}
+.lora {
+  font-family: 'Lora', serif;
+}
+.lora-bold {
   font-family: 'Lora', serif;
   font-weight: bold;
 }
-.txt {
+.lobster {
   font-family: 'Antic Didone', serif;
 }
-.txt-about {
+.kaisei-medium {
   font-family: 'Kaisei Decol', serif;
   font-weight: medium;
+}
+.copyright {
+  color: #f2ebe5;
 }
 .chocolate {
   box-sizing: border-box;
