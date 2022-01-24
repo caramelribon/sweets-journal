@@ -46,119 +46,86 @@
               旅先で、現在地周辺のお店を探してみてください
             </p>
           </div>
-          <div class="row-span-1 bg-none">
+          <div class="row-span-1 bg-none pt-10 pb-24">
             <!-- search area (検索エリア) -->
             <div class="search-area">
-              <div class="search-form
-                          mx-auto my-2
-                          rounded-lg
-                          shadow-md">
-                <form class="mojip">
-                  <div class="flex justify-center items-center
-                              mx-auto">
+              <div class="search-form">
+                <form>
+                  <div class="flex justify-center items-center">
                     <div class="area
-                                flex justify-center items-center">
-                      <div class="relative">
+                                flex justify-center items-center px-10">
+                      <div class="relative select w-72">
                         <select
                           v-model="radius"
-                          class="select
+                          class="select-text
                                  block appearance-none
-                                 w-full
+                                 w-72
                                  leading-tight
-                                 px-4 py-3 pr-8
+                                 px-4 py-3
                                  rounded-l
-                                 text-gray-700
                                  focus:outline-none">
                           <option
                             value=""
                             disabled selected
-                            class="mojip">Area
+                            class="kaisei-medium lora">
                           </option>
                           <option
                             value="500"
-                            class="mojip">半径 500 m以内
+                            class="kaisei-medium lora">半径 500 m以内
                           </option>
                           <option
                             value="1000"
-                            class="mojip">半径 1 km以内
+                            class="kaisei-medium lora">半径 1 km以内
                           </option>
                           <option
                             value="3000"
-                            class="mojip">半径 3 km以内
+                            class="kaisei-medium lora">半径 3 km以内
                           </option>
                         </select>
-                        <div class="v-icon
-                                    flex items-center
-                                    absolute
-                                    inset-y-0 right-0
-                                    px-2
-                                    text-gray-700
-                                    pointer-events-none">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            class="w-4 h-4 fill-current">
-                            <path d="M9.293 12.95l.707.707L15.657
-                                    8l-1.414-1.414L10 10.828
-                                    5.757 6.586 4.343 8z"/>
-                          </svg>
-                        </div>
+                        <span class="select-highlight"></span>
+                        <span class="select-bar w-72"></span>
+                        <label class="select-label">Area</label>
                       </div>
                     </div>
                     <div class="flex justify-center items-center">
-                      <div class="relative">
+                      <div class="relative select w-72">
                         <select
                           v-model="type"
-                          class="select
+                          class="select-text
                                  block appearance-none
-                                 w-full
+                                 w-72
                                  leading-tight
-                                 px-4 py-3 pr-8
-                                 rounded-r
-                                 text-gray-700
+                                 px-4 py-3
                                  focus:outline-none">
                           <option
                             value=""
                             disabled selected
-                            class="mojip">Category
+                            class="kaisei-medium lora">
                           </option>
                           <option
                             value="restaurant"
-                            class="mojip">Restaurant
+                            class="kaisei-medium lora">Restaurant
                           </option>
                           <option
                             value="cafe"
-                            class="mojip">Cafe
+                            class="kaisei-medium lora">Cafe
                           </option>
                         </select>
-                        <div class="v-icon
-                                    flex items-center
-                                    absolute
-                                    inset-y-0 right-0
-                                    px-2
-                                    text-gray-700
-                                    pointer-events-none">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            class="w-4 h-4 fill-current">
-                            <path d="M9.293 12.95l.707.707L15.657
-                                     8l-1.414-1.414L10 10.828
-                                     5.757 6.586 4.343 8z"/>
-                          </svg>
-                        </div>
+                        <span class="select-highlight"></span>
+                        <span class="select-bar w-72"></span>
+                        <label class="select-label">Category</label>
                       </div>
                     </div>
-                    <div class="search-button">
+                    <div>
                       <button
                         type="submit"
                         @click.prevent="getCurrentLatLng"
-                        class="search-icon
-                               rounded pl-2
+                        class="search-button
+                               rounded pl-10
                                bg-none
                                text-white
                                uppercase">
-                        <i class="fas fa-search fa-2x"></i>
+                        〇
                       </button>
                     </div>
                   </div>
@@ -942,7 +909,7 @@ export default {
 .button-size {
   font-size: 1.5em;
 }
-.search-form {
+/*.search-form {
   width: 350px;
   padding: 7px;
   margin: auto;
@@ -951,10 +918,10 @@ export default {
   -webkit-box-shadow: 0 5px 6px 1px #888;
   -moz-box-shadow:0 5px 6px 1px #888;
   box-shadow: 0 5px 6px 1px #888;
-}
-.select {
+}*/
+/*.select {
   background-color: #D9ADAD;
-}
+}*/
 #slider {
   overflow: hidden;
   width: 310px;
@@ -976,5 +943,191 @@ button:disabled {
 }
 .liked {
   color: #ff8882;
+}
+/* serch form (検索フォーム) */
+.select {
+  font-family: 'Lora', serif;
+  font-family: 'Kaisei Decol', serif;
+  font-weight: medium;
+  position: relative;
+}
+.select-text {
+  position: relative;
+  font-family: inherit;
+  padding: 10px 10px 10px 0;
+  color: #f2ebe5;
+  font-size: 35px;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0, 0.12);
+  text-shadow: 0 1px #966258,
+               0 2px #8d5c53,
+               0 3px #885950,
+               0 4px #80544b,
+               0 5px #7b5148,
+               0 6px #744c44,
+               0 7px #6f4841,
+               0 8px #68433c,
+               0 9px #5f3e37,
+               0 10px 8px #523530;
+}
+/* Remove focus */
+.select-text:focus {
+  outline: none;
+  border-bottom: 1px solid rgba(0,0,0,0);
+}
+/* Use custom arrow */
+.select .select-text {
+  appearance: none;
+  -webkit-appearance:none;
+}
+.select:after {
+  position: absolute;
+  top: 18px;
+  right: 10px;
+  /* Styling the down arrow */
+  width: 0;
+  height: 0;
+  padding: 0;
+  text-align: center;
+  content: '▼';
+  color: #f2ebe5;
+  text-shadow: 0 1px #966258,
+               0 2px #8d5c53,
+               0 3px #885950,
+               0 4px #80544b,
+               0 5px #7b5148,
+               0 6px #744c44,
+               0 7px #6f4841,
+               0 8px #68433c,
+               0 9px #5f3e37,
+               0 10px 8px #523530;
+  pointer-events: none;
+  transition: 0.3s ease all;
+}
+.select:hover:after {
+  transform: translate(0px, 10px);
+  text-shadow: none;
+}
+select {
+  background-color: transparent;
+  line-height: 2.0em;
+}
+option {
+  background-color: #a76e63;
+}
+/* LABEL ======================================= */
+.select-label {
+  color: rgba(0,0,0, 0.26);
+  font-size: 10px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 0;
+  top: 10px;
+  transition: 0.2s ease all;
+}
+/* active state */
+.select-text:focus ~ .select-label, .select-text:valid ~ .select-label {
+  color: #f2ebe5;
+  top: -100px;
+  transition: 0.2s ease all;
+  font-size: 50px;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #966258,
+               0 2px #8d5c53,
+               0 3px #885950,
+               0 4px #80544b,
+               0 5px #7b5148,
+               0 6px #744c44,
+               0 7px #6f4841,
+               0 8px #68433c,
+               0 9px #5f3e37,
+               0 10px 8px #523530;
+}
+/* BOTTOM BARS ================================= */
+.select-bar {
+  position: relative;
+  display: block;
+  width: 200px;
+}
+.select-bar:before, .select-bar:after {
+  content: '';
+  height: 2px;
+  width: 0;
+  bottom: 0px;
+  position: absolute;
+  background: #f2ebe5;
+  transition: 0.2s ease all;
+}
+.select-bar:before {
+  left: 50%;
+}
+.select-bar:after {
+  right: 50%;
+}
+/* active state */
+.select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
+  width: 50%;
+}
+/* HIGHLIGHTER ================================== */
+.select-highlight {
+  position: absolute;
+  height: 60%;
+  width: 100px;
+  top: 25%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+/* serch button (検索ボタン) */
+.search-button {
+  display: inline-block;
+  position: relative;
+  font-size: 50px;
+  color: #f2ebe5;
+  text-shadow: 0 1px #966258,
+              0 2px #8d5c53,
+              0 3px #885950,
+              0 4px #80544b,
+              0 5px #7b5148,
+              0 6px #744c44,
+              0 7px #6f4841,
+              0 8px #68433c,
+              0 9px #5f3e37,
+              0 10px 8px #523530;
+  transition: all .5s ease;
+}
+.search-button::before {
+  position: absolute;
+  top: 45px;
+  left: 68px;
+  transform: rotate(-45deg);
+  width: 0.10em;
+  height: 0.5em;
+  content: "i";
+  color: #f2ebe5;
+  font-size: 30px;
+  text-shadow: -1px 1px #966258,
+               -1px 2px #8d5c53,
+               -2px 3px #885950,
+               -3px 4px #80544b,
+               -4px 5px #7b5148,
+               -5px 6px #744c44,
+               -6px 7px #6f4841,
+               -7px 8px #68433c,
+               -8px 9px #5f3e37,
+               -9px 10px 8px #523530;
+  transition: all .5s ease;
+}
+.search-button:hover {
+  transform: translate(0px, 10px);
+  text-shadow: none;
+}
+.search-button:hover::before {
+  transform: translate(0px, 10px);
+  transform: rotate(-45deg);
+  text-shadow: none;
 }
 </style>
