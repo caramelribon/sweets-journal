@@ -9,312 +9,316 @@
         <p class="jnl">Journal</p>
       </div>
     </div>
-    <!-- About -->
-    <div class="beige-bg">
-      <p class="small-title-beige text-center p-10">About</p>
-      <div class="grid grid-cols-7 h-auto">
-        <div class="col-span-3 bg-none"></div>
-        <div class="col-span-4 bg-none animate__animated invisible">
-          <p class="text-nvybrown text-4xl mt-12 mb-8 mx-24 lora-bold">
-            Welcome to the Sweets Journal
-          </p>
-          <div class="flex justify-center items-center mx-24 mb-10">
-            <p class="text-nvybrown text-2xl kaisei-medium">
-              Sweets Journalでは、旅先で現在地周辺のカフェやレストランを見つけることができます。<br>
-              また、会員登録をすることで、旅先で見つけたお店や、
-              行けなかったけど気になったお店を簡単に保存することができます。<br>
-              そして、皆が登録したお店をみることもできるので、
-              他の会員がどんなお店に注目しているのかもわかります。<br>
-              ぜひ、皆さんの旅先でお店を探したり、素敵なお店を保存したりしてみてください。
+    <div class="contents">
+      <!-- About -->
+      <div class="beige-bg">
+        <p class="small-title-beige text-center p-10">About</p>
+        <div class="grid grid-cols-7 h-auto">
+          <div class="col-span-3 bg-none"></div>
+          <div class="col-span-4 bg-none animate__animated invisible">
+            <p class="text-nvybrown text-4xl mt-12 mb-8 mx-24 lora-bold">
+              Welcome to the Sweets Journal
             </p>
-          </div>
-          <button
-            class="text-nvybrown text-3xl ml-24 mb-32"
-            @click.prevent="Try()">
-            More
-          </button>
-        </div>
-      </div>
-    </div>
-    <!-- Search -->
-    <div class="navypink-bg h-auto">
-      <p class="small-title-navypink text-center p-10">Search</p>
-      <div class="grid grid-rows-2 h-auto animate__animated invisible">
-        <div class="row-span-1">
-          <p class="text-beige text-2xl text-center mt-10 mb-12 kaisei-medium">
-            旅先で、現在地周辺のお店を探してみてください
-          </p>
-        </div>
-        <div class="row-span-1 bg-none">
-          <!-- search area (検索エリア) -->
-          <div class="search-area">
-            <div class="search-form
-                        mx-auto my-2
-                        rounded-lg
-                        shadow-md">
-              <form class="mojip">
-                <div class="flex justify-center items-center
-                            mx-auto">
-                  <div class="area
-                              flex justify-center items-center">
-                    <div class="relative">
-                      <select
-                        v-model="radius"
-                        class="select
-                               block appearance-none
-                               w-full
-                               leading-tight
-                               px-4 py-3 pr-8
-                               rounded-l
-                               text-gray-700
-                               focus:outline-none">
-                        <option
-                          value=""
-                          disabled selected
-                          class="mojip">Area
-                        </option>
-                        <option
-                          value="500"
-                          class="mojip">半径 500 m以内
-                        </option>
-                        <option
-                          value="1000"
-                          class="mojip">半径 1 km以内
-                        </option>
-                        <option
-                          value="3000"
-                          class="mojip">半径 3 km以内
-                        </option>
-                      </select>
-                      <div class="v-icon
-                                  flex items-center
-                                  absolute
-                                  inset-y-0 right-0
-                                  px-2
-                                  text-gray-700
-                                  pointer-events-none">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          class="w-4 h-4 fill-current">
-                          <path d="M9.293 12.95l.707.707L15.657
-                                  8l-1.414-1.414L10 10.828
-                                  5.757 6.586 4.343 8z"/>
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flex justify-center items-center">
-                    <div class="relative">
-                      <select
-                        v-model="type"
-                        class="select
-                               block appearance-none
-                               w-full
-                               leading-tight
-                               px-4 py-3 pr-8
-                               rounded-r
-                               text-gray-700
-                               focus:outline-none">
-                        <option
-                          value=""
-                          disabled selected
-                          class="mojip">Category
-                        </option>
-                        <option
-                          value="restaurant"
-                          class="mojip">Restaurant
-                        </option>
-                        <option
-                          value="cafe"
-                          class="mojip">Cafe
-                        </option>
-                      </select>
-                      <div class="v-icon
-                                  flex items-center
-                                  absolute
-                                  inset-y-0 right-0
-                                  px-2
-                                  text-gray-700
-                                  pointer-events-none">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          class="w-4 h-4 fill-current">
-                          <path d="M9.293 12.95l.707.707L15.657
-                                   8l-1.414-1.414L10 10.828
-                                   5.757 6.586 4.343 8z"/>
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="search-button">
-                    <button
-                      type="submit"
-                      @click.prevent="getCurrentLatLng"
-                      class="search-icon
-                             rounded pl-2
-                             bg-none
-                             text-white
-                             uppercase">
-                      <i class="fas fa-search fa-2x"></i>
-                    </button>
-                  </div>
-                </div>
-              </form>
+            <div class="flex justify-center items-center mx-24 mb-10">
+              <p class="text-nvybrown text-2xl kaisei-medium">
+                Sweets Journalでは、旅先で現在地周辺のカフェやレストランを見つけることができます。<br>
+                また、会員登録をすることで、旅先で見つけたお店や、
+                行けなかったけど気になったお店を簡単に保存することができます。<br>
+                そして、皆が登録したお店をみることもできるので、
+                他の会員がどんなお店に注目しているのかもわかります。<br>
+                ぜひ、皆さんの旅先でお店を探したり、素敵なお店を保存したりしてみてください。
+              </p>
             </div>
+            <button
+              class="text-nvybrown text-3xl ml-24 mb-32"
+              @click.prevent="Try()">
+              More
+            </button>
           </div>
         </div>
       </div>
-    </div>
-    <!-- Ranking (ランキング) -->
-    <div class="beige-bg h-auto">
-      <p class="small-title-beige text-center p-10">Ranking</p>
-      <div class="animate__animated invisible">
-        <div class="grid grid-rows-2 h-auto">
+      <!-- Search -->
+      <div class="navypink-bg h-auto">
+        <p class="small-title-navypink text-center p-10">Search</p>
+        <div class="grid grid-rows-2 h-auto animate__animated invisible">
           <div class="row-span-1">
-            <p class="text-nvybrown text-2xl text-center mt-10 mb-12 kaisei-medium">
-              お気に入りのお店ランキングと気になるお店ランキングです
+            <p class="text-beige text-2xl text-center mt-10 mb-12 kaisei-medium">
+              旅先で、現在地周辺のお店を探してみてください
             </p>
           </div>
-          <div class="row-span-1 bg-none"></div>
-        </div>
-        <div
-        v-if="ranking"
-        class="ranking">
-        <swiper :options="swiperOption">
-          <swiper-slide
-            v-for="ranking in rankings"
-            :key="ranking.id">
-            <div class="flex flex-row flex-wrap
-                        justify-center items-start
-                        p-5">
-              <div class="mx-6 my-10">
-                <div class="shop-image
-                            relative">
-                  <!-- place image (お店の写真) -->
-                  <a @click="openShopInfo(ranking)">
-                    <img
-                      v-bind:src="ranking.photo_1"
-                      width="300"
-                      height="300">
-                  </a>
-                  <!-- place description (お店の詳細情報) -->
-                  <rinfo-modal
-                    v-if="infomodal"
-                    :val="shopInfos"
-                    @close="closeShopInfo">
-                  </rinfo-modal>
-                </div>
-                <!-- place name and button(favorite and mark) (お店の名前とお気に入り＆気になるボタン) -->
-                <div>
-                  <!-- place name (お店の名前) -->
-                  <div class="place-name
-                              flex justify-center items-center
-                              p-1">
-                    <p class="shop-text
-                              text-center">
-                      {{ ranking.name }}
-                    </p>
-                  </div>
-                  <!-- button-area-gap -->
-                  <div class="button-area-gap"></div>
-                  <!-- button (favorite and mark) -->
-                  <div class="button-area
-                              grid grid-cols-6">
-                    <div class="col-span-4"></div>
-                    <!-- favorite button -->
+          <div class="row-span-1 bg-none">
+            <!-- search area (検索エリア) -->
+            <div class="search-area">
+              <div class="search-form
+                          mx-auto my-2
+                          rounded-lg
+                          shadow-md">
+                <form class="mojip">
+                  <div class="flex justify-center items-center
+                              mx-auto">
+                    <div class="area
+                                flex justify-center items-center">
+                      <div class="relative">
+                        <select
+                          v-model="radius"
+                          class="select
+                                 block appearance-none
+                                 w-full
+                                 leading-tight
+                                 px-4 py-3 pr-8
+                                 rounded-l
+                                 text-gray-700
+                                 focus:outline-none">
+                          <option
+                            value=""
+                            disabled selected
+                            class="mojip">Area
+                          </option>
+                          <option
+                            value="500"
+                            class="mojip">半径 500 m以内
+                          </option>
+                          <option
+                            value="1000"
+                            class="mojip">半径 1 km以内
+                          </option>
+                          <option
+                            value="3000"
+                            class="mojip">半径 3 km以内
+                          </option>
+                        </select>
+                        <div class="v-icon
+                                    flex items-center
+                                    absolute
+                                    inset-y-0 right-0
+                                    px-2
+                                    text-gray-700
+                                    pointer-events-none">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            class="w-4 h-4 fill-current">
+                            <path d="M9.293 12.95l.707.707L15.657
+                                    8l-1.414-1.414L10 10.828
+                                    5.757 6.586 4.343 8z"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
                     <div class="flex justify-center items-center">
-                      <button @click="onFavorite(place)">
-                        <i class="far fa-heart fa-lg"></i>
+                      <div class="relative">
+                        <select
+                          v-model="type"
+                          class="select
+                                 block appearance-none
+                                 w-full
+                                 leading-tight
+                                 px-4 py-3 pr-8
+                                 rounded-r
+                                 text-gray-700
+                                 focus:outline-none">
+                          <option
+                            value=""
+                            disabled selected
+                            class="mojip">Category
+                          </option>
+                          <option
+                            value="restaurant"
+                            class="mojip">Restaurant
+                          </option>
+                          <option
+                            value="cafe"
+                            class="mojip">Cafe
+                          </option>
+                        </select>
+                        <div class="v-icon
+                                    flex items-center
+                                    absolute
+                                    inset-y-0 right-0
+                                    px-2
+                                    text-gray-700
+                                    pointer-events-none">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            class="w-4 h-4 fill-current">
+                            <path d="M9.293 12.95l.707.707L15.657
+                                     8l-1.414-1.414L10 10.828
+                                     5.757 6.586 4.343 8z"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="search-button">
+                      <button
+                        type="submit"
+                        @click.prevent="getCurrentLatLng"
+                        class="search-icon
+                               rounded pl-2
+                               bg-none
+                               text-white
+                               uppercase">
+                        <i class="fas fa-search fa-2x"></i>
                       </button>
                     </div>
-                    <!-- mark button -->
-                    <div class="flex justify-center items-center">
-                      <button>
-                        <i class="far fa-bookmark fa-lg"></i>
-                      </button>
-                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </swiper-slide>
-        </swiper>
-    </div>
-      </div>
-    </div>
-    <!-- Place Serch Results (検索結果)-->
-    <div id="map"></div>
-    <div
-      id="shop"
-      class="flex
-             justify-center
-             items-start
-             flex-row
-             flex-wrap
-             beige-bg
-             p-5
-             h-auto">
-      <div v-for="(place, index) in places" :key="index">
-        <!-- shop layout -->
-        <div class="m-4">
-          <!-- shop image -->
-          <div class="shop-image">
-            <div>
-              <img v-bind:src="place.photourl" width="300" height="300">
-            </div>
-          </div>
-          <!-- shop description and button(favorite and mark) -->
-          <div class="shop-description">
-            <!-- shop name -->
-            <div class="shop-name flex justify-center items-center p-1">
-              <p class="shop-text text-center">{{ place.name }}</p>
-            </div>
-            <!-- button-area-gap -->
-            <div class="button-area-gap"></div>
-            <!-- button (favorite and mark) -->
-            <div class="button-area grid grid-cols-6">
-              <div class="col-span-4"></div>
-              <!-- favorite button -->
-              <div class="flex justify-center items-center">
-                <button
-                @click="onFavorite(place)"
-                :disabled="isActive"
-                v-if="userLikedPlaceId.indexOf(place.id) === -1">
-                  <i class="far fa-heart fa-lg"></i>
-                </button>
-                <button
-                @click="offFavorite(place)"
-                :disabled="isActive"
-                v-else>
-                  <i class="fas fa-heart fa-lg liked"></i>
-                </button>
-              </div>
-              <!-- mark button -->
-              <div class="flex justify-center items-center">
-                <button>
-                  <i class="far fa-bookmark fa-lg"></i>
-                </button>
+                </form>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <!-- Ranking (ランキング) -->
+      <div class="beige-bg h-auto">
+        <p class="small-title-beige text-center p-10">Ranking</p>
+        <div class="animate__animated invisible">
+          <div class="grid grid-rows-2 h-auto">
+            <div class="row-span-1">
+              <p class="text-nvybrown text-2xl text-center mt-10 mb-12 kaisei-medium">
+                お気に入りのお店ランキングと気になるお店ランキングです
+              </p>
+            </div>
+            <div class="row-span-1 bg-none"></div>
+          </div>
+          <div
+          v-if="ranking"
+          class="ranking">
+          <swiper :options="swiperOption">
+            <swiper-slide
+              v-for="ranking in rankings"
+              :key="ranking.id">
+              <div class="flex flex-row flex-wrap
+                          justify-center items-start
+                          p-5">
+                <div class="mx-6 my-10">
+                  <div class="shop-image
+                              relative">
+                    <!-- place image (お店の写真) -->
+                    <a @click="openShopInfo(ranking)">
+                      <img
+                        v-bind:src="ranking.photo_1"
+                        width="300"
+                        height="300">
+                    </a>
+                    <!-- place description (お店の詳細情報) -->
+                    <rinfo-modal
+                      v-if="infomodal"
+                      :val="shopInfos"
+                      @close="closeShopInfo">
+                    </rinfo-modal>
+                  </div>
+                  <!-- place name and button(favorite and mark) (お店の名前とお気に入り＆気になるボタン) -->
+                  <div>
+                    <!-- place name (お店の名前) -->
+                    <div class="place-name
+                                flex justify-center items-center
+                                p-1">
+                      <p class="shop-text
+                                text-center">
+                        {{ ranking.name }}
+                      </p>
+                    </div>
+                    <!-- button-area-gap -->
+                    <div class="button-area-gap"></div>
+                    <!-- button (favorite and mark) -->
+                    <div class="button-area
+                                grid grid-cols-6">
+                      <div class="col-span-4"></div>
+                      <!-- favorite button -->
+                      <div class="flex justify-center items-center">
+                        <button @click="onFavorite(place)">
+                          <i class="far fa-heart fa-lg"></i>
+                        </button>
+                      </div>
+                      <!-- mark button -->
+                      <div class="flex justify-center items-center">
+                        <button>
+                          <i class="far fa-bookmark fa-lg"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper>
+      </div>
+        </div>
+      </div>
+      <!-- Place Serch Results (検索結果)-->
+      <div id="map"></div>
+      <div
+        id="shop"
+        class="flex
+               justify-center
+               items-start
+               flex-row
+               flex-wrap
+               beige-bg
+               p-5
+               h-auto">
+        <div v-for="(place, index) in places" :key="index">
+          <!-- shop layout -->
+          <div class="m-4">
+            <!-- shop image -->
+            <div class="shop-image">
+              <div>
+                <img v-bind:src="place.photourl" width="300" height="300">
+              </div>
+            </div>
+            <!-- shop description and button(favorite and mark) -->
+            <div class="shop-description">
+              <!-- shop name -->
+              <div class="shop-name flex justify-center items-center p-1">
+                <p class="shop-text text-center">{{ place.name }}</p>
+              </div>
+              <!-- button-area-gap -->
+              <div class="button-area-gap"></div>
+              <!-- button (favorite and mark) -->
+              <div class="button-area grid grid-cols-6">
+                <div class="col-span-4"></div>
+                <!-- favorite button -->
+                <div class="flex justify-center items-center">
+                  <button
+                  @click="onFavorite(place)"
+                  :disabled="isActive"
+                  v-if="userLikedPlaceId.indexOf(place.id) === -1">
+                    <i class="far fa-heart fa-lg"></i>
+                  </button>
+                  <button
+                  @click="offFavorite(place)"
+                  :disabled="isActive"
+                  v-else>
+                    <i class="fas fa-heart fa-lg liked"></i>
+                  </button>
+                </div>
+                <!-- mark button -->
+                <div class="flex justify-center items-center">
+                  <button>
+                    <i class="far fa-bookmark fa-lg"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- CopyRight -->
+      <div class="navypink-bg h-auto">
+        <p class="text-beige text-center p-5 lora">
+          <i class="far fa-copyright copyright"></i>
+          2022 Wakana T
+        </p>
+      </div>
     </div>
-    <!-- CopyRight -->
-    <div class="navypink-bg h-auto">
-      <p class="text-beige text-center p-5 lora">
-        <i class="far fa-copyright copyright"></i>
-        2022 Wakana T
-      </p>
-    </div>
+    <a href="#" class="page-top" @click.prevent="pageTop">Top</a>
   </div>
 </template>
 
 <script>
 import GoogleMapsApiLoader from 'google-maps-api-loader';
 import firebase from 'firebase/app';
+import $ from 'jquery';
 import RinfoModal from '@/components/RinfoModal.vue';
 import { getRanking } from '@/services/firebaseService';
 
@@ -386,10 +390,11 @@ export default {
     this.google_shop = await GoogleMapsApiLoader({
       apiKey: process.env.VUE_APP_GOOGLEMAPS_APIKEY,
     });
-    this.waypoints();
+    this.wayPoints();
+    this.updateButton();
   },
   methods: {
-    waypoints() {
+    wayPoints() {
       const elem = this.$el.querySelectorAll('.animate__animated');
       elem.forEach((x) => {
         this.waypoint = new window.Waypoint({
@@ -402,6 +407,21 @@ export default {
           offset: '80%',
         });
       });
+    },
+    updateButton() {
+      const pagetop = $('.page-top');
+      pagetop.hide();
+      $(window).scroll(function () {
+        if ($(this).scrollTop() > 500) {
+          pagetop.fadeIn();
+        } else {
+          pagetop.fadeOut();
+        }
+      });
+    },
+    pageTop() {
+      // 600ミリ秒かけてトップに戻る
+      $('html, body').animate({ scrollTop: 0 }, 600);
     },
     // 現在地の緯度と経度の取得
     async getCurrentLatLng() {
@@ -871,7 +891,31 @@ export default {
   color: rgba(255,255,255,0.3);
   box-shadow: -1px -1px 1.4px,-1px -1px 1.4px inset;
 }
-
+.page-top {
+  position: fixed;
+  right: -10px;
+  bottom: 20px;
+  height: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  transform: rotate(90deg);
+  font-size: 90%;
+  line-height: 4.5rem;
+  color: #3d4350;
+  padding: 0 0 0 35px;
+  border-bottom: solid 1px;
+}
+.page-top::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 49px;
+  left: 0px;
+  width: 15px;
+  border-top: solid 1px;
+  transform: rotate(-35deg);
+  transform-origin: left top;
+}
 .place-name {
   width: 300px;
   height: 60px;

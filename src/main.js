@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 import InfiniteLoading from 'vue-infinite-loading';
 import firebase from 'firebase/app';
+import jQuery from 'jquery';
 import App from './App.vue';
 import router from './router';
 import '@/assets/style/tailwind.css';
@@ -10,11 +11,11 @@ import 'firebase/firestore';
 import 'firebase/storage';
 import 'swiper/css/swiper.css';
 import 'animate.css';
-import jQuery from 'jquery';
 
 global.jquery = jQuery;
 global.$ = jQuery;
-window.$ = window.jQuery = require('jquery');
+window.$ = window.jQuery;
+window.$ = require('jquery');
 
 Vue.config.productionTip = false;
 Vue.use(VueAwesomeSwiper);
