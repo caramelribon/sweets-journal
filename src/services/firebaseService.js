@@ -41,6 +41,28 @@ export const getFavorite = async (userID) => {
   return favoriteData;
 };
 
+export const getBookmark = async (userID) => {
+  const bookmarkData = [];
+  const db = firebase.firestore();
+  db
+    .collection('bookmarks')
+    .where('user_id', '==', userID)
+    .get()
+    .then((snapShot) => {
+      snapShot.forEach((doc) => {
+        const placeId = doc.data().place_id;
+        db.collection('places').doc(placeId).get()
+          .then((info) => {
+            if (!info.data()) {
+              return;
+            }
+            bookmarkData.push(info.data());
+          });
+      });
+    });
+  return bookmarkData;
+};
+
 const getActivityDetailData = async (doc) => {
   const db = firebase.firestore();
 

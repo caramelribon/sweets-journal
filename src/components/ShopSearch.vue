@@ -260,31 +260,31 @@
                     <!-- favorite button -->
                     <div class="flex justify-center items-center">
                       <button
-                      @click="onFavorite(place)"
-                      :disabled="isActive"
-                      v-if="userLikedPlaceId.indexOf(place.id) === -1">
+                        @click="onFavorite(place)"
+                        :disabled="isActive"
+                        v-if="userLikedPlaceId.indexOf(place.id) === -1">
                         <i class="far fa-heart fa-lg"></i>
                       </button>
                       <button
-                      @click="offFavorite(place)"
-                      :disabled="isActive"
-                      v-else>
+                        @click="offFavorite(place)"
+                        :disabled="isActive"
+                        v-else>
                         <i class="fas fa-heart fa-lg liked"></i>
                       </button>
                     </div>
                     <!-- mark button -->
                     <div class="flex justify-center items-center">
                       <button
-                      @click="onBookmark(place)"
-                      :disabled="isActive"
-                      v-if="userLikedPlaceId.indexOf(place.id) === -1">
+                        @click="onBookmark(place)"
+                        :disabled="isActive"
+                        v-if="userBookmarkPlaceId.indexOf(place.id) === -1">
                         <i class="far fa-bookmark fa-lg"></i>
                       </button>
                       <button
-                      @click="offBookmark(place)"
-                      :disabled="isActive"
-                      v-else>
-                        <i class="far fa-bookmark fa-lg"></i>
+                        @click="offBookmark(place)"
+                        :disabled="isActive"
+                        v-else>
+                        <i class="far fa-bookmark fa-lg bookmarked"></i>
                       </button>
                     </div>
                   </div>
@@ -354,8 +354,8 @@ export default {
     // ログイン状態の変化を監視する
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
+        // ログイン中
         this.currentUID = user.uid;
-        // console.log('状態：ログイン中');
         this.isActive = false;
         // ログインユーザがいいねしているplaceのidを取得
         await firebase.firestore().collection('favorites').where('user_id', '==', user.uid)
@@ -370,7 +370,7 @@ export default {
           });
         console.log(this.userLikedPlaceId);
       } else {
-        // console.log('状態：ログアウト');
+        //ログアウト中
         this.isActive = true;
       }
     });
@@ -785,7 +785,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Antic+Didone&family=Elsie&family=Italiana&family=Kaisei+Decol:wght@400;500;700&family=Lobster&family=Lora:wght@400;700&display=swap');
 .sweets {
@@ -1089,6 +1089,9 @@ button:disabled {
 }
 .liked {
   color: #ff8882;
+}
+.bookmarked {
+  color: #efdc71;
 }
 /* serch form (検索フォーム) */
 .select {
