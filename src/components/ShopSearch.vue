@@ -274,7 +274,16 @@
                     </div>
                     <!-- mark button -->
                     <div class="flex justify-center items-center">
-                      <button>
+                      <button
+                      @click="onBookmark(place)"
+                      :disabled="isActive"
+                      v-if="userLikedPlaceId.indexOf(place.id) === -1">
+                        <i class="far fa-bookmark fa-lg"></i>
+                      </button>
+                      <button
+                      @click="offBookmark(place)"
+                      :disabled="isActive"
+                      v-else>
                         <i class="far fa-bookmark fa-lg"></i>
                       </button>
                     </div>
@@ -336,6 +345,7 @@ export default {
       infomodal: false,
       isActive: true,
       userLikedPlaceId: [],
+      userBookmarkPlaceId: [],
       currentUID: null,
       placeResults: false,
     };
@@ -473,51 +483,36 @@ export default {
     onFavorite(place) {
       // userLikedPlaceIdにplace.idを追加する
       this.userLikedPlaceId.push(place.id);
-      // このお店がfavorites→user.uid→place.idにあるかどうか調べる
+      // このお店がfavorites→user.uid&place.idにあるかどうか調べる
       const db = firebase.firestore();
-      const query = db.collection('favorites')
+      db.collection('favorites')
         .where('user_id', '==', this.currentUID)
         .where('place_id', '==', place.id)
         .get()
         .then((doc) => {
           if (doc.exists) {
-            // あったら、そのお店のお気に入りを解除し、favorite_countを-1にする
-            // favorites→user.uid→place.idを削除
-            query.docs.forEach(async (docdata) => {
-              await docdata.ref.delete();
-            });
-            // shops→shop.id→favorite_countを-1にする
-            const docFavRef = db.collection('places').doc(place.id);
-            docFavRef.get().then((docFa) => {
-              if (docFa.exists) {
-                const favcount = docFa.data().favorite_count - 1;
-                docFavRef.update({
-                  favorite_count: favcount,
-                });
-              } else {
-                console.log('Error');
-              }
-            })
-              .catch((error) => {
-                console.log('エラーです。', error);
-              });
+            // あったら、offFavorite()に進む
+            this.offFavorite(place);
           } else {
-            // なかったら、お気に入り登録とアクティビティ登録をする、confirmShopData()に進む
+            // なかったら、お気に入り登録とアクティビティ登録
             // お気に入り登録
             db.collection('favorites').doc().set({
               user_id: this.currentUID,
               place_id: place.id,
             });
-            this.onActivity(place.id, this.currentUID);
-            this.confirmShopData(place.id);
+            // activityに登録
+            this.onFavActivity(place.id, this.currentUID);
+            // place_idのお店が登録してあるか確認
+            this.confirmFavShopData(place.id);
           }
         })
         .catch((error) => {
-          console.log('エラーです。', error);
+          console.log('Can not register favorite shop!', error);
         });
     },
-    onActivity(placeId, userId) {
+    onFavActivity(placeId, userId) {
       const db = firebase.firestore();
+      // activitiesに登録
       const docRef = db
         .collection('activities')
         .doc();
@@ -527,6 +522,7 @@ export default {
         action: 'favorite',
         create_at: firebase.firestore.FieldValue.serverTimestamp(),
       });
+      // activityCountを+1して更新
       const actRef = db
         .collection('activityCount')
         .doc('count');
@@ -537,22 +533,24 @@ export default {
         });
       });
     },
-    confirmShopData(placeId) {
+    confirmFavShopData(placeId) {
       const docRef = firebase.firestore().collection('places').doc(placeId);
       docRef.get().then((doc) => {
         if (doc.exists) {
-          const favcount = doc.data().favorite_count + 1;
+          // お店の情報がすでに登録されていたら、favorite_countを+1して更新
+          const favCount = doc.data().favorite_count + 1;
           docRef.update({
-            favorite_count: favcount,
+            favorite_count: favCount,
           });
         } else {
-          this.getShopData(placeId);
+          // 登録されていなかったら、getFavShopDada()
+          this.getFavShopData(placeId);
         }
       }).catch((error) => {
-        console.log('エラーです。', error);
+        console.log('No data!', error);
       });
     },
-    getShopData(id) {
+    getFavShopData(id) {
       const shop = new this.google_shop.maps.Map(document.getElementById('map'));
       const request = {
         placeId: id,
@@ -589,16 +587,10 @@ export default {
       const service = new this.google_shop.maps.places.PlacesService(shop);
       service.getDetails(request, callback);
     },
-    async createRanking() {
-      // Ranking上位のお店の情報を取得
-      this.rankings = await getRanking().catch((err) => {
-        console.log('データを取得できませんでした', err);
-      });
-    },
     offFavorite(place) {
       // userLikedPlaceIdから削除する
       this.userLikedPlaceId = this.userLikedPlaceId.filter((id) => id !== place.id);
-      // favoriteのコレクションから削除する
+      // favoritesのコレクションから削除する
       firebase.firestore().collection('favorites')
         .where('user_id', '==', this.currentUID)
         .where('place_id', '==', place.id)
@@ -606,33 +598,181 @@ export default {
         .then((snapShot) => {
           snapShot.forEach(async (doc) => {
             if (doc.exists) {
-              // あったら、そのお店のお気に入りを解除し、favorite_countを-1にする
+              // あったら、そのお店のお気に入りを解除し、favorite_countに-1する
               // favorites→user.uid→place.idを削除
               await doc.ref.delete();
-              console.log('削除しました');
+              console.log('Cancel favorite place!');
               // shops→shop.id→favorite_countを-1にする
-              const docFavRef = firebase.firestore().collection('places').doc(place.id);
-              docFavRef.get().then((docFa) => {
-                if (docFa.exists) {
-                  const favcount = docFa.data().favorite_count - 1;
-                  docFavRef.update({
+              const placeDocRef = firebase.firestore().collection('places').doc(place.id);
+              placeDocRef.get().then((doc) => {
+                if (doc.exists) {
+                  const favcount = doc.data().favorite_count - 1;
+                  placeDocRef.update({
                     favorite_count: favcount,
                   });
-                } else {
-                  console.log('Error');
                 }
               })
                 .catch((error) => {
-                  console.log('エラーです。', error);
+                  console.log('favorite_count error!', error);
                 });
             } else {
-              console.log('データがないです');
+              console.log('Not data!');
             }
           });
         })
         .catch((error) => {
-          console.log('エラーです。', error);
+          console.log('Can not cancel favorite place!', error);
         });
+    },
+    onBookmark(place) {
+      // userBookmarkPlaceIdにplace.idを追加する
+      this.userBookmarkPlaceId.push(place.id);
+      // このお店がbookmarks→user.uid&place.idにあるかどうか調べる
+      const db = firebase.firestore();
+      db.collection('bookmarks')
+        .where('user_id', '==', this.currentUID)
+        .where('place_id', '==', place.id)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            // あったら、offBookmark()に進む
+            this.offBookmark(place);
+          } else {
+            // なかったら、気になる登録とアクティビティ登録
+            // 気になる登録
+            db.collection('bookmarks').doc().set({
+              user_id: this.currentUID,
+              place_id: place.id,
+            });
+            // activityに登録
+            this.onBmActivity(place.id, this.currentUID);
+            // place_idのお店が登録してあるか確認
+            this.confirmBmShopData(place.id);
+          }
+        })
+        .catch((error) => {
+          console.log('Can not register bookmark shop!', error);
+        });
+    },
+    onBmActivity(placeId, userId) {
+      const db = firebase.firestore();
+      // activitiesに登録
+      const docRef = db
+        .collection('activities')
+        .doc();
+      docRef.set({
+        user_id: userId,
+        place_id: placeId,
+        action: 'mark',
+        create_at: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+      // activityCountを+1して更新
+      const actRef = db
+        .collection('activityCount')
+        .doc('count');
+      actRef.get().then((doc) => {
+        const actCount = doc.data().activityCount + 1;
+        actRef.update({
+          activityCount: actCount,
+        });
+      });
+    },
+    confirmBmShopData(placeId) {
+      const docRef = firebase.firestore().collection('places').doc(placeId);
+      docRef.get().then((doc) => {
+        if (doc.exists) {
+          // お店の情報がすでに登録されていたら、bookmark_countを+1して更新
+          const bmCount = doc.data().bookmark_count + 1;
+          docRef.update({
+            bookmark_count: bmCount,
+          });
+        } else {
+          // 登録されていなかったら、getBmShopDada()
+          this.getBmShopData(placeId);
+        }
+      }).catch((error) => {
+        console.log('No data!', error);
+      });
+    },
+    getBmShopDada(id) {
+      const shop = new this.google_shop.maps.Map(document.getElementById('map'));
+      const request = {
+        placeId: id,
+      };
+      const callback = (result, status) => {
+        if (status === this.google_shop.maps.places.PlacesServiceStatus.OK) {
+          console.log(result);
+          // placesにデータを保存
+          const docRef = firebase
+            .firestore()
+            .collection('places')
+            .doc(id);
+          docRef.set({
+            id: result.place_id,
+            name: result.name,
+            add_short: result.vicinity,
+            website: result.website,
+            all_rating: result.rating,
+            favorite_count: 0,
+            bookmark_count: 1,
+            review_1: result.reviews[0].text,
+            review_2: result.reviews[1].text,
+            review_3: result.reviews[2].text,
+            review_4: result.reviews[3].text,
+            review_5: result.reviews[4].text,
+            photo_1: result.photos[0].getUrl({ width: 300, height: 400 }),
+            photo_2: result.photos[1].getUrl({ width: 300, height: 400 }),
+            photo_3: result.photos[2].getUrl({ width: 300, height: 400 }),
+            photo_4: result.photos[3].getUrl({ width: 300, height: 400 }),
+            photo_5: result.photos[4].getUrl({ width: 300, height: 400 }),
+          });
+        }
+      };
+      const service = new this.google_shop.maps.places.PlacesService(shop);
+      service.getDetails(request, callback);
+    },
+    offBookmark(place) {
+      // userBookmarkPlaceIdから削除する
+      this.userBookmarkPlaceId = this.userBookmarkPlaceId.filter((id) => id !== place.id);
+      // bookmarksのコレクションから削除する
+      firebase.firestore().collection('bookmarks')
+        .where('user_id', '==', this.currentUID)
+        .where('place_id', '==', place.id)
+        .get()
+        .then((snapShot) => {
+          snapShot.forEach(async (doc) => {
+            if (doc.exists) {
+              // あったら、そのお店の気になる登録を解除し、bookmark_countに-1する
+              // favorites→user.uid→place.idを削除
+              await doc.ref.delete();
+              console.log('Cancel bookmark place');
+              // shops→shop.id→bookmark_countを-1にする
+              const bmDocRef = firebase.firestore().collection('places').doc(place.id);
+              bmDocRef.get().then((doc) => {
+                if (doc.exists) {
+                  const bookmarkCount = doc.data().favorite_count - 1;
+                  bmDocRef.update({
+                    bookmark_count: bookmarkCount,
+                  });
+                }
+              })
+                .catch((error) => {
+                  console.log('bookmark_count error', error);
+                });
+            } else {
+              console.log('No data!');
+            }
+          });
+        })
+        .catch((error) => {
+          console.log('Can not cancel bookmark place!', error);
+        });
+    },
+    async createRanking() {
+      // Ranking上位のお店の情報を取得
+      this.rankings = await getRanking().catch((err) => {
+        console.log('データを取得できませんでした', err);
+      });
     },
     openShopInfo(ranking) {
       this.infomodal = true;
