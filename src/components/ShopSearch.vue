@@ -284,7 +284,7 @@
                         @click="offBookmark(place)"
                         :disabled="isActive"
                         v-else>
-                        <i class="far fa-bookmark fa-lg bookmarked"></i>
+                        <i class="fas fa-bookmark fa-lg bookmarked"></i>
                       </button>
                     </div>
                   </div>
@@ -368,9 +368,18 @@ export default {
           .catch((error) => {
             console.log('Error getting documents: ', error);
           });
-        console.log(this.userLikedPlaceId);
+        await firebase.firestore().collection('bookmarks').where('user_id', '==', user.uid)
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((docPlaceId) => {
+              this.userBookmarkPlaceId.push(docPlaceId.data().place_id);
+            });
+          })
+          .catch((error) => {
+            console.log('Error getting documents: ', error);
+          });
       } else {
-        //ログアウト中
+        // ログアウト中
         this.isActive = true;
       }
     });
@@ -604,8 +613,8 @@ export default {
               console.log('Cancel favorite place!');
               // shops→shop.id→favorite_countを-1にする
               const placeDocRef = firebase.firestore().collection('places').doc(place.id);
-              placeDocRef.get().then((doc) => {
-                if (doc.exists) {
+              placeDocRef.get().then((placeDoc) => {
+                if (placeDoc.exists) {
                   const favcount = doc.data().favorite_count - 1;
                   placeDocRef.update({
                     favorite_count: favcount,
@@ -694,7 +703,7 @@ export default {
         console.log('No data!', error);
       });
     },
-    getBmShopDada(id) {
+    getBmShopData(id) {
       const shop = new this.google_shop.maps.Map(document.getElementById('map'));
       const request = {
         placeId: id,
@@ -747,11 +756,11 @@ export default {
               await doc.ref.delete();
               console.log('Cancel bookmark place');
               // shops→shop.id→bookmark_countを-1にする
-              const bmDocRef = firebase.firestore().collection('places').doc(place.id);
-              bmDocRef.get().then((doc) => {
-                if (doc.exists) {
+              const placeDocRef = firebase.firestore().collection('places').doc(place.id);
+              placeDocRef.get().then((placeDoc) => {
+                if (placeDoc.exists) {
                   const bookmarkCount = doc.data().favorite_count - 1;
-                  bmDocRef.update({
+                  placeDocRef.update({
                     bookmark_count: bookmarkCount,
                   });
                 }
@@ -1123,16 +1132,17 @@ button:disabled {
 /* Remove focus */
 .select-text:focus {
   outline: none;
-  border-bottom: 1px solid rgba(0,0,0,0);
+  border-bottom: 3px solid rgba(0,0,0,0);
 }
 /* Use custom arrow */
 .select .select-text {
   appearance: none;
   -webkit-appearance:none;
+  text-align: center;
 }
 .select:after {
   position: absolute;
-  top: 18px;
+  top: 30px;
   right: 10px;
   /* Styling the down arrow */
   width: 0;
@@ -1182,6 +1192,7 @@ option {
   top: -100px;
   transition: 0.2s ease all;
   font-size: 50px;
+  text-align: center;
   font-family: 'Lora', serif;
   font-weight: bold;
   text-shadow: 0 1px #966258,
@@ -1210,21 +1221,15 @@ option {
   background: #f2ebe5;
   transition: 0.2s ease all;
 }
-.select-bar:before {
-  left: 50%;
-}
-.select-bar:after {
-  right: 50%;
-}
 /* active state */
 .select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
-  width: 50%;
+  width: 287px;
 }
 /* HIGHLIGHTER ================================== */
 .select-highlight {
   position: absolute;
   height: 60%;
-  width: 100px;
+  width: 100%;
   top: 25%;
   left: 0;
   pointer-events: none;

@@ -56,7 +56,7 @@
               <input type="password" id="password" v-model="userPass" placeholder="Password"/>
               <label for="password"></label>
             </div>
-            <input type="submit" value="REGISTER"/>
+            <input type="submit" value="REGISTER" @click="onClickSignUp"/>
           </div>
         </div>
       </div>

@@ -16,6 +16,7 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: UserFavorite,
+    props: true,
   },
   {
     path: '/activity',

@@ -60,18 +60,19 @@
                   <div class="button mt-2 mx-3">
                     <div class="flex justify-center items-center">
                       <!-- User Profile (ユーザのプロフィールに繋がるボタン) -->
-                      <div
-                        v-for="(rink, index) in rinks"
-                        :key="`first-${index}`"
-                        class="signup mr-1">
+                      <div class="signup mr-1">
                         <router-link
+                          :to="{
+                                  name: 'Profile',
+                                  query: { userName: username,  userUID: currentUID},
+                                }"
                           class="block
                                  leading-none border rounded
                                  px-2 py-2
                                  text-xs text-white
                                  hover:border-transparent hover:text-navyblue hover:bg-white"
-                          v-bind:to=rink.path>
-                            <p class="moji">{{ rink.title }}</p>
+                        >
+                            <p class="moji">Profile</p>
                         </router-link>
                       </div>
                       <!-- Logout (ログアウトボタン) -->
@@ -188,7 +189,6 @@ export default {
     return {
       currentUID: null,
       loginmodal: false,
-      rinks: [{ title: 'Profile', path: '/profile' }],
       signupmodal: false,
       userinfo: false,
       username: null,

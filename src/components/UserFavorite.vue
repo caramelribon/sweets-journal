@@ -1,128 +1,144 @@
 <template>
-  <div class="favorites">
-    <ul class="tab flex justify-center items-center">
-      <li><a href=#favorite>Favorites</a></li>
-      <li><a href=#mark>Marks</a></li>
+  <div class="user-profile lightblue-bg">
+    <div class="p-10">
+      <p class="text-center user-name">{{ userName }}</p>
+    </div>
+    <ul class="tabs-menu flex justify-center items-center">
+      <li
+        class="text-4xl px-3"
+        :class="{active: activeTab === 'favorite'}"
+        @click="activeTab = 'favorite'"
+      >
+        Favorites
+      </li>
+      <li
+      class="sm:text-3xl md:text-4xl px-3"
+        :class="{active: activeTab === 'bookmark'}"
+        @click="activeTab = 'bookmark'"
+      >
+        Marks
+      </li>
     </ul>
-    <div id=favorite class="area">
-      <div class="py-16">
-        <p class="shop-text text-4xl text-center">Favorite Places</p>
-      </div>
-      <div class="flex p-5 items-start justify-center flex-row flex-wrap">
-        <div v-for="favorite in favorites" :key="favorite.id">
-          <!-- shop layout -->
-          <div class="m-4">
-            <!-- shop image -->
-            <div class="shop-image">
-              <a @click="openShopInfo(favorite)" class="cursor-pointer">
-                <img v-bind:src="favorite.photo_1" width="300" height="300">
-              </a>
-              <rinfo-modal @close="closeShopInfo" v-if="infomodal" :val="shopInfos"></rinfo-modal>
-            </div>
-            <!-- shop description and button(favorite and mark) -->
-            <div class="shop-description">
-              <!-- shop name -->
-              <div class="shop-name flex justify-center items-center p-1">
-                <p class="shop-text text-center">{{ favorite.name }}</p>
+    <section class="tabs-content p-5">
+      <section v-show="activeTab === 'favorite'">
+        <div class="flex p-5 items-start justify-center flex-row flex-wrap">
+          <div v-for="favorite in favorites" :key="favorite.id">
+            <!-- shop layout -->
+            <div class="m-4">
+              <!-- shop image -->
+              <div class="shop-image">
+                <a @click="openShopInfo(favorite)" class="cursor-pointer">
+                  <img v-bind:src="favorite.photo_1" width="300" height="300">
+                </a>
+                <rinfo-modal @close="closeShopInfo" v-if="infomodal" :val="shopInfos"></rinfo-modal>
               </div>
-              <!-- button-area-gap -->
-              <div class="button-area-gap"></div>
-              <!-- button (favorite and mark) -->
-              <div class="button-area grid grid-cols-6">
-                <div class="col-span-4"></div>
-                <!-- favorite button -->
-                <div class="flex justify-center items-center">
-                  <button
-                    @click="onFavorite(favorite)"
-                    :disabled="isActive"
-                    v-if="userLikedPlaceId.indexOf(place.id) === -1">
-                      <i class="far fa-heart fa-lg"></i>
-                  </button>
-                  <button
-                    @click="offFavorite(favorite)"
-                    :disabled="isActive"
-                    v-else>
-                      <i class="fas fa-heart fa-lg liked"></i>
-                  </button>
+              <!-- shop description and button(favorite and mark) -->
+              <div class="shop-description">
+                <!-- shop name -->
+                <div class="shop-name flex justify-center items-center p-1">
+                  <p class="shop-text text-center">{{ favorite.name }}</p>
                 </div>
-                <!-- mark button -->
-                <div class="flex justify-center items-center">
-                  <button
-                    @click="onBookmark(favorite)"
-                    v-if="userBookmarkPlaceId.indexOf(place.id) === -1">
-                    <i class="far fa-bookmark fa-lg"></i>
-                  </button>
-                  <button
-                    @click="offBookmark(favorite)"
-                    v-else>
-                    <i class="far fa-bookmark fa-lg bookmarked"></i>
-                  </button>
+                <!-- button-area-gap -->
+                <div class="button-area-gap"></div>
+                <!-- button (favorite and mark) -->
+                <div class="button-area grid grid-cols-6">
+                  <div class="col-span-4"></div>
+                  <!-- favorite button -->
+                  <div class="flex justify-center items-center">
+                    <button
+                      @click="onFavorite(favorite)"
+                      v-if="userLikedPlaceId.indexOf(favorite.id) === -1">
+                        <i class="far fa-heart fa-lg"></i>
+                    </button>
+                    <button
+                      @click="offFavorite(favorite)"
+                      v-else>
+                        <i class="fas fa-heart fa-lg liked"></i>
+                    </button>
+                  </div>
+                  <!-- mark button -->
+                  <div class="flex justify-center items-center">
+                    <button
+                      @click="onBookmark(favorite)"
+                      v-if="userBookmarkPlaceId.indexOf(favorite.id) === -1">
+                      <i class="far fa-bookmark fa-lg"></i>
+                    </button>
+                    <button
+                      @click="offBookmark(favorite)"
+                      v-else>
+                      <i class="fas fa-bookmark fa-lg bookmarked"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div id="mark" class="area">
-      <div class="py-16">
-        <p class="shop-text text-4xl text-center">Mark Places</p>
-      </div>
-      <div class="flex p-5 items-start justify-center flex-row flex-wrap">
-        <div v-for="mark in bookmarks" :key="mark.id">
-          <!-- shop layout -->
-          <div class="m-4">
-            <!-- shop image -->
-            <div class="shop-image">
-              <a @click="openShopInfo(mark)" class="cursor-pointer">
-                <img v-bind:src="mark.photo_1" width="300" height="300">
-              </a>
-              <rinfo-modal @close="closeShopInfo" v-if="infomodal" :val="shopInfos"></rinfo-modal>
-            </div>
-            <!-- shop description and button(favorite and mark) -->
-            <div class="shop-description">
-              <!-- shop name -->
-              <div class="shop-name flex justify-center items-center p-1">
-                <p class="shop-text text-center">{{ mark.name }}</p>
+      </section>
+      <section v-show="activeTab === 'bookmark'">
+        <div class="flex p-5 items-start justify-center flex-row flex-wrap">
+          <div v-for="mark in bookmarks" :key="mark.id">
+            <!-- shop layout -->
+            <div class="m-4">
+              <!-- shop image -->
+              <div class="shop-image">
+                <a @click="openShopInfo(mark)" class="cursor-pointer">
+                  <img v-bind:src="mark.photo_1" width="300" height="300">
+                </a>
+                <rinfo-modal @close="closeShopInfo" v-if="infomodal" :val="shopInfos"></rinfo-modal>
               </div>
-              <!-- button-area-gap -->
-              <div class="button-area-gap"></div>
-              <!-- button (favorite and mark) -->
-              <div class="button-area grid grid-cols-6">
-                <div class="col-span-4"></div>
-                <!-- favorite button -->
-                <div class="flex justify-center items-center">
-                  <button
-                    @click="onFavorite(mark)"
-                    v-if="userLikedPlaceId.indexOf(place.id) === -1">
-                      <i class="far fa-heart fa-lg"></i>
-                  </button>
-                  <button
-                    @click="offFavorite(mark)"
-                    v-else>
-                      <i class="fas fa-heart fa-lg liked"></i>
-                  </button>
+              <!-- shop description and button(favorite and mark) -->
+              <div class="shop-description">
+                <!-- shop name -->
+                <div class="shop-name flex justify-center items-center p-1">
+                  <p class="shop-text text-center">{{ mark.name }}</p>
                 </div>
-                <!-- mark button -->
-                <div class="flex justify-center items-center">
-                  <button
-                    @click="onBookmark(mark)"
-                    v-if="userBookmarkPlaceId.indexOf(place.id) === -1">
-                    <i class="far fa-bookmark fa-lg"></i>
-                  </button>
-                  <button
-                    @click="offBookmark(mark)"
-                    v-else>
-                    <i class="far fa-bookmark fa-lg bookmarked"></i>
-                  </button>
+                <!-- button-area-gap -->
+                <div class="button-area-gap"></div>
+                <!-- button (favorite and mark) -->
+                <div class="button-area grid grid-cols-6">
+                  <div class="col-span-4"></div>
+                  <!-- favorite button -->
+                  <div class="flex justify-center items-center">
+                    <button
+                      @click="onFavorite(mark)"
+                      v-if="userLikedPlaceId.indexOf(mark.id) === -1">
+                        <i class="far fa-heart fa-lg"></i>
+                    </button>
+                    <button
+                      @click="offFavorite(mark)"
+                      v-else>
+                        <i class="fas fa-heart fa-lg liked"></i>
+                    </button>
+                  </div>
+                  <!-- mark button -->
+                  <div class="flex justify-center items-center">
+                    <button
+                      @click="onBookmark(mark)"
+                      v-if="userBookmarkPlaceId.indexOf(mark.id) === -1">
+                      <i class="far fa-bookmark fa-lg"></i>
+                    </button>
+                    <button
+                      @click="offBookmark(mark)"
+                      v-else>
+                      <i class="fas fa-bookmark fa-lg bookmarked"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    
+      </section>
+    </section>
+    <!-- CopyRight -->
+    <footer>
+      <p class="text-beige text-center p-5 lora">
+        <i class="far fa-copyright copyright"></i>
+        2022 Wakana T
+      </p>
+    </footer>
+    <a href="#" class="page-top" @click.prevent="pageTop">Top</a>
   </div>
 </template>
 
@@ -130,8 +146,7 @@
 import firebase from 'firebase/app';
 import $ from 'jquery';
 import RinfoModal from '@/components/RinfoModal.vue';
-import { getFavorite } from '@/services/firebaseService';
-import { getBookmark } from '@/services/firebaseService';
+import { getFavorite, getBookmark } from '@/services/firebaseService';
 
 export default {
   components: { RinfoModal },
@@ -143,37 +158,51 @@ export default {
   },
   data() {
     return {
-      username: '',
       favorites: [],
       bookmarks: [],
       infomodal: false,
+      userLikedPlaceId: [],
+      userBookmarkPlaceId: [],
+      activeTab: 'favorite',
+      userName: this.$route.query.userName,
+      userUID: this.$route.query.userUID,
     };
   },
   mounted() {
-    // ページが読み込まれたときの動作
-    $(window).on('load', function () {
-      $('.tab li:first-of-type').addClass("active");
-      $('.area:first-of-type').addClass("is-active");
-      var hashName = location.hash;
-      this.getHashID (hashName);
-    });
-    // タブをclickしたときの動作
-    $('.tab a').on('click', function() {
-      const idName = $(this).attr('href');  
-      this.getHashID(idName);
-      return false;
-    });
+    this.updateButton();
   },
   methods: {
     async getData() {
       // ログインしているユーザのuidを取得
-      const user = firebase.auth().currentUser;
-      const userUID = user.uid;
+      // const user = firebase.auth().currentUser;
+      // this.userUID = user.uid;
+      // this.userName = user.username;
+      // console.log(this.userName);
+      await firebase.firestore().collection('favorites').where('user_id', '==', this.userUID)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((docPlaceId) => {
+            this.userLikedPlaceId.push(docPlaceId.data().place_id);
+          });
+        })
+        .catch((error) => {
+          console.log('Error getting documents: ', error);
+        });
+      await firebase.firestore().collection('bookmarks').where('user_id', '==', this.userUID)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((docPlaceId) => {
+            this.userBookmarkPlaceId.push(docPlaceId.data().place_id);
+          });
+        })
+        .catch((error) => {
+          console.log('Error getting documents: ', error);
+        });
       // ログインユーザがお気に入りしたお店の情報を取得
-      this.favorites = await getFavorite(userUID).catch((err) => {
+      this.favorites = await getFavorite(this.userUID).catch((err) => {
         console.log('Can not catch favorite data!', err);
       });
-      this.favorites = await getBookmark(userUID).catch((err) => {
+      this.bookmarks = await getBookmark(this.userUID).catch((err) => {
         console.log('Can not catch bookmark data!', err);
       });
     },
@@ -247,8 +276,8 @@ export default {
               console.log('Cancel favorite place!');
               // shops→shop.id→favorite_countを-1にする
               const placeDocRef = firebase.firestore().collection('places').doc(place.id);
-              placeDocRef.get().then((doc) => {
-                if (doc.exists) {
+              placeDocRef.get().then((placeDoc) => {
+                if (placeDoc.exists) {
                   const favcount = doc.data().favorite_count - 1;
                   placeDocRef.update({
                     favorite_count: favcount,
@@ -336,11 +365,11 @@ export default {
               await doc.ref.delete();
               console.log('Cancel bookmark place');
               // shops→shop.id→bookmark_countを-1にする
-              const bmDocRef = firebase.firestore().collection('places').doc(place.id);
-              bmDocRef.get().then((doc) => {
-                if (doc.exists) {
+              const placeDocRef = firebase.firestore().collection('places').doc(place.id);
+              placeDocRef.get().then((placeDoc) => {
+                if (placeDoc.exists) {
                   const bookmarkCount = doc.data().favorite_count - 1;
-                  bmDocRef.update({
+                  placeDocRef.update({
                     bookmark_count: bookmarkCount,
                   });
                 }
@@ -357,20 +386,6 @@ export default {
           console.log('Can not cancel bookmark place!', error);
         });
     },
-    getHashID(hashIDName) {
-      if(hashIDName){
-        $('.tab li').find('a').each(function() {
-          const idName = $(this).attr('href');
-          if(idName == hashIDName){
-            const parentElm = $(this).parent();
-            $('.tab li').removeClass("active");
-            $(parentElm).addClass("active");
-            $(".area").removeClass("is-active");
-            $(hashIDName).addClass("is-active");
-          }
-        });
-      }
-    },
     openShopInfo(info) {
       this.infomodal = true;
       this.shopInfos = info;
@@ -378,12 +393,28 @@ export default {
     closeShopInfo() {
       this.infomodal = false;
     },
+    updateButton() {
+      const pagetop = $('.page-top');
+      pagetop.hide();
+      $(window).scroll(function () {
+        if ($(this).scrollTop() > 500) {
+          pagetop.fadeIn();
+        } else {
+          pagetop.fadeOut();
+        }
+      });
+    },
+    pageTop() {
+      // 600ミリ秒かけてトップに戻る
+      $('html, body').animate({ scrollTop: 0 }, 600);
+    },
   },
 };
 </script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Antic+Didone&family=Elsie&family=Italiana&family=Kaisei+Decol:wght@400;500;700&family=Lobster&family=Lora:wght@400;700&display=swap');
 .shop-name {
   width: 300px;
   height: 60px;
@@ -420,38 +451,99 @@ export default {
 .bookmarked {
   color: #efdc71;
 }
-ul {
+.tabs-menu{
   list-style:none;
 }
-a{
-  color:#333;
-  text-decoration: none;
-}
-.tab li a{
+.tabs-menu li {
   display: block;
-  background:#ddd;
-  margin:0 2px;
-  padding:10px 20px;
+  float: left;
+  color: #f2ebe5;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #6e7a7c,
+               0 2px #6a7678,
+               0 3px #687375,
+               0 4px #667173,
+               0 5px #626d6f,
+               0 6px #5f6a6c,
+               0 7px #5d6769,
+               0 8px #596365,
+               0 9px #566062,
+               0 10px 8px #50595b;
+  text-decoration: none;
+  transition: .5s ease all;
 }
-.tab li.active a{
-  background:#fff;
+/* タブにマウスを乗せたらカーソルの形を変える */
+.tabs-menu li:hover {
+  cursor: pointer;
+  transform: translate(0px, 10px);
+  text-shadow: none;
 }
-.area {
-  display: none;/*はじめは非表示*/
-  opacity: 0;/*透過0*/
+/* 非選択のタブにマウスを乗せたら色を変える */
+.tabs-menu li:not(.active):hover {
+  transform: translate(0px, 10px);
+  text-shadow: none;
 }
-.area.is-active {
-  display: block;/*表示*/
-  animation-name: displayAnime;/*ふわっと表示させるためのアニメーション*/
-  animation-duration: 2s;
-  animation-fill-mode: forwards;
+/* 選択中のタブ */
+.tabs-menu .active {
+  transform: translate(0px, 10px);
+  text-shadow: none;
 }
-@keyframes displayAnime{
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.lightblue-bg {
+  background-color: #717d7f;
+  background: linear-gradient(to right, #747e80, #697779, #5f7174);
+}
+.user-name {
+  font-size: 100px;
+  color: #f2ebe5;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #6e7a7c,
+               0 2px #6a7678,
+               0 3px #687375,
+               0 4px #667173,
+               0 5px #626d6f,
+               0 6px #5f6a6c,
+               0 7px #5d6769,
+               0 8px #596365,
+               0 9px #566062,
+               0 10px 8px #50595b;
+}
+.page-top {
+  position: fixed;
+  right: -10px;
+  bottom: 20px;
+  height: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  transform: rotate(90deg);
+  font-size: 90%;
+  line-height: 4.5rem;
+  color: #f2ebe5;
+  padding: 0 0 0 35px;
+  border-bottom: solid 1px;
+}
+.page-top::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 49px;
+  left: 0px;
+  width: 15px;
+  border-top: solid 1px;
+  transform: rotate(-35deg);
+  transform-origin: left top;
+}
+.user-profile {
+  min-height: 100vh;
+  position: relative;/*←相対位置*/
+  padding-bottom: 60px;/*←footerの高さ*/
+  box-sizing: border-box;
+}
+footer{
+  width: 100%;
+  position: absolute;/*←絶対位置*/
+  text-align: center;
+  bottom: 0; /*下に固定*/
 }
 </style>
