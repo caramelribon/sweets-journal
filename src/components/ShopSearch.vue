@@ -1,57 +1,95 @@
 <template>
   <div class="bg-beige">
     <!-- title -->
-    <div class="h-auto navypink-bg">
+    <div class="h-auto navypink-bg relative w-full">
       <div class="flex justify-center items-center pt-20">
-        <p class="swt">Sweets</p>
+        <p class="sweets">Sweets</p>
       </div>
       <div class="flex justify-center items-center pb-20">
-        <p class="jnl">Journal</p>
+        <p class="journal">Journal</p>
+      </div>
+      <div
+        class="absolute
+               text-beige
+               kaisei-medium
+               w-full
+               text-center
+               top-message
+               sm:text-base
+               md:text-2xl
+               lg:text-3xl
+               xl:text-4xl
+               animate__animated animate__fadeInUp">
+        <p>あなたが気に入った・気になる「スイーツのお店」を伝えよう</p>
       </div>
     </div>
     <div class="contents">
       <!-- About -->
       <div class="beige-bg">
         <p class="small-title-beige text-center p-10">About</p>
-        <div class="grid grid-cols-7 h-auto">
-          <div class="col-span-3 bg-none"></div>
-          <div class="col-span-4 bg-none animate__animated invisible">
-            <p class="text-nvybrown text-4xl mt-12 mb-8 mx-24 lora-bold">
+        <div class="h-auto">
+          <div class="bg-none animate__animated invisible">
+            <p class="mt-3
+                      mb-8
+                      mx-20
+                      text-nvybrown
+                      text-2xl
+                      sm:text-3xl
+                      md:text-3xl
+                      lg:text-4xl
+                      xl:text-4xl
+                      2xl:text-4xl
+                      lora-bold
+                      text-center">
               Welcome to the Sweets Journal
             </p>
-            <div class="flex justify-center items-center mx-24 mb-10">
-              <p class="text-nvybrown text-2xl kaisei-medium">
+            <div class="mx-20 sm:mx-20 md:mx-32 lg:mx-52 xl:mx-52 2xl:mx-52 pb-20">
+              <p class="text-nvybrown
+                        sm:text-base
+                        md:text-2xl
+                        lg:text-2xl
+                        xl:text-2xl
+                        2xl:text-2xl
+                        kaisei-medium
+                        mb-10">
                 Sweets Journalでは、旅先で現在地周辺のカフェやレストランを見つけることができます。<br>
-                また、会員登録をすることで、旅先で見つけたお店や、
-                行けなかったけど気になったお店を簡単に保存することができます。<br>
-                そして、皆が登録したお店をみることもできるので、
-                他の会員がどんなお店に注目しているのかもわかります。<br>
-                ぜひ、皆さんの旅先でお店を探したり、素敵なお店を保存したりしてみてください。
+                また、会員登録をすると、<br>
+                ・気に入ったお店や気になるお店を保存できる<br>
+                ・全会員の保存したお店をリアルタイムでみることができる<br>
+                といった機能がつきます!!<br>
+                会員登録することで、他の会員がどんなお店に注目しているのかもわかりますよ♪<br>
+                ぜひ、皆さんの旅先でお店を探したり、素敵なお店を保存したりしてみてください
               </p>
+              <button
+                class="text-nvybrown text-2xl mb-10"
+                @click.prevent="Try()">
+                Sign up
+              </button>
             </div>
-            <button
-              class="text-nvybrown text-3xl ml-24 mb-32"
-              @click.prevent="Try()">
-              More
-            </button>
           </div>
         </div>
       </div>
       <!-- Search -->
       <div class="navypink-bg h-auto">
         <p class="small-title-navypink text-center p-10">Search</p>
-        <div class="grid grid-rows-2 h-auto animate__animated invisible">
-          <div class="row-span-1">
-            <p class="text-beige text-2xl text-center mt-10 mb-12 kaisei-medium">
-              旅先で、現在地周辺のお店を探してみてください
-            </p>
-          </div>
-          <div class="row-span-1 bg-none pt-10 pb-24">
+        <div class="h-auto animate__animated invisible">
+          <p class="text-beige
+                    text-center
+                    my-5
+                    kaisei-medium
+                    sm:text-base
+                    md:text-2xl
+                    lg:text-2xl
+                    xl:text-2xl
+                    2xl:text-2xl">
+            旅先で、現在地周辺のお店を探してみてください
+          </p>
+          <div class="bg-none pt-10 pb-24">
             <!-- search area (検索エリア) -->
             <div class="search-area">
               <div class="search-form">
                 <form>
-                  <div class="flex justify-center items-center">
+                  <div class="md:flex md:justify-center md:items-center">
                     <div class="area
                                 flex justify-center items-center px-10">
                       <div class="relative select w-72">
@@ -87,7 +125,7 @@
                         <label class="select-label">Area</label>
                       </div>
                     </div>
-                    <div class="flex justify-center items-center">
+                    <div class="flex justify-center items-center pt-10">
                       <div class="relative select w-72">
                         <select
                           v-model="type"
@@ -116,7 +154,7 @@
                         <label class="select-label">Category</label>
                       </div>
                     </div>
-                    <div>
+                    <div class="flex justify-center items-center">
                       <button
                         type="submit"
                         @click.prevent="getCurrentLatLng"
@@ -124,6 +162,7 @@
                                rounded pl-10
                                bg-none
                                text-white
+                               text-center
                                uppercase">
                         〇
                       </button>
@@ -143,73 +182,126 @@
         <div class="animate__animated invisible">
           <div class="grid grid-rows-2 h-auto">
             <div class="row-span-1">
-              <p class="text-nvybrown text-2xl text-center mt-10 mb-12 kaisei-medium">
+              <p class="text-nvybrown
+                        text-center
+                        sm:text-base
+                        md:text-2xl
+                        lg:text-2xl
+                        xl:text-2xl
+                        2xl:text-2xl
+                        my-5
+                        kaisei-medium">
                 お気に入りのお店ランキングと気になるお店ランキングです
               </p>
             </div>
             <div class="row-span-1 bg-none"></div>
           </div>
-          <div class="ranking">
-          <swiper :options="swiperOption">
-            <swiper-slide
-              v-for="ranking in rankings"
-              :key="ranking.id">
-              <div class="flex flex-row flex-wrap
-                          justify-center items-start
-                          p-5">
-                <div class="mx-6 my-10">
-                  <div class="shop-image
-                              relative">
-                    <!-- place image (お店の写真) -->
-                    <a @click="openShopInfo(ranking)">
-                      <img
-                        v-bind:src="ranking.photo_1"
-                        width="300"
-                        height="300">
-                    </a>
-                    <!-- place description (お店の詳細情報) -->
-                    <rinfo-modal
-                      v-if="infomodal"
-                      :val="shopInfos"
-                      @close="closeShopInfo">
-                    </rinfo-modal>
-                  </div>
-                  <!-- place name and button(favorite and mark) (お店の名前とお気に入り＆気になるボタン) -->
-                  <div>
-                    <!-- place name (お店の名前) -->
-                    <div class="place-name
-                                flex justify-center items-center
-                                p-1">
-                      <p class="shop-text
-                                text-center">
-                        {{ ranking.name }}
-                      </p>
+          <!-- Favorite -->
+          <div class="ranking pb-10">
+            <p class="ranking-title p-5 text-center">Favorited Places Ranking</p>
+            <swiper :options="swiperOption">
+              <swiper-slide
+                v-for="favorite in favorites"
+                :key="favorite.id">
+                <div class="flex p-5 items-start justify-center flex-row flex-wrap">
+                  <!-- shop layout -->
+                  <div class="mx-6 my-10 card">
+                    <!-- shop image -->
+                    <div class="card-header">
+                      <img :src="favorite.photo_1" width="300" height="300" class="card-image">
                     </div>
-                    <!-- button-area-gap -->
-                    <div class="button-area-gap"></div>
-                    <!-- button (favorite and mark) -->
-                    <div class="button-area
-                                grid grid-cols-6">
-                      <div class="col-span-4"></div>
-                      <!-- favorite button -->
-                      <div class="flex justify-center items-center">
-                        <button @click="onFavorite(place)">
-                          <i class="far fa-heart fa-lg"></i>
-                        </button>
+                    <!-- shop description and button(favorite and mark) -->
+                    <section class="card-body">
+                      <div class="shop-description">
+                        <!-- shop name -->
+                        <div class="place-name flex justify-center items-center p-1">
+                          <p class="text-center text-navyblue kaisei-medium">{{favorite.name }}</p>
+                        </div>
                       </div>
-                      <!-- mark button -->
-                      <div class="flex justify-center items-center">
-                        <button>
-                          <i class="far fa-bookmark fa-lg"></i>
-                        </button>
-                      </div>
-                    </div>
+                      <ul class="card-information">
+                        <li class="text-navyblue kaisei-medium">
+                          {{ favorite.add_short }}
+                        </li>
+                        <li class="text-navyblue kaisei-medium">
+                          <i class="fas fa-star icon-color-yellow"></i> {{ favorite.all_rating }}
+                        </li>
+                        <li class="text-navyblue kaisei-medium">
+                          <div class="flex justify-start items-center">
+                            <div class="favorited_users">
+                              <i class="fas fa-heart liked"></i> {{ favorite.favorite_count }}
+                              <i class="fas fa-users icon-color-blue"></i>
+                            </div>
+                            <div class="bookmarked_users mx-5">
+                              <i class="fas fa-bookmark marked"></i> {{ favorite.bookmark_count }}
+                              <i class="fas fa-users icon-color-blue"></i>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="text-navyblue kaisei-medium">
+                          <a :href="ranking.website" target="_blank">
+                            website <i class="fas fa-external-link-alt icon-color-blue"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </section>
                   </div>
                 </div>
-              </div>
-            </swiper-slide>
-          </swiper>
-         </div>
+              </swiper-slide>
+            </swiper>
+          </div>
+          <!-- mark -->
+          <div class="ranking pb-10">
+            <p class="ranking-title p-5 text-center">Marked Places Ranking</p>
+            <swiper :options="swiperOption">
+              <swiper-slide
+                v-for="mark in bookmarks"
+                :key="mark.id">
+                <div class="flex p-5 items-start justify-center flex-row flex-wrap">
+                  <!-- shop layout -->
+                  <div class="mx-6 my-10 card">
+                    <!-- shop image -->
+                    <div class="card-header">
+                      <img :src="mark.photo_1" width="300" height="300" class="card-image">
+                    </div>
+                    <!-- shop description and button(favorite and mark) -->
+                    <section class="card-body">
+                      <div class="shop-description">
+                        <!-- shop name -->
+                        <div class="place-name flex justify-center items-center p-1">
+                          <p class="text-center text-navyblue kaisei-medium">{{mark.name }}</p>
+                        </div>
+                      </div>
+                      <ul class="card-information">
+                        <li class="text-navyblue kaisei-medium">
+                          {{ mark.add_short }}
+                        </li>
+                        <li class="text-navyblue kaisei-medium">
+                          <i class="fas fa-star icon-color-yellow"></i> {{ mark.all_rating }}
+                        </li>
+                        <li class="text-navyblue kaisei-medium">
+                          <div class="flex justify-start items-center">
+                            <div class="favorited_users">
+                              <i class="fas fa-heart liked"></i> {{ mark.favorite_count }}
+                              <i class="fas fa-users icon-color-blue"></i>
+                            </div>
+                            <div class="bookmarked_users mx-5">
+                              <i class="fas fa-bookmark marked"></i> {{ mark.bookmark_count }}
+                              <i class="fas fa-users icon-color-blue"></i>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="text-navyblue kaisei-medium">
+                          <a :href="ranking.website" target="_blank">
+                            website <i class="fas fa-external-link-alt icon-color-blue"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </section>
+                  </div>
+                </div>
+              </swiper-slide>
+            </swiper>
+          </div>
         </div>
       </div>
       <!-- Place Serch Results (検索結果)-->
@@ -219,14 +311,6 @@
         class="beige-bg h-auto">
         <p class="small-title-beige text-center p-10">Places</p>
         <div class="animate__animated invisible">
-          <div class="grid grid-rows-2 h-auto">
-            <div class="row-span-1">
-              <p class="text-nvybrown text-2xl text-center mt-10 mb-12 kaisei-medium">
-                のお店です
-              </p>
-            </div>
-            <div class="row-span-1 bg-none"></div>
-          </div>
           <div
             id="shop"
             class="flex
@@ -294,27 +378,26 @@
           </div>
         </div>
       </div>
-      <!-- CopyRight -->
-      <div class="navypink-bg h-auto">
+      <!-- footer -->
+      <footer class="navypink-bg h-auto">
         <p class="text-beige text-center p-5 lora">
           <i class="far fa-copyright copyright"></i>
           2022 Wakana T
         </p>
-      </div>
+      </footer>
     </div>
+    <!-- top page icon -->
     <a href="#" class="page-top" @click.prevent="pageTop">Top</a>
   </div>
 </template>
 
 <script>
-import GoogleMapsApiLoader from 'google-maps-api-loader';
-import firebase from 'firebase/app';
 import $ from 'jquery';
-import RinfoModal from '@/components/RinfoModal.vue';
-import { getRanking } from '@/services/firebaseService';
+import firebase from 'firebase/app';
+import GoogleMapsApiLoader from 'google-maps-api-loader';
+import { getRankingFavorited, getRankingMarked } from '@/services/firebaseService';
 
 export default {
-  components: { RinfoModal },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.createRanking(); // 初期化処理
@@ -323,14 +406,17 @@ export default {
   },
   data() {
     return {
+      bookmarks: [],
+      currentUID: null,
+      favorites: [],
       google: null,
       google_shop: null,
+      isActive: true,
       lat: '',
       lng: '',
       radius: '',
       type: '',
       places: [],
-      rankings: [],
       ranking: true,
       swiperOption: {
         speed: 1000,
@@ -342,11 +428,8 @@ export default {
           disableOnInteraction: false,
         },
       },
-      infomodal: false,
-      isActive: true,
       userLikedPlaceId: [],
       userBookmarkPlaceId: [],
-      currentUID: null,
       placeResults: false,
     };
   },
@@ -580,16 +663,7 @@ export default {
             all_rating: result.rating,
             favorite_count: 1,
             bookmark_count: 0,
-            review_1: result.reviews[0].text,
-            review_2: result.reviews[1].text,
-            review_3: result.reviews[2].text,
-            review_4: result.reviews[3].text,
-            review_5: result.reviews[4].text,
             photo_1: result.photos[0].getUrl({ width: 300, height: 400 }),
-            photo_2: result.photos[1].getUrl({ width: 300, height: 400 }),
-            photo_3: result.photos[2].getUrl({ width: 300, height: 400 }),
-            photo_4: result.photos[3].getUrl({ width: 300, height: 400 }),
-            photo_5: result.photos[4].getUrl({ width: 300, height: 400 }),
           });
         }
       };
@@ -779,25 +853,65 @@ export default {
     },
     async createRanking() {
       // Ranking上位のお店の情報を取得
-      this.rankings = await getRanking().catch((err) => {
+      this.favorites = await getRankingFavorited().catch((err) => {
         console.log('データを取得できませんでした', err);
       });
-    },
-    openShopInfo(ranking) {
-      this.infomodal = true;
-      this.shopInfos = ranking;
-    },
-    closeShopInfo() {
-      this.infomodal = false;
+      this.bookmarks = await getRankingMarked().catch((err) => {
+        console.log('データを取得できませんでした', err);
+      });
     },
   },
 };
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Antic+Didone&family=Elsie&family=Italiana&family=Kaisei+Decol:wght@400;500;700&family=Lobster&family=Lora:wght@400;700&display=swap');
+/* background */
+.navypink-bg {
+  background-color: #a76e63;
+  background: linear-gradient(to right, #ab766b, #9f6054, #945447);
+}
+.beige-bg {
+  background-color: #f2ebe5;
+  background: linear-gradient(to right, #f2ebe5, #eee5de, #eae2da);
+}
+
+/* title */
 .sweets {
+  text-transform: Uppercase;
+  font-size: 200px;
+  color: #a76e63;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #966258,
+               0 2px #8d5c53,
+               0 3px #885950,
+               0 4px #80544b,
+               0 5px #7b5148,
+               0 6px #744c44,
+               0 7px #6f4841,
+               0 8px #68433c,
+               0 9px #5f3e37,
+               0 10px 8px #523530;
+}
+.journal {
+  text-transform: Uppercase;
+  font-size: 200px;
+  color: #a76e63;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #966258,
+               0 2px #8d5c53,
+               0 3px #885950,
+               0 4px #80544b,
+               0 5px #7b5148,
+               0 6px #744c44,
+               0 7px #6f4841,
+               0 8px #68433c,
+               0 9px #5f3e37,
+               0 10px 8px #523530;
+}
+.swt {
   font-size: 160px;
   font-family: 'Lora', serif;
   color: #4f5666;
@@ -813,7 +927,7 @@ export default {
     6px 6px #333843,
     7px 7px 4px #2f343e;
 }
-.journal {
+.jnl {
   font-size: 160px;
   font-family: 'Lora', serif;
   color: #4f5666;
@@ -829,48 +943,6 @@ export default {
     5px 5px #3e4451,
     6px 6px #333843,
     7px 7px 4px #2f343e;
-}
-.swt {
-  text-transform: Uppercase;
-  font-size: 200px;
-  color: #a76e63;
-  font-family: 'Lora', serif;
-  font-weight: bold;
-  text-shadow: 0 1px #966258,
-               0 2px #8d5c53,
-               0 3px #885950,
-               0 4px #80544b,
-               0 5px #7b5148,
-               0 6px #744c44,
-               0 7px #6f4841,
-               0 8px #68433c,
-               0 9px #5f3e37,
-               0 10px 8px #523530;
-}
-.jnl {
-  text-transform: Uppercase;
-  font-size: 200px;
-  color: #a76e63;
-  font-family: 'Lora', serif;
-  font-weight: bold;
-  text-shadow: 0 1px #966258,
-               0 2px #8d5c53,
-               0 3px #885950,
-               0 4px #80544b,
-               0 5px #7b5148,
-               0 6px #744c44,
-               0 7px #6f4841,
-               0 8px #68433c,
-               0 9px #5f3e37,
-               0 10px 8px #523530;
-}
-.navypink-bg {
-  background-color: #a76e63;
-  background: linear-gradient(to right, #ab766b, #9f6054, #945447);
-}
-.beige-bg {
-  background-color: #f2ebe5;
-  background: linear-gradient(to right, #f2ebe5, #eee5de, #eae2da);
 }
 .small-title-beige {
   font-size: 100px;
@@ -904,6 +976,108 @@ export default {
                0 9px #5f3e37,
                0 10px 8px #523530;
 }
+.ranking-title {
+  font-size: 50px;
+  color: #a76e63;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #dfd8d3,
+               0 2px #c2bcb7,
+               0 3px #b1aba6,
+               0 4px #a19b96,
+               0 5px #99938e,
+               0 6px 5px #88837e;
+}
+
+@media screen and (max-width:640px) {
+  .sweets {
+    font-size: 100px;
+  }
+  .journal {
+    font-size: 100px;
+  }
+  .small-title-beige {
+    font-size: 50px;
+  }
+  .small-title-navypink {
+    font-size: 50px;
+  }
+  .message-about {
+    font-size: 40px;
+  }
+  .ranking-title {
+    font-size: 30px;
+  }
+}
+@media screen and (min-width:640px) and ( max-width:768px) {
+  .sweets {
+    font-size: 150px;
+  }
+  .journal {
+    font-size: 150px;
+  }
+  .small-title-beige {
+    font-size: 70px;
+  }
+  .small-title-navypink {
+    font-size: 70px;
+  }
+  .message-about {
+    font-size: 20px;
+  }
+  .ranking-title {
+    font-size: 30px;
+  }
+}
+@media screen and (min-width:768px) and ( max-width:1024px) {
+  .sweets {
+    font-size: 200px;
+  }
+  .journal {
+    font-size: 200px;
+  }
+  .small-title-beige {
+    font-size: 100px;
+  }
+  .small-title-navypink {
+    font-size: 100px;
+  }
+  .message-about {
+    font-size: 30px;
+  }
+  .ranking-title {
+    font-size: 50px;
+  }
+}
+@media screen and (min-width:1024px) {
+  .sweets {
+    font-size: 200px;
+  }
+  .journal {
+    font-size: 200px;
+  }
+  .small-title-beige {
+    font-size: 100px;
+  }
+  .small-title-navypink {
+    font-size: 100px;
+  }
+  .message-about {
+    font-size: 40px;
+  }
+  .ranking-title {
+    font-size: 50px;
+  }
+}
+
+.top-message {
+  top: 50%;
+  margin: auto;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+/* text font */
 .lora {
   font-family: 'Lora', serif;
 }
@@ -918,9 +1092,275 @@ export default {
   font-family: 'Kaisei Decol', serif;
   font-weight: medium;
 }
+
+/* serch form */
+select {
+  background-color: transparent;
+  line-height: 2.0em;
+}
+option {
+  background-color: #a76e63;
+}
+.select {
+  font-family: 'Lora', serif;
+  font-family: 'Kaisei Decol', serif;
+  font-weight: medium;
+  position: relative;
+}
+.select-text {
+  position: relative;
+  font-family: inherit;
+  padding: 10px 10px 10px 0;
+  color: #f2ebe5;
+  font-size: 35px;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0, 0.12);
+  text-shadow: 0 1px #966258,
+               0 2px #8d5c53,
+               0 3px #885950,
+               0 4px #80544b,
+               0 5px #7b5148,
+               0 6px #744c44,
+               0 7px #6f4841,
+               0 8px #68433c,
+               0 9px #5f3e37,
+               0 10px 8px #523530;
+}
+.select-text:focus {
+  outline: none;
+  border-bottom: 3px solid rgba(0,0,0,0);
+}
+.select .select-text {
+  appearance: none;
+  -webkit-appearance:none;
+  text-align: center;
+}
+.select:after {
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  /* Styling the down arrow */
+  width: 0;
+  height: 0;
+  padding: 0;
+  text-align: center;
+  content: '▼';
+  color: #f2ebe5;
+  text-shadow: 0 1px #966258,
+               0 2px #8d5c53,
+               0 3px #885950,
+               0 4px #80544b,
+               0 5px #7b5148,
+               0 6px #744c44,
+               0 7px #6f4841,
+               0 8px #68433c,
+               0 9px #5f3e37,
+               0 10px 8px #523530;
+  pointer-events: none;
+  transition: 0.3s ease all;
+}
+.select:hover:after {
+  transform: translate(0px, 10px);
+  text-shadow: none;
+}
+.select-label {
+  color: rgba(0,0,0, 0.26);
+  font-size: 10px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 0;
+  top: 10px;
+  transition: 0.2s ease all;
+}
+.select-text:focus ~ .select-label, .select-text:valid ~ .select-label {
+  color: #f2ebe5;
+  top: -100px;
+  transition: 0.2s ease all;
+  font-size: 50px;
+  text-align: center;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #966258,
+               0 2px #8d5c53,
+               0 3px #885950,
+               0 4px #80544b,
+               0 5px #7b5148,
+               0 6px #744c44,
+               0 7px #6f4841,
+               0 8px #68433c,
+               0 9px #5f3e37,
+               0 10px 8px #523530;
+}
+.select-bar {
+  position: relative;
+  display: block;
+  width: 200px;
+}
+.select-bar:before, .select-bar:after {
+  content: '';
+  height: 2px;
+  width: 0;
+  bottom: 0px;
+  position: absolute;
+  background: #f2ebe5;
+  transition: 0.2s ease all;
+}
+.select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
+  width: 287px;
+}
+.select-highlight {
+  position: absolute;
+  height: 60%;
+  width: 100%;
+  top: 25%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* serch button (検索ボタン) */
+.search-button {
+  display: inline-block;
+  position: relative;
+  font-size: 50px;
+  color: #f2ebe5;
+  text-shadow: 0 1px #966258,
+              0 2px #8d5c53,
+              0 3px #885950,
+              0 4px #80544b,
+              0 5px #7b5148,
+              0 6px #744c44,
+              0 7px #6f4841,
+              0 8px #68433c,
+              0 9px #5f3e37,
+              0 10px 8px #523530;
+  transition: all .5s ease;
+}
+.search-button::before {
+  position: absolute;
+  top: 45px;
+  left: 68px;
+  transform: rotate(-45deg);
+  width: 0.10em;
+  height: 0.5em;
+  content: "i";
+  color: #f2ebe5;
+  font-size: 30px;
+  text-shadow: -1px 1px #966258,
+               -1px 2px #8d5c53,
+               -2px 3px #885950,
+               -3px 4px #80544b,
+               -4px 5px #7b5148,
+               -5px 6px #744c44,
+               -6px 7px #6f4841,
+               -7px 8px #68433c,
+               -8px 9px #5f3e37,
+               -9px 10px 8px #523530;
+  transition: all .5s ease;
+}
+.search-button:hover {
+  transform: translate(0px, 10px);
+  text-shadow: none;
+}
+.search-button:hover::before {
+  transform: translate(0px, 10px);
+  transform: rotate(-45deg);
+  text-shadow: none;
+}
+
+/* place card layout */
+#photos li {
+  display: inline-box;
+  float: left;
+}
+.place-name {
+  width: 300px;
+  height: 60px;
+}
+.place-image {
+  -moz-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
+  -webkit-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
+  -ms-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
+  box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
+}
+.button-area-gap {
+  width: 300px;
+  height: 5px;
+}
+.button-area {
+  width: 300px;
+  height: 40px;
+}
+.add-size {
+  font-size: 5px;
+}
+.button-size {
+  font-size: 1.5em;
+}
+
+/* favorite and bookmark button */
+button:disabled {
+  opacity: .4;
+}
+.liked {
+  color: #ff8882;
+}
+.bookmarked {
+  color: #efdc71;
+}
+.marked {
+  color: #efdc71;
+}
+
+/* ranking layout */
+#slider {
+  overflow: hidden;
+  width: 310px;
+  border: 1px solid #000;
+  margin: 10px auto;
+  padding: 0px;
+}
+#rankings {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* page-top button */
+.page-top {
+  position: fixed;
+  right: -10px;
+  bottom: 20px;
+  height: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  transform: rotate(90deg);
+  font-size: 90%;
+  line-height: 4.5rem;
+  color: #8d8985;
+  padding: 0 0 0 35px;
+  border-bottom: solid 1px;
+}
+.page-top::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 49px;
+  left: 0px;
+  width: 15px;
+  border-top: solid 1px;
+  transform: rotate(-35deg);
+  transform-origin: left top;
+}
+
+/* copyright */
 .copyright {
   color: #f2ebe5;
 }
+
+/* chocolate */
 .chocolate {
   box-sizing: border-box;
   position: relative;
@@ -1015,38 +1455,82 @@ export default {
   color: rgba(255,255,255,0.3);
   box-shadow: -1px -1px 1.4px,-1px -1px 1.4px inset;
 }
-.page-top {
-  position: fixed;
-  right: -10px;
-  bottom: 20px;
+
+/* card layout */
+.card {
+  padding: 20px;
+  width: 300px;
+  background-color: #FFF;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+}
+.card:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+.card:hover .card-header {
   height: 50px;
-  text-decoration: none;
-  font-weight: bold;
-  transform: rotate(90deg);
-  font-size: 90%;
-  line-height: 4.5rem;
-  color: #3d4350;
-  padding: 0 0 0 35px;
-  border-bottom: solid 1px;
 }
-.page-top::before {
-  content: "";
-  display: block;
+.card:hover .card-header .card-image {
+  transform: translateX(-50%) translateY(-50%) scale(1.5);
+}
+.card:hover .card-body {
+  height: 200px;
+}
+.card:hover .card-body .card-information li {
+  transform: translateX(0);
+  transition-timing-function: cubic-bezier(0, 1.5, 1, 1);
+  transition-duration: 0.5s;
+}
+.card:hover .card-body .card-information li:nth-child(1) {
+  transition-delay: 0.25s;
+}
+.card:hover .card-body .card-information li:nth-child(2) {
+  transition-delay: 0.5s;
+}
+.card:hover .card-body .card-information li:nth-child(3) {
+  transition-delay: 0.75s;
+}
+.card:hover .card-body .card-information li:nth-child(4) {
+  transition-delay: 1s;
+}
+.card:hover .card-body .card-information li:nth-child(5) {
+  transition-delay: 1.25s;
+}
+.card:hover .card-body .card-information li:nth-child(6) {
+  transition-delay: 1.5s;
+}
+.card .card-header {
+  position: relative;
+  background-color: #eb6c3f;
+  height: 200px;
+  margin: -20px -20px 20px -20px;
+  transition: height 0.5s;
+  overflow: hidden;
+}
+.card .card-header .card-image {
   position: absolute;
-  top: 49px;
-  left: 0px;
-  width: 15px;
-  border-top: solid 1px;
-  transform: rotate(-35deg);
-  transform-origin: left top;
-}
-.place-name {
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  display: block;
   width: 300px;
-  height: 60px;
+  height: auto;
+  transition: transform 0.5s;
 }
-.button-area-gap {
-  width: 300px;
-  height: 5px;
+.card .card-body {
+  height: 50px;
+  transition: height 0.5s;
+  overflow: hidden;
+}
+.card .card-body .card-information {
+  margin-top: 10px;
+  color: #424242;
+}
+.card .card-body .card-information li {
+  margin-top: 5px;
+  transition-duration: 0;
+  transition-delay: 0.5s;
+  transform: translateX(-100%);
 }
 .place-image {
   -moz-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
@@ -1054,234 +1538,8 @@ export default {
   -ms-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
   box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
 }
-.button-area {
-  width: 300px;
-  height: 40px;
-}
-.add-size {
-  font-size: 5px;
-}
-.button-size {
-  font-size: 1.5em;
-}
-/*.search-form {
-  width: 350px;
-  padding: 7px;
-  margin: auto;
-  background-color: #D9ADAD;
-  border-radius: 20px;
-  -webkit-box-shadow: 0 5px 6px 1px #888;
-  -moz-box-shadow:0 5px 6px 1px #888;
-  box-shadow: 0 5px 6px 1px #888;
-}*/
-/*.select {
-  background-color: #D9ADAD;
-}*/
-#slider {
-  overflow: hidden;
-  width: 310px;
-  border: 1px solid #000;
-  margin: 10px auto;
-  padding: 0px;
-}
-#rankings {
-  list-style-type: none;
-  margin: 0px;
-  padding: 0px;
-}
-#photos li {
-  display: inline-box;
-  float: left;
-}
-button:disabled {
-  opacity: .4;
-}
-.liked {
-  color: #ff8882;
-}
-.bookmarked {
-  color: #efdc71;
-}
-/* serch form (検索フォーム) */
-.select {
-  font-family: 'Lora', serif;
-  font-family: 'Kaisei Decol', serif;
-  font-weight: medium;
-  position: relative;
-}
-.select-text {
-  position: relative;
-  font-family: inherit;
-  padding: 10px 10px 10px 0;
-  color: #f2ebe5;
-  font-size: 35px;
-  border-radius: 0;
-  border: none;
-  border-bottom: 1px solid rgba(0,0,0, 0.12);
-  text-shadow: 0 1px #966258,
-               0 2px #8d5c53,
-               0 3px #885950,
-               0 4px #80544b,
-               0 5px #7b5148,
-               0 6px #744c44,
-               0 7px #6f4841,
-               0 8px #68433c,
-               0 9px #5f3e37,
-               0 10px 8px #523530;
-}
-/* Remove focus */
-.select-text:focus {
-  outline: none;
-  border-bottom: 3px solid rgba(0,0,0,0);
-}
-/* Use custom arrow */
-.select .select-text {
-  appearance: none;
-  -webkit-appearance:none;
-  text-align: center;
-}
-.select:after {
-  position: absolute;
-  top: 30px;
-  right: 10px;
-  /* Styling the down arrow */
-  width: 0;
-  height: 0;
-  padding: 0;
-  text-align: center;
-  content: '▼';
-  color: #f2ebe5;
-  text-shadow: 0 1px #966258,
-               0 2px #8d5c53,
-               0 3px #885950,
-               0 4px #80544b,
-               0 5px #7b5148,
-               0 6px #744c44,
-               0 7px #6f4841,
-               0 8px #68433c,
-               0 9px #5f3e37,
-               0 10px 8px #523530;
-  pointer-events: none;
-  transition: 0.3s ease all;
-}
-.select:hover:after {
-  transform: translate(0px, 10px);
-  text-shadow: none;
-}
-select {
-  background-color: transparent;
-  line-height: 2.0em;
-}
-option {
-  background-color: #a76e63;
-}
-/* LABEL ======================================= */
-.select-label {
-  color: rgba(0,0,0, 0.26);
-  font-size: 10px;
-  font-weight: normal;
-  position: absolute;
-  pointer-events: none;
-  left: 0;
-  top: 10px;
-  transition: 0.2s ease all;
-}
-/* active state */
-.select-text:focus ~ .select-label, .select-text:valid ~ .select-label {
-  color: #f2ebe5;
-  top: -100px;
-  transition: 0.2s ease all;
-  font-size: 50px;
-  text-align: center;
-  font-family: 'Lora', serif;
-  font-weight: bold;
-  text-shadow: 0 1px #966258,
-               0 2px #8d5c53,
-               0 3px #885950,
-               0 4px #80544b,
-               0 5px #7b5148,
-               0 6px #744c44,
-               0 7px #6f4841,
-               0 8px #68433c,
-               0 9px #5f3e37,
-               0 10px 8px #523530;
-}
-/* BOTTOM BARS ================================= */
-.select-bar {
-  position: relative;
-  display: block;
-  width: 200px;
-}
-.select-bar:before, .select-bar:after {
-  content: '';
-  height: 2px;
-  width: 0;
-  bottom: 0px;
-  position: absolute;
-  background: #f2ebe5;
-  transition: 0.2s ease all;
-}
-/* active state */
-.select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
-  width: 287px;
-}
-/* HIGHLIGHTER ================================== */
-.select-highlight {
-  position: absolute;
-  height: 60%;
-  width: 100%;
-  top: 25%;
-  left: 0;
-  pointer-events: none;
-  opacity: 0.5;
-}
-/* serch button (検索ボタン) */
-.search-button {
-  display: inline-block;
-  position: relative;
-  font-size: 50px;
-  color: #f2ebe5;
-  text-shadow: 0 1px #966258,
-              0 2px #8d5c53,
-              0 3px #885950,
-              0 4px #80544b,
-              0 5px #7b5148,
-              0 6px #744c44,
-              0 7px #6f4841,
-              0 8px #68433c,
-              0 9px #5f3e37,
-              0 10px 8px #523530;
-  transition: all .5s ease;
-}
-.search-button::before {
-  position: absolute;
-  top: 45px;
-  left: 68px;
-  transform: rotate(-45deg);
-  width: 0.10em;
-  height: 0.5em;
-  content: "i";
-  color: #f2ebe5;
-  font-size: 30px;
-  text-shadow: -1px 1px #966258,
-               -1px 2px #8d5c53,
-               -2px 3px #885950,
-               -3px 4px #80544b,
-               -4px 5px #7b5148,
-               -5px 6px #744c44,
-               -6px 7px #6f4841,
-               -7px 8px #68433c,
-               -8px 9px #5f3e37,
-               -9px 10px 8px #523530;
-  transition: all .5s ease;
-}
-.search-button:hover {
-  transform: translate(0px, 10px);
-  text-shadow: none;
-}
-.search-button:hover::before {
-  transform: translate(0px, 10px);
-  transform: rotate(-45deg);
-  text-shadow: none;
+.place-name {
+  width: 260px;
+  height: 60px;
 }
 </style>

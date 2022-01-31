@@ -5,14 +5,14 @@ module.exports = {
     extend: {
       colors: {
         'beige': '#f2ebe5',
-        'lightblue': '#dddae3',
+        'lightblue': '#717d7f',
         'lightpink': '#c6ada6',
         'navyblue': '#4f5666',
         'navypink': '#a76e63',
         'navybrown': '#927d6e',
         'navygray': '#6d6d6d',
+        'lightgray': '#8d8985',
         'lightgreen': '#969687',
-        'ltblue': '#d2d0d8',
         'nvybrown': '#754035',
       },
     },

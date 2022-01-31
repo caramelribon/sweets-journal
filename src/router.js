@@ -22,6 +22,7 @@ const routes = [
     path: '/activity',
     name: 'Activity',
     component: UserActivity,
+    props: true,
   },
 ];
 

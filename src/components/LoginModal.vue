@@ -75,6 +75,7 @@ export default {
       userMail: '',
       userPass: '',
       userName: '',
+      toUsername: null,
     };
   },
   methods: {
@@ -112,12 +113,18 @@ export default {
                 username: this.userName,
                 created_at: firebase.firestore.FieldValue.serverTimestamp(),
               });
+              this.toUsername = this.userName;
+              this.sendUsername();
             });
         })
         .catch((error) => {
           // 登録に失敗したときの処理
           console.error('登録エラー', error);
         });
+    },
+    sendUsername() {
+      this.$emit('inputUsername', this.toUsername);
+      console.log(this.toUsername);
     },
   },
 };
@@ -330,10 +337,10 @@ input {
   align-items: center;
   left: 50%;
   top: 50%;
+  position: relative;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
-  margin: 0 auto;
 }
 .panel .login {
   width: 300px;
@@ -417,7 +424,6 @@ input {
   margin-top: 0;
   color: #3d424f; /*Loginの文字色*/
 }
-
 .login .group {
   position: relative;
   width: 100%;

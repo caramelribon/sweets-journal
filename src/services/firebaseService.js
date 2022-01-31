@@ -1,11 +1,29 @@
 import firebase from 'firebase/app';
 
 // eslint-disable-next-line
-export const getRanking = async () => {
+export const getRankingFavorited = async () => {
   const rankingData = [];
   await firebase.firestore()
     .collection('places')
     .orderBy('favorite_count', 'desc')
+    .limit(3)
+    .get()
+    .then((snapShot) => {
+      snapShot.forEach((doc) => {
+        if (!doc.data()) {
+          return;
+        }
+        rankingData.push(doc.data());
+      });
+    });
+  return rankingData;
+};
+
+export const getRankingMarked = async () => {
+  const rankingData = [];
+  await firebase.firestore()
+    .collection('places')
+    .orderBy('bookmark_count', 'desc')
     .limit(3)
     .get()
     .then((snapShot) => {
@@ -85,20 +103,16 @@ const getActivityDetailData = async (doc) => {
 
   return {
     action: useraction,
-    createat: createdate,
-    username: userinfo.data().username,
-    placename: placeinfo.data().name,
-    addS: placeinfo.data().add_short,
-    photo1: placeinfo.data().photo_1,
-    photo2: placeinfo.data().photo_2,
-    photo3: placeinfo.data().photo_3,
-    photo4: placeinfo.data().photo_4,
-    photo5: placeinfo.data().photo_5,
-    website: placeinfo.data().website,
-    rating: placeinfo.data().all_rating,
-    review1: placeinfo.data().review_1,
-    review2: placeinfo.data().review_2,
-    review3: placeinfo.data().review_3,
+    created_at: createdate,
+    userName: userinfo.data().username,
+    placeId: placeinfo.data().id,
+    placeName: placeinfo.data().name,
+    placeAdd: placeinfo.data().add_short,
+    placePhoto: placeinfo.data().photo_1,
+    placeWebsite: placeinfo.data().website,
+    placeRating: placeinfo.data().all_rating,
+    placeFavCount: placeinfo.data().favorite_count,
+    placeBmCount: placeinfo.data().bookmark_count,
   };
 };
 
