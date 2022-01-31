@@ -58,13 +58,9 @@
                 ・全会員の保存したお店をリアルタイムでみることができる<br>
                 といった機能がつきます!!<br>
                 会員登録することで、他の会員がどんなお店に注目しているのかもわかりますよ♪<br>
-                ぜひ、皆さんの旅先でお店を探したり、素敵なお店を保存したりしてみてください
+                ぜひ、皆さんの旅先でお店を探したり、素敵なお店を保存したりしてみてください<br>
+                会員登録は、右上の<i class="far fa-user user-button-color"></i>からできます
               </p>
-              <button
-                class="text-nvybrown text-2xl mb-10"
-                @click.prevent="Try()">
-                Sign up
-              </button>
             </div>
           </div>
         </div>
@@ -88,16 +84,28 @@
             <!-- search area (検索エリア) -->
             <div class="search-area">
               <div class="search-form">
-                <form>
-                  <div class="md:flex md:justify-center md:items-center">
+                <form class="pt-20">
+                  <div class="flex justify-center items-center">
                     <div class="area
                                 flex justify-center items-center px-10">
-                      <div class="relative select w-72">
+                      <div class="relative
+                                  select
+                                  sm:w-40
+                                  md:w-56
+                                  lg:w-64
+                                  xl:w-72
+                                  2xl:w-72
+                                  w-40">
                         <select
                           v-model="radius"
                           class="select-text
                                  block appearance-none
-                                 w-72
+                                 sm:w-40
+                                 md:w-56
+                                 lg:w-64
+                                 xl:w-72
+                                 2xl:w-72
+                                 w-40
                                  leading-tight
                                  px-4 py-3
                                  rounded-l
@@ -121,17 +129,35 @@
                           </option>
                         </select>
                         <span class="select-highlight"></span>
-                        <span class="select-bar w-72"></span>
+                        <span class="select-bar
+                                     sm:w-40
+                                     md:w-56
+                                     lg:w-64
+                                     xl:w-72
+                                     2xl:w-72
+                                     w-40"></span>
                         <label class="select-label">Area</label>
                       </div>
                     </div>
-                    <div class="flex justify-center items-center pt-10">
-                      <div class="relative select w-72">
+                    <div class="flex justify-center items-center px-10">
+                      <div class="relative
+                                  select
+                                  sm:w-40
+                                  md:w-56
+                                  lg:w-64
+                                  xl:w-72
+                                  2xl:w-72
+                                  w-40">
                         <select
                           v-model="type"
                           class="select-text
                                  block appearance-none
-                                 w-72
+                                 sm:w-40
+                                 md:w-56
+                                 lg:w-64
+                                 xl:w-72
+                                 2xl:w-72
+                                 w-40
                                  leading-tight
                                  px-4 py-3
                                  focus:outline-none">
@@ -150,7 +176,13 @@
                           </option>
                         </select>
                         <span class="select-highlight"></span>
-                        <span class="select-bar w-72"></span>
+                        <span class="select-bar
+                                     sm:w-40
+                                     md:w-56
+                                     lg:w-64
+                                     xl:w-72
+                                     2xl:w-72
+                                     w-40"></span>
                         <label class="select-label">Category</label>
                       </div>
                     </div>
@@ -414,6 +446,7 @@ export default {
       isActive: true,
       lat: '',
       lng: '',
+      loginModal: false,
       radius: '',
       type: '',
       places: [],
@@ -1008,6 +1041,9 @@ export default {
   .ranking-title {
     font-size: 30px;
   }
+  .select-text {
+    font-size: 20px;
+  }
 }
 @media screen and (min-width:640px) and ( max-width:768px) {
   .sweets {
@@ -1027,6 +1063,9 @@ export default {
   }
   .ranking-title {
     font-size: 30px;
+  }
+  .select-text {
+    font-size: 20px;
   }
 }
 @media screen and (min-width:768px) and ( max-width:1024px) {
@@ -1048,6 +1087,9 @@ export default {
   .ranking-title {
     font-size: 50px;
   }
+  .select-text {
+    font-size: 30px;
+  }
 }
 @media screen and (min-width:1024px) {
   .sweets {
@@ -1067,6 +1109,9 @@ export default {
   }
   .ranking-title {
     font-size: 50px;
+  }
+  .select-text {
+    font-size: 30px;
   }
 }
 
@@ -1166,7 +1211,7 @@ option {
 }
 .select-label {
   color: rgba(0,0,0, 0.26);
-  font-size: 10px;
+  font-size: 50px;
   font-weight: normal;
   position: absolute;
   pointer-events: none;
@@ -1196,7 +1241,7 @@ option {
 .select-bar {
   position: relative;
   display: block;
-  width: 200px;
+  width: 150px;
 }
 .select-bar:before, .select-bar:after {
   content: '';
@@ -1208,7 +1253,7 @@ option {
   transition: 0.2s ease all;
 }
 .select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
-  width: 287px;
+  width: 193%;
 }
 .select-highlight {
   position: absolute;
