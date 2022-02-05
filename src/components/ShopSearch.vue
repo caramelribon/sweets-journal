@@ -86,6 +86,53 @@
               <div class="search-form">
                 <form class="pt-20">
                   <div class="flex justify-center items-center">
+                    <div class="flex justify-center items-center px-10">
+                      <div class="relative
+                                  select
+                                  sm:w-40
+                                  md:w-56
+                                  lg:w-64
+                                  xl:w-72
+                                  2xl:w-72
+                                  w-40">
+                        <select
+                          v-model="type"
+                          class="select-text
+                                 block appearance-none
+                                 sm:w-40
+                                 md:w-56
+                                 lg:w-64
+                                 xl:w-72
+                                 2xl:w-72
+                                 w-40
+                                 leading-tight
+                                 px-4 py-3
+                                 focus:outline-none">
+                          <option
+                            value=""
+                            disabled selected
+                            class="kaisei-medium lora">
+                          </option>
+                          <option
+                            value="restaurant"
+                            class="kaisei-medium lora">Restaurant
+                          </option>
+                          <option
+                            value="cafe"
+                            class="kaisei-medium lora">Cafe
+                          </option>
+                        </select>
+                        <span class="select-highlight"></span>
+                        <span class="select-bar
+                                     sm:w-40
+                                     md:w-56
+                                     lg:w-64
+                                     xl:w-72
+                                     2xl:w-72
+                                     w-40"></span>
+                        <label class="select-label">Category</label>
+                      </div>
+                    </div>
                     <div class="area
                                 flex justify-center items-center px-10">
                       <div class="relative
@@ -137,53 +184,6 @@
                                      2xl:w-72
                                      w-40"></span>
                         <label class="select-label">Area</label>
-                      </div>
-                    </div>
-                    <div class="flex justify-center items-center px-10">
-                      <div class="relative
-                                  select
-                                  sm:w-40
-                                  md:w-56
-                                  lg:w-64
-                                  xl:w-72
-                                  2xl:w-72
-                                  w-40">
-                        <select
-                          v-model="type"
-                          class="select-text
-                                 block appearance-none
-                                 sm:w-40
-                                 md:w-56
-                                 lg:w-64
-                                 xl:w-72
-                                 2xl:w-72
-                                 w-40
-                                 leading-tight
-                                 px-4 py-3
-                                 focus:outline-none">
-                          <option
-                            value=""
-                            disabled selected
-                            class="kaisei-medium lora">
-                          </option>
-                          <option
-                            value="restaurant"
-                            class="kaisei-medium lora">Restaurant
-                          </option>
-                          <option
-                            value="cafe"
-                            class="kaisei-medium lora">Cafe
-                          </option>
-                        </select>
-                        <span class="select-highlight"></span>
-                        <span class="select-bar
-                                     sm:w-40
-                                     md:w-56
-                                     lg:w-64
-                                     xl:w-72
-                                     2xl:w-72
-                                     w-40"></span>
-                        <label class="select-label">Category</label>
                       </div>
                     </div>
                     <div class="flex justify-center items-center">
