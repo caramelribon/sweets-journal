@@ -1,7 +1,7 @@
 <template>
   <div class="bg-beige">
     <!-- title -->
-    <div class="h-auto navypink-bg relative w-full">
+    <div class="h-auto navypink-bg relative w-full title">
       <div class="flex justify-center items-center pt-20">
         <p class="sweets">Sweets</p>
       </div>
@@ -22,6 +22,7 @@
                animate__animated animate__fadeInUp">
         <p>あなたが気に入った・気になる「スイーツのお店」を伝えよう</p>
       </div>
+      <div class="scrolldown lora"><span>Scroll</span></div>
     </div>
     <div class="contents">
       <!-- About -->
@@ -419,7 +420,7 @@
       </footer>
     </div>
     <!-- top page icon -->
-    <a href="#" class="page-top" @click.prevent="pageTop">Top</a>
+    <a href="#" class="page-top lora" @click.prevent="pageTop">Top</a>
   </div>
 </template>
 
@@ -1122,6 +1123,73 @@ export default {
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
 }
+
+/* scroll down */
+/* スクロールダウン全体の場所 */
+.scrolldown{
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+}
+
+/*Scrollテキストの描写*/
+.scrolldown span{
+  position: absolute;
+  left:10px;
+  bottom:10px;
+  color: #eee;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  /*縦書き設定*/
+  -ms-writing-mode: tb-rl;
+  -webkit-writing-mode: vertical-rl;
+  writing-mode: vertical-rl;
+}
+
+/* 丸の描写 */
+.scrolldown:before {
+  content: "";
+  position: absolute;
+  bottom:0;
+  left:-4px;
+  /*丸の形状*/
+  width:10px;
+  height:10px;
+  border-radius: 50%;
+  background:#eee;
+  /*丸の動き1.6秒かけて透過し、永遠にループ*/
+  animation:
+    circlemove 1.6s ease-in-out infinite,
+    cirlemovehide 1.6s ease-out infinite;
+}
+
+/*下からの距離が変化して丸の全体が上から下に動く*/
+@keyframes circlemove{
+  0%{bottom:45px;}
+  100%{bottom:-5px;}
+ }
+
+/*上から下にかけて丸が透過→不透明→透過する*/
+@keyframes cirlemovehide{
+  0%{opacity:0}
+  50%{opacity:1;}
+  80%{opacity:0.9;}
+  100%{opacity:0;}
+ }
+
+/* 線の描写 */
+.scrolldown:after{
+  content:"";
+  /*描画位置*/
+  position: absolute;
+  bottom:0;
+  left:0;
+  /*線の形状*/
+  width:2px;
+  height: 50px;
+  background:#eee;
+}
+
 /* text font */
 .lora {
   font-family: 'Lora', serif;
