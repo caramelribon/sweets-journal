@@ -12,3 +12,17 @@ export default {
   components: { AppHeader },
 };
 </script>
+
+<style>
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #beb9b6;
+}
+::-webkit-scrollbar-thumb {
+  background: #9b9794;
+  border-radius: 10px;
+}
+</style>
