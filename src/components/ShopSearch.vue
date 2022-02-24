@@ -85,29 +85,30 @@
             <!-- search area (検索エリア) -->
             <div class="search-area">
               <div class="search-form">
-                <form class="pt-20">
+                <form class="pt-16">
                   <div class="flex justify-center items-center">
-                    <div class="flex justify-center items-center px-10">
+                    <div class="flex justify-center items-center">
                       <div class="relative
                                   select
                                   sm:w-40
                                   md:w-56
-                                  lg:w-64
+                                  lg:w-72
                                   xl:w-72
                                   2xl:w-72
                                   w-40">
                         <select
                           v-model="type"
-                          class="select-text
+                          class="sel-form
+                                 select-text
                                  block appearance-none
                                  sm:w-40
                                  md:w-56
-                                 lg:w-64
+                                 lg:w-72
                                  xl:w-72
                                  2xl:w-72
                                  w-40
                                  leading-tight
-                                 px-4 py-3
+                                 px-5 py-3
                                  focus:outline-none">
                           <option
                             value=""
@@ -127,7 +128,7 @@
                         <span class="select-bar
                                      sm:w-40
                                      md:w-56
-                                     lg:w-64
+                                     lg:w-72
                                      xl:w-72
                                      2xl:w-72
                                      w-40"></span>
@@ -140,7 +141,7 @@
                                   select
                                   sm:w-40
                                   md:w-56
-                                  lg:w-64
+                                  lg:w-72
                                   xl:w-72
                                   2xl:w-72
                                   w-40">
@@ -150,7 +151,7 @@
                                  block appearance-none
                                  sm:w-40
                                  md:w-56
-                                 lg:w-64
+                                 lg:w-72
                                  xl:w-72
                                  2xl:w-72
                                  w-40
@@ -160,7 +161,7 @@
                                  focus:outline-none">
                           <option
                             value=""
-                            disabled selected
+                            hidden disabled selected
                             class="kaisei-medium lora">
                           </option>
                           <option
@@ -180,7 +181,7 @@
                         <span class="select-bar
                                      sm:w-40
                                      md:w-56
-                                     lg:w-64
+                                     lg:w-72
                                      xl:w-72
                                      2xl:w-72
                                      w-40"></span>
@@ -192,7 +193,7 @@
                         type="submit"
                         @click.prevent="getCurrentLatLng"
                         class="search-button
-                               rounded pl-10
+                               rounded
                                bg-none
                                text-white
                                text-center
@@ -1045,6 +1046,16 @@ export default {
   .select-text {
     font-size: 20px;
   }
+  .select-text:focus ~ .select-label, .select-text:valid ~ .select-label {
+    font-size: 30px;
+    top: -70px;
+  }
+  .select:after {
+    top: 17px;
+  }
+  .select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
+    width: 106%;
+  }
 }
 @media screen and (min-width:640px) and ( max-width:768px) {
   .sweets {
@@ -1068,13 +1079,23 @@ export default {
   .select-text {
     font-size: 20px;
   }
+  .select-text:focus ~ .select-label, .select-text:valid ~ .select-label {
+    font-size: 40px;
+    top: -80px;
+  }
+  .select:after {
+    top: 17px;
+  }
+  .select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
+    width: 106%;
+  }
 }
 @media screen and (min-width:768px) and ( max-width:1024px) {
   .sweets {
-    font-size: 200px;
+    font-size: 150px;
   }
   .journal {
-    font-size: 200px;
+    font-size: 150px;
   }
   .small-title-beige {
     font-size: 100px;
@@ -1089,7 +1110,17 @@ export default {
     font-size: 50px;
   }
   .select-text {
-    font-size: 30px;
+    font-size: 25px;
+  }
+  .select-text:focus ~ .select-label, .select-text:valid ~ .select-label {
+    font-size: 50px;
+    top: -100px;
+  }
+  .select:after {
+    top: 30px;
+  }
+  .select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
+    width: 149%;
   }
 }
 @media screen and (min-width:1024px) {
@@ -1114,6 +1145,16 @@ export default {
   .select-text {
     font-size: 30px;
   }
+  .select-text:focus ~ .select-label, .select-text:valid ~ .select-label {
+    font-size: 50px;
+    top: -100px;
+  }
+  .select:after {
+    top: 30px;
+  }
+  .select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
+    width: 192%;
+  }
 }
 
 .top-message {
@@ -1131,7 +1172,6 @@ export default {
   bottom: 0;
   left: 50%;
 }
-
 /*Scrollテキストの描写*/
 .scrolldown span{
   position: absolute;
@@ -1145,7 +1185,6 @@ export default {
   -webkit-writing-mode: vertical-rl;
   writing-mode: vertical-rl;
 }
-
 /* 丸の描写 */
 .scrolldown:before {
   content: "";
@@ -1162,13 +1201,11 @@ export default {
     circlemove 1.6s ease-in-out infinite,
     cirlemovehide 1.6s ease-out infinite;
 }
-
 /*下からの距離が変化して丸の全体が上から下に動く*/
 @keyframes circlemove{
   0%{bottom:45px;}
   100%{bottom:-5px;}
  }
-
 /*上から下にかけて丸が透過→不透明→透過する*/
 @keyframes cirlemovehide{
   0%{opacity:0}
@@ -1176,7 +1213,6 @@ export default {
   80%{opacity:0.9;}
   100%{opacity:0;}
  }
-
 /* 線の描写 */
 .scrolldown:after{
   content:"";
@@ -1225,7 +1261,6 @@ option {
   font-family: inherit;
   padding: 10px 10px 10px 0;
   color: #f2ebe5;
-  font-size: 35px;
   border-radius: 0;
   border: none;
   border-bottom: 1px solid rgba(0,0,0, 0.12);
@@ -1251,7 +1286,6 @@ option {
 }
 .select:after {
   position: absolute;
-  top: 30px;
   right: 10px;
   /* Styling the down arrow */
   width: 0;
@@ -1289,9 +1323,7 @@ option {
 }
 .select-text:focus ~ .select-label, .select-text:valid ~ .select-label {
   color: #f2ebe5;
-  top: -100px;
   transition: 0.2s ease all;
-  font-size: 50px;
   text-align: center;
   font-family: 'Lora', serif;
   font-weight: bold;
@@ -1320,13 +1352,10 @@ option {
   background: #f2ebe5;
   transition: 0.2s ease all;
 }
-.select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
-  width: 193%;
-}
 .select-highlight {
   position: absolute;
   height: 60%;
-  width: 100%;
+  width: 50%;
   top: 25%;
   left: 0;
   pointer-events: none;
@@ -1354,7 +1383,7 @@ option {
 .search-button::before {
   position: absolute;
   top: 45px;
-  left: 68px;
+  left: 31px;
   transform: rotate(-45deg);
   width: 0.10em;
   height: 0.5em;
