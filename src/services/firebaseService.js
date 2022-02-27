@@ -119,15 +119,43 @@ export const postFavActivity = async (placeId, userId) => {
   const dbAct = firebase.firestore().collection('activities').doc();
   const dbActCount = firebase.firestore().collection('activityCount').doc('count');
   // activitiesに登録
-  dbAct.set({
+  await dbAct.set({
     user_id: userId,
     place_id: placeId,
     action: 'favorite',
     create_at: firebase.firestore.FieldValue.serverTimestamp(),
   });
   // activityCountを+1して更新
-  dbActCount.get().then((doc) => {
+  await dbActCount.get().then((doc) => {
     const actCount = doc.data().activityCount + 1;
+    dbActCount.update({
+      activityCount: actCount,
+    });
+  });
+};
+
+export const delFavActivity = async (placeId, userId) => {
+  const dbAct = firebase.firestore().collection('activities');
+  const dbActCount = firebase.firestore().collection('activityCount').doc('count');
+  // activityを削除
+  await dbAct
+    .where('user_id', '==', userId)
+    .where('place_id', '==', placeId)
+    .where('action', '==', 'favorite')
+    .get()
+    .then((snapShot) => {
+      snapShot.forEach(async (doc) => {
+        if (doc.exists) {
+          await doc.ref.delete();
+          console.log('Cancel activity of favorite!');
+        } else {
+          console.log('Not data!');
+        }
+      });
+    });
+  // activityCountを-1して更新
+  await dbActCount.get().then((doc) => {
+    const actCount = doc.data().activityCount - 1;
     dbActCount.update({
       activityCount: actCount,
     });
@@ -169,6 +197,7 @@ export const delFavorite = async (placeId, userId, userLikedPlaceId) => {
         }
       });
     });
+  await delFavActivity(placeId, userId);
   return userLikedPlaceIdRenew;
 };
 
@@ -176,15 +205,43 @@ export const postBmActivity = async (placeId, userId) => {
   const dbAct = firebase.firestore().collection('activities').doc();
   const dbActCount = firebase.firestore().collection('activityCount').doc('count');
   // activitiesに登録
-  dbAct.set({
+  await dbAct.set({
     user_id: userId,
     place_id: placeId,
     action: 'mark',
     create_at: firebase.firestore.FieldValue.serverTimestamp(),
   });
   // activityCountを+1して更新
-  dbActCount.get().then((doc) => {
+  await dbActCount.get().then((doc) => {
     const actCount = doc.data().activityCount + 1;
+    dbActCount.update({
+      activityCount: actCount,
+    });
+  });
+};
+
+export const delBmActivity = async (placeId, userId) => {
+  const dbAct = firebase.firestore().collection('activities');
+  const dbActCount = firebase.firestore().collection('activityCount').doc('count');
+  // activityを削除
+  await dbAct
+    .where('user_id', '==', userId)
+    .where('place_id', '==', placeId)
+    .where('action', '==', 'mark')
+    .get()
+    .then((snapShot) => {
+      snapShot.forEach(async (doc) => {
+        if (doc.exists) {
+          await doc.ref.delete();
+          console.log('Cancel activity of favorite!');
+        } else {
+          console.log('Not data!');
+        }
+      });
+    });
+  // activityCountを-1して更新
+  await dbActCount.get().then((doc) => {
+    const actCount = doc.data().activityCount - 1;
     dbActCount.update({
       activityCount: actCount,
     });
@@ -226,6 +283,7 @@ export const delBookmark = async (placeId, userId, userBookmarkPlaceId) => {
         }
       });
     });
+  await delBmActivity(placeId, userId);
   return userBookmarkPlaceIdRenew;
 };
 
