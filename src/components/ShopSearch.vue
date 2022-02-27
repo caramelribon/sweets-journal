@@ -1545,7 +1545,7 @@ button:disabled {
 }
 .card .card-header {
   position: relative;
-  background-color: #eb6c3f;
+  background-color: #9e9a95;
   height: 200px;
   margin: -20px -20px 20px -20px;
   transition: height 0.5s;
