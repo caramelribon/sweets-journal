@@ -247,18 +247,19 @@ export default {
   methods: {
     // login userのdataを取得
     async getData() {
-      // ログインユーザがfavoriteしたplaceのidを取得
+      // login userがfavoriteしたplaceのidを取得
       this.userLikedPlaceId = await getFavPlaceId(this.userUID).catch((err) => {
         console.log('Can not catch place_id login user favorited', err);
       });
-      // ログインユーザがbookmarkしたplaceのidを取得
+      // login userがbookmarkしたplaceのidを取得
       this.userBookmarkPlaceId = await getBmPlaceId(this.userUID).catch((err) => {
         console.log('Can not catch place_id login user bookmarked', err);
       });
-      // ログインユーザがお気に入りしたお店の情報を取得
+      // login userがfavoriteしたお店の情報を取得
       this.favorites = await getFavorite(this.userUID).catch((err) => {
         console.log('Can not catch favorite data!', err);
       });
+      // login userがbookmarkしたお店の情報を取得
       this.bookmarks = await getBookmark(this.userUID).catch((err) => {
         console.log('Can not catch bookmark data!', err);
       });

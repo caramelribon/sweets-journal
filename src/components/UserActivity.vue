@@ -17,7 +17,7 @@
     </div>
     <div class="flex p-5 items-start justify-center flex-row flex-wrap">
       <div v-for="(activity, index) in activities" :key="index">
-        <div class="relative m-7">
+        <div class="relative m-7 animate__animated animate__fadeInUp">
           <!-- User Action -->
           <span class="absolute user-action">
             <span class="flex justify-start items-center">
@@ -130,9 +130,17 @@
 </template>
 
 <script>
-import firebase from 'firebase/app';
 import $ from 'jquery';
-import { getActivity } from '@/services/firebaseService';
+import firebase from 'firebase/app';
+import {
+  getActivity,
+  getFavPlaceId,
+  getBmPlaceId,
+  postFavActivity,
+  delFavorite,
+  postBmActivity,
+  delBookmark,
+} from '@/services/firebaseService';
 
 export default {
   beforeRouteEnter(to, from, next) {
@@ -175,28 +183,16 @@ export default {
     this.updateButton();
   },
   methods: {
-    // ページを開いたときに数件取得する
+    // dataの取得
     async getData() {
-      await firebase.firestore().collection('favorites').where('user_id', '==', this.userUID)
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((docPlaceId) => {
-            this.userLikedPlaceId.push(docPlaceId.data().place_id);
-          });
-        })
-        .catch((error) => {
-          console.log('Error getting documents: ', error);
-        });
-      await firebase.firestore().collection('bookmarks').where('user_id', '==', this.userUID)
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((docPlaceId) => {
-            this.userBookmarkPlaceId.push(docPlaceId.data().place_id);
-          });
-        })
-        .catch((error) => {
-          console.log('Error getting documents: ', error);
-        });
+      // login userがfavoriteしたplaceのidを取得
+      this.userLikedPlaceId = await getFavPlaceId(this.userUID).catch((err) => {
+        console.log('Can not catch place_id login user favorited', err);
+      });
+      // login userがbookmarkしたplaceのidを取得
+      this.userBookmarkPlaceId = await getBmPlaceId(this.userUID).catch((err) => {
+        console.log('Can not catch place_id login user bookmarked', err);
+      });
       // データ数の取得
       const docRef = await firebase.firestore().collection('activityCount').doc('count');
       docRef.get().then((doc) => {
@@ -206,14 +202,12 @@ export default {
       // 最初のデータの取得
       let data = [];
       data = await getActivity(5, this.pagingToken);
-      // console.log('getData called');
-      console.log(data);
       this.activities = data.BuffData;
       this.pagingToken = data.nextPageToken;
       this.dataCount -= 5;
       console.log(this.dataCount);
     },
-    // 無限スクロールによるデータの追加の仕方
+    // infinite scroll
     infiniteScroll() {
       if (this.dataCount >= 5) {
         // データが5件以上あるときは、5件づつ取得する
@@ -229,7 +223,6 @@ export default {
         this.noData();
       }
     },
-    // 次のボタンを押したら、さらに1件取得
     async nextPage(num) {
       // 読込中は再読み込み防止
       if (this.itemLoading) return;
@@ -255,9 +248,153 @@ export default {
           this.itemLoading = false;
         });
     },
+    // when no data
     noData() {
       this.nodata = true;
     },
+    // お気に入り機能
+    async onFavorite(place) {
+      // activitiesにactivity情報を追加
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      const hour = now.getHours();
+      const min = now.getMinutes();
+      const sec = now.getSeconds();
+      const createtime = `${year}/${month}/${date} ${hour}:${min}:${sec}`;
+      let data = [];
+      data = {
+        action: 'favorite',
+        created_at: createtime,
+        userName: this.userName,
+        placeId: place.placeId,
+        placeName: place.placeName,
+        placeAdd: place.placeAdd,
+        placePhoto: place.placePhoto,
+        placeWebsite: place.placeWebsite,
+        placeRating: place.placeRating,
+        placeFavCount: place.placeFavCount + 1,
+        placeBmCount: place.placeBmCount,
+      };
+      this.activities.unshift(data);
+      // userLikedPlaceIdにplace.idを追加
+      this.userLikedPlaceId.push(place.placeId);
+      // このお店がfavorites→user.uid&place.idにあるか検索
+      const dbFav = firebase.firestore().collection('favorites');
+      await dbFav
+        .where('user_id', '==', this.userUID)
+        .where('place_id', '==', place.placeId)
+        .get()
+        .then(async (doc) => {
+          if (doc.exists) {
+            // Yes:お気に入り解除
+            this.userLikedPlaceId = await delFavorite(
+              place.placeId,
+              this.userUID,
+              this.userLikedPlaceId,
+            ).catch((err) => {
+              console.log('Can not delete favorited place!', err);
+            });
+          } else {
+            // No:お気に入り登録
+            dbFav.doc().set({
+              user_id: this.userUID,
+              place_id: place.placeId,
+            });
+            // No:アクティビティ登録
+            await postFavActivity(place.placeId, this.userUID).catch((err) => {
+              console.log('Can not register activities!', err);
+            });
+          }
+        })
+        .catch((error) => {
+          console.log('Can not register favorite shop!', error);
+        });
+    },
+    // お気に入り解除機能
+    async offFavorite(place) {
+      this.activities = this.activities.filter((data) => data !== place);
+      this.userLikedPlaceId = await delFavorite(
+        place.placeId,
+        this.userUID,
+        this.userLikedPlaceId,
+      ).catch((err) => {
+        console.log('Can not delete favorited place!', err);
+      });
+    },
+    // 気になる機能
+    async onBookmark(place) {
+      // activitiesにactivity情報を追加
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      const hour = now.getHours();
+      const min = now.getMinutes();
+      const sec = now.getSeconds();
+      const createtime = `${year}/${month}/${date} ${hour}:${min}:${sec}`;
+      let data = [];
+      data = {
+        action: 'mark',
+        created_at: createtime,
+        userName: this.userName,
+        placeId: place.placeId,
+        placeName: place.placeName,
+        placeAdd: place.placeAdd,
+        placePhoto: place.placePhoto,
+        placeWebsite: place.placeWebsite,
+        placeRating: place.placeRating,
+        placeFavCount: place.placeFavCount,
+        placeBmCount: place.placeBmCount + 1,
+      };
+      this.activities.unshift(data);
+      // userBookmarkPlaceIdにplace.idを追加
+      this.userBookmarkPlaceId.push(place.placeId);
+      // このお店がbookmarks→user.uid&place.idにあるか検索
+      const dbBm = firebase.firestore().collection('bookmarks');
+      await dbBm
+        .where('user_id', '==', this.userUID)
+        .where('place_id', '==', place.placeId)
+        .get()
+        .then(async (doc) => {
+          if (doc.exists) {
+            // Yes:気になる解除
+            this.userBookmarkPlaceId = await delBookmark(
+              place.placeId,
+              this.userUID,
+              this.userBookmarkPlaceId,
+            ).catch((err) => {
+              console.log('Can not delete bookmarked place!', err);
+            });
+          } else {
+            // No:気になる登録
+            dbBm.doc().set({
+              user_id: this.userUID,
+              place_id: place.placeId,
+            });
+            // No:アクティビティ登録
+            await postBmActivity(place.placeId, this.userUID).catch((err) => {
+              console.log('Can not register activities!', err);
+            });
+          }
+        })
+        .catch((error) => {
+          console.log('Can not register bookmark shop!', error);
+        });
+    },
+    // 気になる解除機能
+    async offBookmark(place) {
+      this.activities = this.activities.filter((data) => data !== place);
+      this.userBookmarkPlaceId = await delBookmark(
+        place.placeId,
+        this.userUID,
+        this.userBookmarkPlaceId,
+      ).catch((err) => {
+        console.log('Can not delete bookmarked place!', err);
+      });
+    },
+    // pagetop button
     updateButton() {
       const pagetop = $('.page-top');
       pagetop.hide();
