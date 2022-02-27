@@ -116,19 +116,19 @@ export const getBmPlaceId = async (userId) => {
 };
 
 export const postFavActivity = async (placeId, userId) => {
-  const dbAct = firebase.firestore().collection('activities');
-  const dbActCount = firebase.firestore().collection('activityCount');
+  const dbAct = firebase.firestore().collection('activities').doc();
+  const dbActCount = firebase.firestore().collection('activityCount').doc('count');
   // activitiesに登録
-  dbAct.doc().set({
+  dbAct.set({
     user_id: userId,
     place_id: placeId,
     action: 'favorite',
     create_at: firebase.firestore.FieldValue.serverTimestamp(),
   });
   // activityCountを+1して更新
-  dbActCount.doc('count').get().then((doc) => {
+  dbActCount.get().then((doc) => {
     const actCount = doc.data().activityCount + 1;
-    dbActCount.doc('count').update({
+    dbActCount.update({
       activityCount: actCount,
     });
   });
@@ -152,8 +152,8 @@ export const delFavorite = async (placeId, userId, userLikedPlaceId) => {
           await doc.ref.delete();
           console.log('Cancel favorite!');
           // favorite_countを-1
-          const docRef = dbPlace.doc(placeId).get();
-          docRef.then((placeDoc) => {
+          const docRef = dbPlace.doc(placeId);
+          docRef.get().then((placeDoc) => {
             if (placeDoc.exists) {
               const favCount = placeDoc.data().favorite_count - 1;
               docRef.update({
@@ -173,17 +173,17 @@ export const delFavorite = async (placeId, userId, userLikedPlaceId) => {
 };
 
 export const postBmActivity = async (placeId, userId) => {
-  const dbAct = firebase.firestore().collection('activities');
-  const dbActCount = firebase.firestore().collection('activityCount');
+  const dbAct = firebase.firestore().collection('activities').doc();
+  const dbActCount = firebase.firestore().collection('activityCount').doc('count');
   // activitiesに登録
-  dbAct.doc().set({
+  dbAct.set({
     user_id: userId,
     place_id: placeId,
     action: 'mark',
     create_at: firebase.firestore.FieldValue.serverTimestamp(),
   });
   // activityCountを+1して更新
-  dbActCount.doc('count').get().then((doc) => {
+  dbActCount.get().then((doc) => {
     const actCount = doc.data().activityCount + 1;
     dbActCount.update({
       activityCount: actCount,
@@ -212,7 +212,7 @@ export const delBookmark = async (placeId, userId, userBookmarkPlaceId) => {
           const docRef = dbPlace.doc(placeId);
           docRef.get().then((placeDoc) => {
             if (placeDoc.exists) {
-              const bmCount = doc.data().bookmark_count - 1;
+              const bmCount = placeDoc.data().bookmark_count - 1;
               docRef.update({
                 bookmark_count: bmCount,
               });

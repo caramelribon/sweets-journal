@@ -644,12 +644,6 @@ export default {
           console.log('Can not register favorite shop!', error);
         });
     },
-    async offFavorite(place) {
-      await delFavorite(place.id, this.currentUID, this.userLikedPlaceId)
-        .catch((err) => {
-          console.log('Can not delete favorited place!', err);
-        });
-    },
     searchFavPlace(placeId) {
       const dbPlace = firebase.firestore().collection('places');
       const docRef = dbPlace.doc(placeId);
@@ -693,6 +687,13 @@ export default {
       };
       const service = new this.google_shop.maps.places.PlacesService(shop);
       service.getDetails(request, callback);
+    },
+    // お気に入り解除機能
+    async offFavorite(place) {
+      this.userLikedPlaceId = await delFavorite(place.id, this.currentUID, this.userLikedPlaceId)
+        .catch((err) => {
+          console.log('Can not delete favorited place!', err);
+        });
     },
     // 気になる機能
     async onBookmark(place) {
@@ -775,6 +776,16 @@ export default {
       };
       const service = new this.google_shop.maps.places.PlacesService(shop);
       service.getDetails(request, callback);
+    },
+    // 気になる解除機能
+    async offBookmark(place) {
+      this.userBookmarkPlaceId = await delBookmark(
+        place.id,
+        this.currentUID,
+        this.userBookmarkPlaceId,
+      ).catch((err) => {
+        console.log('Can not delete bookmarked place!', err);
+      });
     },
     // get Ranking Data
     async createRanking() {
