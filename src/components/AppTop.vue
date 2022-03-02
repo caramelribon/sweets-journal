@@ -228,7 +228,7 @@
                    lg:text-2xl
                    xl:text-2xl
                    2xl:text-2xl">
-            データの取得に失敗しました。<br>categoryとareaの両方を選択しているか確認してください。
+            データの取得に失敗しました<br>categoryとareaの両方を選択しているか確認してください
           </p>
         </span>
       </div>

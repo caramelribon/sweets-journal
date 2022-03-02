@@ -14,6 +14,19 @@
       >
         User Activity
       </p>
+      <div class="animate__animated animate__fadeInUp mt-7">
+          <p  class="text-beige
+                     text-center
+                     kaisei-medium
+                     sm:text-base
+                     md:text-2xl
+                     lg:text-2xl
+                     xl:text-2xl
+                     2xl:text-2xl"
+          >
+            全ユーザのアクティビティです
+          </p>
+      </div>
     </div>
     <div class="flex p-5 items-start justify-center flex-row flex-wrap">
       <div v-for="(activity, index) in activities" :key="index">

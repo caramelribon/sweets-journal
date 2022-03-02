@@ -12,6 +12,19 @@
                  user-name">
         {{ userName }}
       </p>
+      <div class="animate__animated animate__fadeInUp mt-24 mb-2">
+          <p  class="text-beige
+                     text-center
+                     kaisei-medium
+                     sm:text-base
+                     md:text-2xl
+                     lg:text-2xl
+                     xl:text-2xl
+                     2xl:text-2xl"
+          >
+            あなたが気になる・お気に入りしたお店です
+          </p>
+      </div>
     </div>
     <!-- tab -->
     <ul class="tabs-menu flex justify-center items-center">
