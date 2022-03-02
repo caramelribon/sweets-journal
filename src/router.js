@@ -13,7 +13,7 @@ const routes = [
     component: ShopSearch,
   },
   {
-    path: '/profile',
+    path: '/user/:userId',
     name: 'Profile',
     component: UserFavorite,
     props: true,

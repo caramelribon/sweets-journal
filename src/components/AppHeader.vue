@@ -71,6 +71,7 @@
                       <router-link
                         :to="{
                                 name: 'Profile',
+                                params: { userId: currentUID },
                                 query: { userName: userName,  userUID: currentUID},
                               }"
                         class="block
