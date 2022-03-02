@@ -70,15 +70,16 @@
       <div class="navypink-bg h-auto">
         <p class="small-title-navypink text-center p-10">Search</p>
         <div class="h-auto animate__animated invisible">
-          <p class="text-beige
-                    text-center
-                    my-5
-                    kaisei-medium
-                    sm:text-base
-                    md:text-2xl
-                    lg:text-2xl
-                    xl:text-2xl
-                    2xl:text-2xl">
+          <p  class="text-beige
+                     text-center
+                     my-5
+                     kaisei-medium
+                     sm:text-base
+                     md:text-2xl
+                     lg:text-2xl
+                     xl:text-2xl
+                     2xl:text-2xl"
+          >
             旅先で、現在地周辺のお店を探してみてください
           </p>
           <div class="bg-none pt-10 pb-24">
@@ -207,10 +208,106 @@
             </div>
           </div>
         </div>
+        <!-- fetching status -->
+        <span v-show="currentState === 'IS_FETCHING'">
+          <div class="py-12 text-center">
+            <span class="material-icons md-48">
+              loop
+            </span>
+          </div>
+        </span>
+        <!-- failed status -->
+        <span v-show="currentState === 'IS_FAILED'">
+          <p
+            class="text-beige
+                   text-center
+                   py-12
+                   kaisei-medium
+                   sm:text-base
+                   md:text-2xl
+                   lg:text-2xl
+                   xl:text-2xl
+                   2xl:text-2xl">
+            データの取得に失敗しました。<br>categoryとareaの両方を選択しているか確認してください。
+          </p>
+        </span>
+      </div>
+      <!-- Place Serch Results (検索結果)-->
+      <div id="map"></div>
+      <div
+        v-show="currentState === 'IS_FOUND'"
+        class="navypink-bg h-auto">
+        <p class="place-title text-center p-10">Places</p>
+        <div class="animate__animated invisible">
+          <div
+            id="shop"
+            class="flex
+                   justify-center
+                   items-start
+                   flex-row
+                   flex-wrap
+                   px-5
+                   navypink-bg
+                   h-auto">
+            <div v-for="(place, index) in places" :key="index">
+              <!-- shop layout -->
+              <div class="m-4">
+                <!-- shop image -->
+                <div class="place-image">
+                  <img v-bind:src="place.photourl" width="300" height="300">
+                </div>
+                <!-- shop description and button(favorite and mark) -->
+                <div class="place-description">
+                  <!-- shop name -->
+                  <div class="place-name flex justify-center items-center pb-1 pt-5">
+                    <p class="text-beige text-center kaisei-medium">
+                      {{ place.name }}
+                    </p>
+                  </div>
+                  <!-- button-area-gap -->
+                  <div class="button-area-gap"></div>
+                  <!-- button (favorite and mark) -->
+                  <div class="button-area grid grid-cols-6">
+                    <div class="col-span-4"></div>
+                    <!-- favorite button -->
+                    <div class="flex justify-center items-center">
+                      <button
+                        @click="onFavorite(place)"
+                        :disabled="isActive"
+                        v-if="userLikedPlaceId.indexOf(place.id) === -1">
+                        <i class="far fa-heart fa-lg"></i>
+                      </button>
+                      <button
+                        @click="offFavorite(place)"
+                        :disabled="isActive"
+                        v-else>
+                        <i class="fas fa-heart fa-lg liked"></i>
+                      </button>
+                    </div>
+                    <!-- mark button -->
+                    <div class="flex justify-center items-center">
+                      <button
+                        @click="onBookmark(place)"
+                        :disabled="isActive"
+                        v-if="userBookmarkPlaceId.indexOf(place.id) === -1">
+                        <i class="far fa-bookmark fa-lg"></i>
+                      </button>
+                      <button
+                        @click="offBookmark(place)"
+                        :disabled="isActive"
+                        v-else>
+                        <i class="fas fa-bookmark fa-lg bookmarked"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- Ranking (ランキング) -->
       <div
-        v-if="ranking"
         class="beige-bg h-auto">
         <p class="small-title-beige text-center p-10">Ranking</p>
         <div class="animate__animated invisible">
@@ -338,80 +435,6 @@
           </div>
         </div>
       </div>
-      <!-- Place Serch Results (検索結果)-->
-      <div id="map"></div>
-      <div
-        v-if="placeResults"
-        class="beige-bg h-auto">
-        <p class="small-title-beige text-center p-10">Places</p>
-        <div class="animate__animated invisible">
-          <div
-            id="shop"
-            class="flex
-                   justify-center
-                   items-start
-                   flex-row
-                   flex-wrap
-                   px-5
-                   beige-bg
-                   h-auto">
-            <div v-for="(place, index) in places" :key="index">
-              <!-- shop layout -->
-              <div class="m-4">
-                <!-- shop image -->
-                <div class="place-image">
-                  <img v-bind:src="place.photourl" width="300" height="300">
-                </div>
-                <!-- shop description and button(favorite and mark) -->
-                <div class="place-description">
-                  <!-- shop name -->
-                  <div class="place-name flex justify-center items-center pb-1 pt-5">
-                    <p class="text-nvybrown text-center kaisei-medium">
-                      {{ place.name }}
-                    </p>
-                  </div>
-                  <!-- button-area-gap -->
-                  <div class="button-area-gap"></div>
-                  <!-- button (favorite and mark) -->
-                  <div class="button-area grid grid-cols-6">
-                    <div class="col-span-4"></div>
-                    <!-- favorite button -->
-                    <div class="flex justify-center items-center">
-                      <button
-                        @click="onFavorite(place)"
-                        :disabled="isActive"
-                        v-if="userLikedPlaceId.indexOf(place.id) === -1">
-                        <i class="far fa-heart fa-lg"></i>
-                      </button>
-                      <button
-                        @click="offFavorite(place)"
-                        :disabled="isActive"
-                        v-else>
-                        <i class="fas fa-heart fa-lg liked"></i>
-                      </button>
-                    </div>
-                    <!-- mark button -->
-                    <div class="flex justify-center items-center">
-                      <button
-                        @click="onBookmark(place)"
-                        :disabled="isActive"
-                        v-if="userBookmarkPlaceId.indexOf(place.id) === -1">
-                        <i class="far fa-bookmark fa-lg"></i>
-                      </button>
-                      <button
-                        @click="offBookmark(place)"
-                        :disabled="isActive"
-                        v-else>
-                        <i class="fas fa-bookmark fa-lg bookmarked"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <!-- footer -->
       <footer class="navypink-bg h-auto">
         <p class="text-beige text-center p-5 lora">
@@ -474,7 +497,7 @@ export default {
       },
       userLikedPlaceId: [],
       userBookmarkPlaceId: [],
-      placeResults: false,
+      currentState: 'IS_INITIALIZED',
     };
   },
   async mounted() {
@@ -552,59 +575,59 @@ export default {
     },
     // 検索に成功したとき
     success(position) {
-      this.ranking = false;
       this.lat = position.coords.latitude;
       this.lng = position.coords.longitude;
       this.searchPlace();
     },
     // 検索に失敗したとき
     error(err) {
+      this.currentState = 'IS_FAILED';
       console.log(err.message);
     },
     // 現在地周辺の地図とお店の取得
     searchPlace() {
-      this.ranking = false;
-      if (this.placeResults === false) {
-        this.placeResults = true;
+      this.places = [];
+      this.currentState = 'IS_FETCHING';
+      if (this.radius === '' || this.type === '') {
+        this.currentState = 'IS_FAILED';
       } else {
-        this.placeResults = false;
-        this.placeResults = true;
-      }
-      const currentlatlng = new this.google.maps.LatLng(this.lat, this.lng);
-      const map = new this.google.maps.Map(document.getElementById('map'), {
-        center: currentlatlng,
-        zoom: 15,
-      });
-      // 検索結果からお店の名前をplacesに入れる
-      const callback = (results, status) => {
-        if (status === this.google.maps.places.PlacesServiceStatus.OK) {
-          for (let i = 0; i < results.length; i += 1) {
-            const place = results[i];
-            const shopid = place.place_id;
-            const shopname = place.name;
-            const photos = place.photos;
-            const url = photos[0].getUrl({ width: 300, height: 400 });
-            const shopadd = place.vicinity;
-            const hairetsu = {
-              id: shopid,
-              name: shopname,
-              add: shopadd,
-              photourl: url,
-            };
-            this.places.push(hairetsu);
+        const currentlatlng = new this.google.maps.LatLng(this.lat, this.lng);
+        const map = new this.google.maps.Map(document.getElementById('map'), {
+          center: currentlatlng,
+          zoom: 15,
+        });
+        // 検索結果からお店の名前をplacesに入れる
+        const callback = (results, status) => {
+          if (status === this.google.maps.places.PlacesServiceStatus.OK) {
+            this.currentState = 'IS_FOUND';
+            for (let i = 0; i < results.length; i += 1) {
+              const place = results[i];
+              const shopid = place.place_id;
+              const shopname = place.name;
+              const photos = place.photos;
+              const url = photos[0].getUrl({ width: 300, height: 400 });
+              const shopadd = place.vicinity;
+              const hairetsu = {
+                id: shopid,
+                name: shopname,
+                add: shopadd,
+                photourl: url,
+              };
+              this.places.push(hairetsu);
+            }
+            console.log(this.places);
           }
-          console.log(this.places);
-        }
-      };
-      // 検索条件
-      const request = {
-        location: currentlatlng,
-        radius: this.radius,
-        type: [this.type],
-      };
-      // nearbySearchで検索
-      const service = new this.google.maps.places.PlacesService(map);
-      service.nearbySearch(request, callback);
+        };
+        // 検索条件
+        const request = {
+          location: currentlatlng,
+          radius: this.radius,
+          type: [this.type],
+        };
+        // nearbySearchで検索
+        const service = new this.google.maps.places.PlacesService(map);
+        service.nearbySearch(request, callback);
+      }
     },
     // お気に入り機能
     async onFavorite(place) {
@@ -925,6 +948,23 @@ export default {
                0 5px #99938e,
                0 6px 5px #88837e;
 }
+.place-title {
+  color: #f2ebe5;
+  transition: 0.2s ease all;
+  text-align: center;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #966258,
+               0 2px #8d5c53,
+               0 3px #885950,
+               0 4px #80544b,
+               0 5px #7b5148,
+               0 6px #744c44,
+               0 7px #6f4841,
+               0 8px #68433c,
+               0 9px #5f3e37,
+               0 10px 8px #523530;
+}
 
 @media screen and (max-width:640px) {
   .sweets {
@@ -937,6 +977,9 @@ export default {
     font-size: 50px;
   }
   .small-title-navypink {
+    font-size: 50px;
+  }
+  .place-title {
     font-size: 50px;
   }
   .message-about {
@@ -972,6 +1015,9 @@ export default {
   .small-title-navypink {
     font-size: 70px;
   }
+  .place-title {
+    font-size: 70px;
+  }
   .message-about {
     font-size: 20px;
   }
@@ -1005,6 +1051,9 @@ export default {
   .small-title-navypink {
     font-size: 100px;
   }
+  .place-title {
+    font-size: 100px;
+  }
   .message-about {
     font-size: 30px;
   }
@@ -1036,6 +1085,9 @@ export default {
     font-size: 100px;
   }
   .small-title-navypink {
+    font-size: 100px;
+  }
+  .place-title {
     font-size: 100px;
   }
   .message-about {
@@ -1585,5 +1637,17 @@ button:disabled {
 .place-name {
   width: 260px;
   height: 60px;
+}
+
+/* 回転するアニメーション */
+.material-icons.md-48 {
+  font-size: 48px;
+  color: #f2ebe5;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
