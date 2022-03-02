@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import ShopSearch from '@/components/ShopSearch.vue';
+import AppTop from '@/components/AppTop.vue';
 import UserFavorite from '@/components/UserFavorite.vue';
 import UserActivity from '@/components/UserActivity.vue';
 
@@ -10,7 +10,7 @@ const routes = [
   {
     path: '/',
     name: 'Top',
-    component: ShopSearch,
+    component: AppTop,
   },
   {
     path: '/user/:userId',
