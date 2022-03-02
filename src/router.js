@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import AppTop from '@/components/AppTop.vue';
 import UserFavorite from '@/components/UserFavorite.vue';
 import UserActivity from '@/components/UserActivity.vue';
+import AllPlaces from '@/components/AllPlaces.vue';
 
 Vue.use(Router);
 
@@ -22,6 +23,12 @@ const routes = [
     path: '/activity',
     name: 'Activity',
     component: UserActivity,
+    props: true,
+  },
+  {
+    path: '/activity/places',
+    name: 'AllPlaces',
+    component: AllPlaces,
     props: true,
   },
 ];

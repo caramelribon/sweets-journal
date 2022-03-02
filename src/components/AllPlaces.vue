@@ -12,92 +12,49 @@
                xl:text-9xl
                2xl:text-9xl"
       >
-        User Activity
+        All Places
       </p>
       <div class="animate__animated animate__fadeInUp mt-7">
-        <p  class="text-beige
-                   text-center
-                   kaisei-medium
-                   sm:text-base
-                   md:text-2xl
-                   lg:text-2xl
-                   xl:text-2xl
-                   2xl:text-2xl"
-        >
-          全ユーザのアクティビティです
-        </p>
-      </div>
-      <div class="flex justify-center">
-        <div class="flex justify-end items-center
-                    mt-5
-                    sm:w-11/12
-                    md:w-11/12
-                    lg:w-4/5
-                    xl:w-4/5
-                    2xl:w-4/5
-                    w-11/12">
-          <router-link
-            :to="{
-                    name: 'AllPlaces',
-                    query: { userName: userName,  userUID: userUID},
-                  }"
-            class="block lora-bold text-lightgray text-lg text-center"
+          <p  class="text-beige
+                     text-center
+                     kaisei-medium
+                     sm:text-base
+                     md:text-2xl
+                     lg:text-2xl
+                     xl:text-2xl
+                     2xl:text-2xl"
           >
-               All Places
-            <p class="text-xs text-beige kaisei-medium">
-              保存されたお店の一覧はこちら
-            </p>
-          </router-link>
-        </div>
+            ユーザに気になる・お気に入りされたお店の一覧です
+          </p>
       </div>
     </div>
     <div class="flex p-5 items-start justify-center flex-row flex-wrap">
-      <div v-for="(activity, index) in activities" :key="index">
+      <div v-for="(place, index) in places" :key="index">
         <div class="relative m-7 animate__animated animate__fadeInUp">
-          <!-- User Action -->
-          <span class="absolute user-action">
-            <span class="flex justify-start items-center">
-              <p class="text-xl mx-1 text-lightgray lora-bold user-name">
-                {{ activity.userName }}
-              </p>
-              <p
-                class="text-sm lora mx-1"
-                :class="{
-                          liked: activity.action === 'favorite',
-                          bookmarked: activity.action === 'mark'
-                        }"
-              >
-                {{ activity.action }}
-              </p>
-              <p class="text-sm mx-1 text-lightgray lora">
-                {{ activity.created_at }}
-              </p>
-            </span>
-          </span>
           <!-- shop layout -->
           <div class="card">
             <!-- shop image -->
             <div class="card-header">
-              <img :src="activity.placePhoto" width="300" height="300" class="card-image">
+              <img :src="place.photo_1" width="300" height="300" class="card-image">
             </div>
             <!-- shop description and button(favorite and mark) -->
             <section class="card-body">
               <div class="shop-description">
                 <!-- shop name -->
                 <div class="place-name flex justify-center items-center p-1">
-                  <p class="text-center text-navyblue kaisei-medium">{{ activity.placeName }}</p>
+                  <p class="text-center text-navyblue kaisei-medium">{{ place.name }}</p>
                 </div>
                 <!-- button (favorite and mark) -->
                 <div class="flex justify-end items-center">
                   <!-- favorite button -->
                   <div class="p-2">
                     <button
-                      @click="onFavorite(activity)"
-                      v-if="userLikedPlaceId.indexOf(activity.placeId) === -1">
+                      @click="onFavorite(place)"
+                      v-if="userLikedPlaceId.indexOf(place.id) === -1">
                         <i class="far fa-heart fa-lg"></i>
                     </button>
                     <button
-                      @click="offFavorite(activity)"
+                      @click="offFavorite(place)"
                       v-else>
                         <i class="fas fa-heart fa-lg liked"></i>
                     </button>
@@ -105,12 +62,12 @@
                   <!-- mark button -->
                   <div class="p-2">
                     <button
-                      @click="onBookmark(activity)"
-                      v-if="userBookmarkPlaceId.indexOf(activity.placeId) === -1">
+                      @click="onBookmark(place)"
+                      v-if="userBookmarkPlaceId.indexOf(place.id) === -1">
                       <i class="far fa-bookmark fa-lg"></i>
                     </button>
                     <button
-                      @click="offBookmark(activity)"
+                      @click="offBookmark(place)"
                       v-else>
                       <i class="fas fa-bookmark fa-lg bookmarked"></i>
                     </button>
@@ -119,27 +76,27 @@
               </div>
               <ul class="card-information">
                 <li class="text-navyblue kaisei-medium text-sm">
-                  {{ activity.placeAdd }}
+                  {{ place.add_short }}
                 </li>
                 <li class="text-navyblue kaisei-medium">
-                  <i class="fas fa-star icon-color-yellow"></i> {{ activity.placeRating }}
+                  <i class="fas fa-star icon-color-yellow"></i> {{ place.all_rating }}
                 </li>
                 <!--
                 <li class="text-navyblue kaisei-medium">
                   <div class="flex justify-start items-center">
                     <div class="favorited_users">
-                      <i class="fas fa-heart liked"></i> {{ activity.placeFavCount }}
+                      <i class="fas fa-heart liked"></i> {{ place.favorite_count }}
                       <i class="fas fa-users icon-color-blue"></i>
                     </div>
                     <div class="bookmarked_users mx-5">
-                      <i class="fas fa-bookmark bookmarked"></i> {{ activity.placeBmCount }}
+                      <i class="fas fa-bookmark bookmarked"></i> {{ place.bookmark_count }}
                       <i class="fas fa-users icon-color-blue"></i>
                     </div>
                   </div>
                 </li>
                 -->
                 <li class="text-navyblue kaisei-medium">
-                  <a :href="activity.placeWebsite" target="_blank">
+                  <a :href="place.website" target="_blank">
                     website <i class="fas fa-external-link-alt icon-color-blue"></i>
                   </a>
                 </li>
@@ -171,7 +128,7 @@
 import $ from 'jquery';
 import firebase from 'firebase/app';
 import {
-  getActivity,
+  getPlaces,
   getFavPlaceId,
   getBmPlaceId,
   postFavActivity,
@@ -189,7 +146,7 @@ export default {
   },
   data() {
     return {
-      activities: [],
+      places: [],
       nextData: [],
       pagingToken: null,
       // ロード中のアニメーション
@@ -198,7 +155,7 @@ export default {
       itemLoading: false,
       // データがあるかどうか
       nodata: false,
-      // Activityデータの数
+      // Placesのデータの数
       dataCount: 1,
       // Intersection Obsever
       observer: null,
@@ -232,17 +189,18 @@ export default {
         console.log('Can not catch place_id login user bookmarked', err);
       });
       // データ数の取得
-      const docRef = await firebase.firestore().collection('activityCount').doc('count');
+      const docRef = await firebase.firestore().collection('placeCount').doc('count');
       docRef.get().then((doc) => {
-        this.dataCount = doc.data().activityCount + 1;
+        this.dataCount = doc.data().placeCount + 1;
       });
       console.log(this.dataCount);
       // 最初のデータの取得
       let data = [];
-      data = await getActivity(5, this.pagingToken);
-      this.activities = data.BuffData;
+      data = await getPlaces(5, this.pagingToken);
+      this.places = data.BuffData;
       this.pagingToken = data.nextPageToken;
       this.dataCount -= 5;
+      console.log(this.places);
       console.log(this.dataCount);
     },
     // infinite scroll
@@ -267,9 +225,9 @@ export default {
       // 取得データがもう存在しない場合は行わない
       if (this.isLastPage) return;
       // 次のデータを取得
-      await getActivity(num, this.pagingToken)
+      await getPlaces(num, this.pagingToken)
         .then((data) => {
-          this.activities = this.activities.concat(data.BuffData);
+          this.places = this.places.concat(data.BuffData);
           this.pagingToken = data.nextPageToken;
           this.dataCount -= num;
           console.log(this.dataCount);
@@ -292,30 +250,6 @@ export default {
     },
     // お気に入り機能
     async onFavorite(place) {
-      // activitiesにactivity情報を追加
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth() + 1;
-      const date = now.getDate();
-      const hour = now.getHours();
-      const min = now.getMinutes();
-      const sec = now.getSeconds();
-      const createtime = `${year}/${month}/${date} ${hour}:${min}:${sec}`;
-      let data = [];
-      data = {
-        action: 'favorite',
-        created_at: createtime,
-        userName: this.userName,
-        placeId: place.placeId,
-        placeName: place.placeName,
-        placeAdd: place.placeAdd,
-        placePhoto: place.placePhoto,
-        placeWebsite: place.placeWebsite,
-        placeRating: place.placeRating,
-        placeFavCount: place.placeFavCount + 1,
-        placeBmCount: place.placeBmCount,
-      };
-      this.activities.unshift(data);
       // userLikedPlaceIdにplace.idを追加
       this.userLikedPlaceId.push(place.placeId);
       // このお店がfavorites→user.uid&place.idにあるか検索
@@ -352,7 +286,6 @@ export default {
     },
     // お気に入り解除機能
     async offFavorite(place) {
-      this.activities = this.activities.filter((data) => data !== place);
       this.userLikedPlaceId = await delFavorite(
         place.placeId,
         this.userUID,
@@ -363,30 +296,6 @@ export default {
     },
     // 気になる機能
     async onBookmark(place) {
-      // activitiesにactivity情報を追加
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth() + 1;
-      const date = now.getDate();
-      const hour = now.getHours();
-      const min = now.getMinutes();
-      const sec = now.getSeconds();
-      const createtime = `${year}/${month}/${date} ${hour}:${min}:${sec}`;
-      let data = [];
-      data = {
-        action: 'mark',
-        created_at: createtime,
-        userName: this.userName,
-        placeId: place.placeId,
-        placeName: place.placeName,
-        placeAdd: place.placeAdd,
-        placePhoto: place.placePhoto,
-        placeWebsite: place.placeWebsite,
-        placeRating: place.placeRating,
-        placeFavCount: place.placeFavCount,
-        placeBmCount: place.placeBmCount + 1,
-      };
-      this.activities.unshift(data);
       // userBookmarkPlaceIdにplace.idを追加
       this.userBookmarkPlaceId.push(place.placeId);
       // このお店がbookmarks→user.uid&place.idにあるか検索
@@ -423,7 +332,6 @@ export default {
     },
     // 気になる解除機能
     async offBookmark(place) {
-      this.activities = this.activities.filter((data) => data !== place);
       this.userBookmarkPlaceId = await delBookmark(
         place.placeId,
         this.userUID,

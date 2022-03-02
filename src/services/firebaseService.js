@@ -287,6 +287,17 @@ export const delBookmark = async (placeId, userId, userBookmarkPlaceId) => {
   return userBookmarkPlaceIdRenew;
 };
 
+export const postPlaceCount = async () => {
+  const dbplaceCount = firebase.firestore().collection('placeCount').doc('count');
+  // placeCountを+1して更新
+  await dbplaceCount.get().then((doc) => {
+    const plaCount = doc.data().placeCount + 1;
+    dbplaceCount.update({
+      placeCount: plaCount,
+    });
+  });
+};
+
 const getActivityDetailData = async (doc) => {
   const dbUser = firebase.firestore().collection('users');
   const dbPlace = firebase.firestore().collection('places');
@@ -369,6 +380,45 @@ export async function getActivity(limit, pagingToken) {
       .catch((err) => {
         console.log('エラーが発見されました：データ取得時', err);
         reject(new Error('firebaseからのデータ取得エラー'));
+      });
+  });
+}
+
+export async function getPlaces(limit, pagingToken) {
+  const dbPlace = firebase.firestore().collection('places');
+  return new Promise((resolve, reject) => {
+    let query = dbPlace.orderBy('create_at', 'desc').limit(limit);
+
+    if (pagingToken !== null) {
+      const [seconds, nanoseconds] = pagingToken.split(':');
+      const timestamp = new firebase.firestore.Timestamp(seconds, nanoseconds);
+      query = query.startAfter(timestamp);
+    }
+
+    query.get()
+      .then(async (snapshot) => {
+        // limitよりも多い件数データがあるならnextTokenを作成しておく
+        let nextToken = null;
+        if (snapshot.docs.length >= limit) {
+          const last = snapshot.docs[snapshot.docs.length - 1];
+          const lastData = last.data();
+          const time = lastData.create_at;
+          nextToken = `${time.seconds}:${time.nanoseconds}`;
+        }
+        const infoPromises = [];
+        for (let i = 0; i < snapshot.docs.length; i += 1) {
+          const doc = snapshot.docs[i];
+          infoPromises.push(doc.data());
+        }
+        // 全ての詳細データが取得するまで待つ
+        const infos = await Promise.all(infoPromises);
+
+        // console.log(infos, nextToken);
+        resolve({ BuffData: infos, nextPageToken: nextToken });
+      })
+      .catch((err) => {
+        console.log('Error firebase', err);
+        reject(new Error('Error firebase'));
       });
   });
 }

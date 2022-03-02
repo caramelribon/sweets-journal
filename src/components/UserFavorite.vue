@@ -13,17 +13,17 @@
         {{ userName }}
       </p>
       <div class="animate__animated animate__fadeInUp mt-24 mb-2">
-          <p  class="text-beige
-                     text-center
-                     kaisei-medium
-                     sm:text-base
-                     md:text-2xl
-                     lg:text-2xl
-                     xl:text-2xl
-                     2xl:text-2xl"
-          >
-            あなたが気になる・お気に入りしたお店です
-          </p>
+        <p  class="text-beige
+                   text-center
+                   kaisei-medium
+                   sm:text-base
+                   md:text-2xl
+                   lg:text-2xl
+                   xl:text-2xl
+                   2xl:text-2xl"
+        >
+          あなたが気になる・お気に入りしたお店です
+        </p>
       </div>
     </div>
     <!-- tab -->
@@ -104,12 +104,13 @@
                   </div>
                 </div>
                 <ul class="card-information">
-                  <li class="text-navyblue kaisei-medium">
+                  <li class="text-navyblue kaisei-medium text-sm">
                     {{ favorite.add_short }}
                   </li>
                   <li class="text-navyblue kaisei-medium">
                     <i class="fas fa-star icon-color-yellow"></i> {{ favorite.all_rating }}
                   </li>
+                  <!--
                   <li class="text-navyblue kaisei-medium">
                     <div class="flex justify-start items-center">
                       <div class="favorited_users">
@@ -122,6 +123,7 @@
                       </div>
                     </div>
                   </li>
+                  -->
                   <li class="text-navyblue kaisei-medium">
                     <a :href="favorite.website" target="_blank">
                       website <i class="fas fa-external-link-alt icon-color-blue"></i>
@@ -180,12 +182,13 @@
                   </div>
                 </div>
                 <ul class="card-information text-navyblue">
-                  <li class="text-navyblue kaisei-medium">
+                  <li class="text-navyblue kaisei-medium text-sm">
                     {{ bookmark.add_short }}
                   </li>
                   <li class="text-navyblue kaisei-medium">
                     <i class="fas fa-star icon-color-yellow"></i> {{ bookmark.all_rating }}
                   </li>
+                  <!--
                   <li class="text-navyblue kaisei-medium">
                     <div class="flex justify-start items-center">
                       <div class="favorited_users">
@@ -198,6 +201,7 @@
                       </div>
                     </div>
                   </li>
+                  -->
                   <li class="text-navyblue kaisei-medium">
                     <a :href="bookmark.website" target="_blank">
                       website <i class="fas fa-external-link-alt icon-color-blue"></i>

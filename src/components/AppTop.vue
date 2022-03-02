@@ -322,7 +322,7 @@
                         2xl:text-2xl
                         my-5
                         kaisei-medium">
-                お気に入りのお店ランキングと気になるお店ランキングです
+                お気に入りのお店ランキングと気になるお店ランキングの上位のお店です
               </p>
             </div>
             <div class="row-span-1 bg-none"></div>
@@ -350,12 +350,13 @@
                         </div>
                       </div>
                       <ul class="card-information">
-                        <li class="text-navyblue kaisei-medium">
+                        <li class="text-navyblue kaisei-medium text-sm">
                           {{ favorite.add_short }}
                         </li>
                         <li class="text-navyblue kaisei-medium">
                           <i class="fas fa-star icon-color-yellow"></i> {{ favorite.all_rating }}
                         </li>
+                        <!--
                         <li class="text-navyblue kaisei-medium">
                           <div class="flex justify-start items-center">
                             <div class="favorited_users">
@@ -368,6 +369,7 @@
                             </div>
                           </div>
                         </li>
+                        -->
                         <li class="text-navyblue kaisei-medium">
                           <a :href="ranking.website" target="_blank">
                             website <i class="fas fa-external-link-alt icon-color-blue"></i>
@@ -380,7 +382,7 @@
               </swiper-slide>
             </swiper>
           </div>
-          <!-- mark -->
+          <!-- Bookmark -->
           <div class="ranking pb-10">
             <p class="ranking-title p-5 text-center">Marked Places Ranking</p>
             <swiper :options="swiperOption">
@@ -399,16 +401,17 @@
                       <div class="shop-description">
                         <!-- shop name -->
                         <div class="place-name flex justify-center items-center p-1">
-                          <p class="text-center text-navyblue kaisei-medium">{{mark.name }}</p>
+                          <p class="text-center text-navyblue kaisei-medium">{{ mark.name }}</p>
                         </div>
                       </div>
                       <ul class="card-information">
-                        <li class="text-navyblue kaisei-medium">
+                        <li class="text-navyblue kaisei-medium text-sm">
                           {{ mark.add_short }}
                         </li>
                         <li class="text-navyblue kaisei-medium">
                           <i class="fas fa-star icon-color-yellow"></i> {{ mark.all_rating }}
                         </li>
+                        <!--
                         <li class="text-navyblue kaisei-medium">
                           <div class="flex justify-start items-center">
                             <div class="favorited_users">
@@ -421,6 +424,7 @@
                             </div>
                           </div>
                         </li>
+                        -->
                         <li class="text-navyblue kaisei-medium">
                           <a :href="ranking.website" target="_blank">
                             website <i class="fas fa-external-link-alt icon-color-blue"></i>
@@ -461,6 +465,7 @@ import {
   delFavorite,
   postBmActivity,
   delBookmark,
+  postPlaceCount,
 } from '@/services/firebaseService';
 
 export default {
@@ -680,6 +685,7 @@ export default {
         } else {
           // 登録されていなかったら、お店の情報を登録
           await this.getFavPlaceData(placeId);
+          await postPlaceCount();
         }
       }).catch((err) => {
         console.log('Can not search favorited place!', err);
@@ -705,6 +711,7 @@ export default {
             favorite_count: 1,
             bookmark_count: 0,
             photo_1: result.photos[0].getUrl({ width: 300, height: 400 }),
+            create_at: firebase.firestore.FieldValue.serverTimestamp(),
           });
         }
       };
@@ -769,6 +776,7 @@ export default {
         } else {
           // 登録されていなかったら、お店の情報を登録
           await this.getBmPlaceData(placeId);
+          await postPlaceCount();
         }
       }).catch((err) => {
         console.log('Can not search bookmarked place!', err);
@@ -794,6 +802,7 @@ export default {
             favorite_count: 0,
             bookmark_count: 1,
             photo_1: result.photos[0].getUrl({ width: 300, height: 400 }),
+            create_at: firebase.firestore.FieldValue.serverTimestamp(),
           });
         }
       };
@@ -1407,6 +1416,9 @@ button:disabled {
   color: #efdc71;
 }
 .marked {
+  color: #efdc71;
+}
+.icon-color-yellow {
   color: #efdc71;
 }
 
