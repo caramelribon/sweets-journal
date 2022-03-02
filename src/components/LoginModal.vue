@@ -31,14 +31,14 @@
               <label for="password"></label>
             </div>
             <input type="submit" value="LOGIN" @click="onClickLogIn"/>
-            <label class="button-open" for="switch-open">
+            <label class="button-open lora" for="switch-open">
               SIGN UP
               <i class="fa fa-user-plus" aria-hidden="true"></i>
             </label>
           </div>
         </div>
         <div class="register is-active">
-          <label class="button-close" for="switch-close">
+          <label class="button-close lora" for="switch-close">
             LOGIN
             <i class="fas fa-user-check" aria-hidden="true"></i>
           </label>
@@ -131,6 +131,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Antic+Didone&family=Elsie&family=Italiana&family=Kaisei+Decol:wght@400;500;700&family=Lobster&family=Lora:wght@400;700&display=swap');
+.lora {
+  font-family: 'Lora', serif;
+}
 .overlay {
   background: rgba(0,0,0,0.7);
   position: fixed;
@@ -146,12 +150,12 @@ export default {
 .login .group input[type=text], .login .group input[type=password] {
   width: 100%;
   border: none;
-  color: #363a46; /*入力した文字の色*/
+  color: #f2ebe5; /*入力した文字の色*/
   padding: 14px 10px 14px 45px;
   margin-top: 20px;
-  background: #afaaa6; /*loginの入力フォーム*/
+  background: #9c9895; /*loginの入力フォーム*/
   z-index: 2;
-  font-family: "Lato", sans-serif;
+  font-family: 'Lora', serif;
   font-size: 12px;
   letter-spacing: 1px;
   position: relative;
@@ -169,7 +173,7 @@ export default {
   margin-top: 20px;
   background: #a15c4e; /*registerの入力フォームの背景*/
   z-index: 2;
-  font-family: "Lato", sans-serif;
+  font-family: 'Lora', serif;
   font-weight: 300;
   font-size: 12px;
   letter-spacing: 1px;
@@ -177,15 +181,15 @@ export default {
 }
 .login .group input[type=text]::-moz-placeholder,
 .login .group input[type=password]::-moz-placeholder {
-  color: #727886;
+  color: #918d89;
 }
 .login .group input[type=text]:-ms-input-placeholder,
 .login .group input[type=password]:-ms-input-placeholder {
-  color: #727886;
+  color: #918d89;
 }
 .login .group input[type=text]::placeholder,
 .login .group input[type=password]::placeholder {
-  color: #727886;
+  color: #f2ebe5;
 }
 .login .group input[type=text]:focus + label::before,
 .login .group input[type=password]:focus + label::before {
@@ -217,6 +221,7 @@ export default {
   border-left: none !important;
   letter-spacing: 1px;
   cursor: pointer;
+  font-family: 'Lora', serif;
 }
 .panel .register input[type=submit] {
   align-self: flex-start;
@@ -228,6 +233,7 @@ export default {
   border-left: none !important;
   letter-spacing: 1px;
   cursor: pointer;
+  font-family: 'Lora', serif;
 }
 @-webkit-keyframes loginOpen {
   0% {
@@ -345,7 +351,7 @@ input {
 .panel .login {
   width: 300px;
   height: 380px;
-  background: #96928f;
+  background: #807b77;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -356,8 +362,8 @@ input {
   transition: filter 0.5s;
 }
 .panel .login input[type=submit] {
-  border: #3d424f solid 1px;
-  color: #3d424f;
+  border: #f2ebe5 solid 1px;
+  color: #f2ebe5;
 }
 .panel .register {
   transform: translateX(-140px);
@@ -367,10 +373,10 @@ input {
   position: absolute;
   width: 110px;
   height: 50px;
-  padding: 10px 5px;
+  padding: 12px 5px;
   background: none;
-  border: #3d424f solid 1px;
-  color: #3d424f;
+  border: #f2ebe5 solid 1px;
+  color: #f2ebe5;
   top: 270px;
   right: 15px;
   cursor: pointer;
@@ -385,7 +391,7 @@ input {
   position: absolute;
   width: 110px;
   height: 50px;
-  padding: 10px 5px;
+  padding: 12px 5px;
   background: none;
   border: #d5bdb9 solid 1px;
   color: #d5bdb9;
@@ -422,14 +428,26 @@ input {
   font-size: 30px;
   letter-spacing: 2px;
   margin-top: 0;
-  color: #3d424f; /*Loginの文字色*/
+  color: #f2ebe5; /*Loginの文字色*/
+  font-family: 'Lora', serif;
+  font-weight: bold;
+   text-shadow: 0 1px #8a8682,
+                0 2px #85817d,
+                0 3px #807b77,
+                0 4px #7d7874,
+                0 5px #78736f,
+                0 6px #75706c,
+                0 7px #75716d,
+                0 8px #736f6b,
+                0 9px #736f6c,
+                0 10px 8px #6e6a67;
 }
 .login .group {
   position: relative;
   width: 100%;
 }
 .login .group i {
-  color: #3d424f; /*navypinkアイコンの色*/
+  color: #f2ebe5; /*navypinkアイコンの色*/
   position: absolute;
   top: 36px;
   left: 15px;
@@ -443,7 +461,7 @@ input {
   width: 100%;
   height: 48px;
   z-index: 1;
-  background: #c0bab6; /*beige入力フォームの上線(入力する前)*/
+  background: #666361; /*beige入力フォームの上線(入力する前)*/
   top: 19px;
 }
 .login .group label::before {
@@ -451,7 +469,7 @@ input {
   position: absolute;
   width: 0;
   height: 100%;
-  background: #4f5666; /*navypink入力フォームの上線(入力した後)*/
+  background: #f2ebe5; /*navypink入力フォームの上線(入力した後)*/
   transition: width 0.5s;
 }
 .register h1 {
@@ -460,6 +478,18 @@ input {
   letter-spacing: 2px;
   margin-top: 0;
   color: #d5bdb9;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #966258,
+               0 2px #8d5c53,
+               0 3px #885950,
+               0 4px #80544b,
+               0 5px #7b5148,
+               0 6px #744c44,
+               0 7px #6f4841,
+               0 8px #68433c,
+               0 9px #5f3e37,
+               0 10px 8px #523530;
 }
 .register .group {
   width: 100%;
@@ -527,13 +557,13 @@ input[type=radio] {
 }
 /* button hover Animation */
 .panel .login input[type=submit]:hover {
-  background-color: #afaaa6;
+  background-color: #a8a39e;
   transition: background 0.5s
 }
 .panel .login .button-open:hover {
   transform: translatey(3px);
   box-shadow: none;
-  background-color: #afaaa6;
+  background-color: #a8a39e;
 }
 .panel .login .button-open:hover {
   animation: ani9 0.4s ease-in-out infinite alternate;
