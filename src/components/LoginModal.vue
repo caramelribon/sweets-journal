@@ -14,10 +14,10 @@
                 v-model="usermail"
                 required
                 type="text"
-                id="email"
+                id="emailLogin"
                 placeholder="E-Mail"
                 name="mailLogin"/>
-              <label for="email"></label>
+              <label for="emailLogin"></label>
             </div>
             <div class="group mb-6">
               <i class="fa fa-unlock-alt" aria-hidden="true"></i>
@@ -25,10 +25,10 @@
                 v-model="userpass"
                 required
                 type="password"
-                id="password"
+                id="passwordLogin"
                 placeholder="Password"
                 name="pswLogin"/>
-              <label for="password"></label>
+              <label for="passwordLogin"></label>
             </div>
             <input type="submit" value="LOGIN" @click="onClickLogIn"/>
             <label class="button-open lora" for="switch-open">
@@ -37,6 +37,7 @@
             </label>
           </div>
         </div>
+        <!-- Sign up Form -->
         <div class="register is-active">
           <label class="button-close lora" for="switch-close">
             LOGIN
@@ -44,17 +45,39 @@
           </label>
           <div class="inner">
             <h1 classs="beige">REGISTER</h1>
+            <!-- user name -->
             <div class="group"><i class="fa fa-user" aria-hidden="true"></i>
               <input type="text" id="name" v-model="userName" placeholder="Name"/>
               <label for="name"></label>
             </div>
+            <!-- email -->
             <div class="group"><i class="fa fa-envelope" aria-hidden="true"></i>
-              <input type="text" id="email" v-model="userMail" placeholder="E-Mail"/>
+              <input type="email" id="email" v-model="userMail" placeholder="E-Mail"/>
               <label for="email"></label>
             </div>
+            <!-- email(checking) -->
+            <div class="group"><i class="fa fa-envelope" aria-hidden="true"></i>
+              <input
+                type="email"
+                id="emailCheck"
+                v-model="userMailCheck"
+                placeholder="E-Mail (for checking)"
+              />
+              <label for="emailCheck"></label>
+            </div>
+            <!-- password -->
             <div class="group"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
               <input type="password" id="password" v-model="userPass" placeholder="Password"/>
               <label for="password"></label>
+            </div>
+            <!-- password(checking) -->
+            <div class="group"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
+              <input
+                type="password"
+                id="passwordCheck"
+                v-model="userPass"
+                placeholder="Password (for checking)"/>
+              <label for="passwordCheck"></label>
             </div>
             <input type="submit" value="REGISTER" @click="onClickSignUp"/>
           </div>
@@ -73,7 +96,9 @@ export default {
       usermail: '',
       userpass: '',
       userMail: '',
+      userMailCheck: '',
       userPass: '',
+      userPassCheck: '',
       userName: '',
       toUsername: null,
     };
@@ -147,7 +172,10 @@ export default {
   z-index: 1;
   transition: all .5s ease;
 }
-.login .group input[type=text], .login .group input[type=password] {
+
+.login .group input[type=text],
+.login .group input[type=email],
+.login .group input[type=password] {
   width: 100%;
   border: none;
   color: #f2ebe5; /*入力した文字の色*/
@@ -160,16 +188,14 @@ export default {
   letter-spacing: 1px;
   position: relative;
 }
-.login .group input[type=text]:focus
-+ label::before, .login .group input[type=password]:focus
-+ label::before {
-  width: 100%;
-}
-.register .group input[type=text], .register .group input[type=password] {
+
+.register .group input[type=text],
+.register .group input[type=email],
+.register .group input[type=password] {
   width: 100%;
   border: none;
   color: #f2ebe5; /*文字を入力したときの文字の色*/
-  padding: 14px 10px 14px 45px;
+  padding: 10px 10px 10px 45px;
   margin-top: 20px;
   background: #a15c4e; /*registerの入力フォームの背景*/
   z-index: 2;
@@ -179,35 +205,45 @@ export default {
   letter-spacing: 1px;
   position: relative;
 }
+
 .login .group input[type=text]::-moz-placeholder,
+.login .group input[type=email]::-moz-placeholder,
 .login .group input[type=password]::-moz-placeholder {
   color: #918d89;
 }
 .login .group input[type=text]:-ms-input-placeholder,
+.login .group input[type=email]:-ms-input-placeholder,
 .login .group input[type=password]:-ms-input-placeholder {
   color: #918d89;
 }
 .login .group input[type=text]::placeholder,
+.login .group input[type=email]::placeholder,
 .login .group input[type=password]::placeholder {
   color: #f2ebe5;
 }
 .login .group input[type=text]:focus + label::before,
+.login .group input[type=email]:focus + label::before,
 .login .group input[type=password]:focus + label::before {
   width: 100%;
 }
+
 .register .group input[type=text]::-moz-placeholder,
+.register .group input[type=email]::-moz-placeholder,
 .register .group input[type=password]::-moz-placeholder {
   color: #c4b3af;
 }
 .register .group input[type=text]:-ms-input-placeholder,
+.register .group input[type=email]:-ms-input-placeholder,
 .register .group input[type=password]:-ms-input-placeholder {
   color: #c4b3af;
 }
 .register .group input[type=text]::placeholder,
+.register .group input[type=email]::placeholder,
 .register .group input[type=password]::placeholder {
   color: #c4b3af;
 }
 .register .group input[type=text]:focus + label::before,
+.register .group input[type=email]:focus + label::before,
 .register .group input[type=password]:focus + label::before {
   width: 100%;
 }
@@ -225,7 +261,7 @@ export default {
 }
 .panel .register input[type=submit] {
   align-self: flex-start;
-  margin-top: 30px;
+  margin-top: 20px;
   padding: 10px 0;
   width: 150px;
   background: transparent;
@@ -395,7 +431,7 @@ input {
   background: none;
   border: #d5bdb9 solid 1px;
   color: #d5bdb9;
-  top: 320px;
+  top: 350px;
   right: 30px;
   cursor: pointer;
   transition: transform 0.4s;
@@ -498,7 +534,7 @@ input {
 .register .group i {
   color: #d5bdb9;
   position: absolute;
-  top: 36px;
+  top: 33px;
   left: 15px;
   z-index: 3;
   font-size: 13px;
@@ -507,7 +543,7 @@ input {
   display: block;
   position: absolute;
   width: 100%;
-  height: 48px;
+  height: 40px;
   z-index: 1;
   background: #ae6354; /*beige入力フォームの上線(入力する前)*/
   top: 19px;
