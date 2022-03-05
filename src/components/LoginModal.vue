@@ -45,41 +45,123 @@
           </label>
           <div class="inner">
             <h1 classs="beige">REGISTER</h1>
+            <p class="error-register">{{ signupError }}</p>
             <!-- user name -->
-            <div class="group"><i class="fa fa-user" aria-hidden="true"></i>
-              <input type="text" id="name" v-model="userName" placeholder="Name"/>
-              <label for="name"></label>
-            </div>
-            <!-- email -->
-            <div class="group"><i class="fa fa-envelope" aria-hidden="true"></i>
-              <input type="email" id="email" v-model="userMail" placeholder="E-Mail"/>
-              <label for="email"></label>
-            </div>
-            <!-- email(checking) -->
-            <div class="group"><i class="fa fa-envelope" aria-hidden="true"></i>
-              <input
-                type="email"
-                id="emailCheck"
-                v-model="userMailCheck"
-                placeholder="E-Mail (for checking)"
-              />
-              <label for="emailCheck"></label>
-            </div>
-            <!-- password -->
-            <div class="group"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
-              <input type="password" id="password" v-model="userPass" placeholder="Password"/>
-              <label for="password"></label>
-            </div>
-            <!-- password(checking) -->
-            <div class="group"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
-              <input
-                type="password"
-                id="passwordCheck"
-                v-model="userPass"
-                placeholder="Password (for checking)"/>
-              <label for="passwordCheck"></label>
-            </div>
-            <input type="submit" value="REGISTER" @click="onClickSignUp"/>
+            <form class="w-full" @submit.prevent="onSignUp">
+              <div class="group"><i class="fa fa-user" aria-hidden="true"></i>
+                <input
+                  type="text"
+                  id="name"
+                  data-maxlength="10"
+                  class="required maxlength name"
+                  v-model="signForm.userName"
+                  placeholder="Name"
+                />
+                <label for="name"></label>
+                <!-- error message (name) -->
+                <span class="error-name flex px-1">
+                  <p class="error">{{ signValidation.name }}</p>
+                  <p class="error px-1">{{ signValidation.nameLength }}</p>
+                </span>
+              </div>
+              <!-- email -->
+              <div class="group"><i class="fa fa-envelope" aria-hidden="true"></i>
+                <input
+                  type="email"
+                  id="email"
+                  size="30"
+                  class="required equal-email"
+                  v-model="signForm.userMail"
+                  placeholder="E-Mail"
+                />
+                <label for="email"></label>
+                <!-- error message (email) -->
+                <span class="error-email flex px-1">
+                  <p class="error">
+                    {{ signValidation.email }}
+                  </p>
+                  <p class="error px-1">{{ signValidation.emailType }}</p>
+                  <p class="error">{{ signValidation.emailEqual }}</p>
+                </span>
+              </div>
+              <!-- email(checking) -->
+              <div class="group"><i class="fa fa-envelope" aria-hidden="true"></i>
+                <input
+                  type="email"
+                  id="emailCheck"
+                  size="30"
+                  class="required equal-email"
+                  v-model="signForm.userMailCheck"
+                  placeholder="E-Mail (for checking)"
+                />
+                <label for="emailCheck"></label>
+                <!-- error message (email) -->
+                <span class="error-email flex px-1">
+                  <p class="error" v-if="signValidation.emailCheck !== null">
+                    {{ signValidation.emailCheck }}
+                  </p>
+                  <p class="error px-1" v-if="signValidation.emailTypeCheck !== null">
+                    {{ signValidation.emailTypeCheck }}
+                  </p>
+                  <p class="error" v-if="signValidation.emailEqual !== null">
+                    {{ signValidation.emailEqual }}
+                  </p>
+                </span>
+              </div>
+              <!-- password -->
+              <div class="group"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                <input
+                  type="password"
+                  id="password"
+                  minlength="8"
+                  class="required equal-password"
+                  v-model="signForm.userPass"
+                  placeholder="Password"
+                />
+                <label for="password"></label>
+                <span class="error-email flex mx-1">
+                    <p class="error" v-if="signValidation.password !== null">
+                      {{ signValidation.password }}
+                    </p>
+                    <p class="error px-1" v-if="signValidation.passwordType !== null">
+                      {{ signValidation.passwordType }}
+                    </p>
+                    <p class="error" v-if="signValidation.passwordLength !== null">
+                      {{ signValidation.passwordLength }}
+                    </p>
+                    <p class="error px-1" v-if="signValidation.passwordEqual !== null">
+                      {{ signValidation.passwordEqual }}
+                    </p>
+                </span>
+              </div>
+              <!-- password(checking) -->
+              <div class="group"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                <input
+                  type="password"
+                  id="passwordCheck"
+                  minlength="8"
+                  class="required equal-password"
+                  v-model="signForm.userPassCheck"
+                  placeholder="Password (for checking)"
+                />
+                <label for="passwordCheck"></label>
+                <span class="error-email flex px-1">
+                    <p class="error" v-show="signValidation.passwordCheck !== null">
+                      {{ signValidation.passwordCheck }}
+                    </p>
+                    <p class="error px-1" v-show="signValidation.passwordTypeCheck !== null">
+                      {{ signValidation.passwordTypeCheck }}
+                    </p>
+                    <p class="error" v-show="signValidation.passwordLengthCheck !== null">
+                      {{ signValidation.passwordLengthCheck }}
+                    </p>
+                    <p class="error px-1" v-show="signValidation.passwordEqual !== null">
+                      {{ signValidation.passwordEqual }}
+                    </p>
+                </span>
+              </div>
+              <input type="submit" value="REGISTER" @click="checkValidation"/>
+            </form>
           </div>
         </div>
       </div>
@@ -88,6 +170,7 @@
 </template>
 
 <script>
+// import $ from 'jquery';
 import firebase from 'firebase/app';
 
 export default {
@@ -95,12 +178,40 @@ export default {
     return {
       usermail: '',
       userpass: '',
-      userMail: '',
-      userMailCheck: '',
-      userPass: '',
-      userPassCheck: '',
-      userName: '',
       toUsername: null,
+      signForm: {
+        userMail: null,
+        userMailCheck: null,
+        userPass: null,
+        userPassCheck: null,
+        userName: null,
+      },
+      signValidation: {
+        name: '',
+        nameLength: '',
+        email: '',
+        emailEqual: '',
+        emailType: '',
+        emailCheck: '',
+        emailTypeCheck: '',
+        password: '',
+        passwordEqual: '',
+        passwordType: '',
+        passwordLength: '',
+        passwordCheck: '',
+        passwordTypeCheck: '',
+        passwordLengthCheck: '',
+      },
+      loginValidation: {
+        email: '',
+        emailEqual: '',
+        emailType: '',
+        password: '',
+        passwordEqual: '',
+        passwordType: '',
+        passwordLength: '',
+      },
+      signupError: '',
     };
   },
   methods: {
@@ -117,36 +228,234 @@ export default {
           console.error('ログインエラー', error);
         });
     },
-    onClickSignUp() {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.userMail, this.userPass)
-        .then(() => {
-          // 登録に成功したときの処理
-          console.log('登録しました');
-          // Usernameの登録
-          const user = firebase.auth().currentUser;
-          user.updateProfile({
-            displayName: this.userName,
-          })
-            .then(() => {
-              // データベースへの登録
-              const db = firebase.firestore();
-              db.collection('users').doc(user.uid).set({
-                uid: user.uid,
-                emial: this.userMail,
-                username: this.userName,
-                created_at: firebase.firestore.FieldValue.serverTimestamp(),
+    async onSignUp() {
+      this.signupError = '';
+      const result = await this.checkValidation();
+      if (result === true) {
+        console.log('All OK');
+        // Signup
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.signForm.userMail, this.signForm.userPass)
+          .then(() => {
+            // 登録に成功したときの処理
+            console.log('登録しました');
+            // Usernameの登録
+            const user = firebase.auth().currentUser;
+            user.updateProfile({
+              displayName: this.signForm.userName,
+            })
+              .then(() => {
+                // データベースへの登録
+                const db = firebase.firestore();
+                db.collection('users').doc(user.uid).set({
+                  uid: user.uid,
+                  emial: this.signForm.userMail,
+                  username: this.signForm.userName,
+                  created_at: firebase.firestore.FieldValue.serverTimestamp(),
+                });
+                this.toUsername = this.signForm.userName;
+                this.sendUsername();
               });
-              this.toUsername = this.userName;
-              this.sendUsername();
-            });
-        })
-        .catch((error) => {
-          // 登録に失敗したときの処理
-          console.error('登録エラー', error);
-        });
+          })
+          .catch((error) => {
+            // 登録に失敗したときの処理
+            alert('登録できませんでした', error);
+            console.error('登録エラー', error);
+          });
+      } else {
+        this.signupError = 'フォームに誤りがあります';
+        console.log(this.signupError);
+      }
     },
+    async checkValidation() {
+      let valid = false;
+      const resultUsername = await this.checkUsername();
+      const resultEmail = await this.checkEmail();
+      const resultEmailCheck = await this.checkEmailCheck();
+      const resultEmailEqual = await this.checkEmailEqual();
+      const resultPass = await this.checkPass();
+      const resultPassCheck = await this.checkPassCheck();
+      const resultPassEqual = await this.checkPassEqual();
+      if (resultUsername === true && resultEmail === true
+      && resultEmailCheck === true && resultEmailEqual === true && resultPass === true
+      && resultPassCheck === true && resultPassEqual === true) {
+        valid = true;
+        console.log('OK');
+      } else {
+        valid = false;
+        console.log('NG');
+      }
+      return valid;
+    },
+    // Username validation Check
+    checkUsername() {
+      let UserName = false;
+      this.signValidation.name = '';
+      this.signValidation.nameLength = '';
+      if (!this.signForm.userName) {
+        this.signValidation.name = '未入力です';
+        console.log('username NG no data');
+      } else if (!this.checkMaxCount(this.signForm.userName)) {
+        this.signValidation.nameLength = '10文字以内で入力してください';
+        console.log('username NG name length');
+      } else {
+        UserName = true;
+        console.log('username OK');
+      }
+      if (UserName === true) {
+        this.signValidation.name = '';
+        this.signValidation.nameLength = '';
+      }
+      return UserName;
+    },
+    // Email validation Check
+    checkEmail() {
+      let UserMail = false;
+      this.signValidation.email = '';
+      this.signValidation.emailType = '';
+      if (!this.signForm.userMail) {
+        this.signValidation.email = '未入力です';
+        console.log('email NG no data');
+      } else if (!this.checkEmailString(this.signForm.userMail)) {
+        this.signValidation.emailType = '正しい形式で入力してください';
+        console.log('email NG type');
+      } else {
+        UserMail = true;
+        console.log('email OK');
+      }
+      if (UserMail === true) {
+        this.signValidation.email = '';
+        this.signValidation.emailType = '';
+      }
+      return UserMail;
+    },
+    // Email(check) validation Check
+    checkEmailCheck() {
+      let UserMailCheck = false;
+      this.signValidation.emailCheck = '';
+      this.signValidation.emailTypeCheck = '';
+      if (!this.signForm.userMailCheck) {
+        this.signValidation.emailCheck = '未入力です';
+        console.log('email check NG no data');
+      } else if (!this.checkEmailString(this.signForm.userMailCheck)) {
+        this.signValidation.emailTypeCheck = '正しい形式で入力してください';
+        console.log('email check NG type');
+      } else {
+        UserMailCheck = true;
+        console.log('email OK');
+      }
+      if (UserMailCheck === true) {
+        this.signValidation.emailCheck = '';
+        this.signValidation.emailTypeCheck = '';
+      }
+      return UserMailCheck;
+    },
+    // Email equal Check
+    checkEmailEqual() {
+      let UserMailChecking = false;
+      this.signValidation.emailEqual = '';
+      if (this.signForm.userMailCheck !== this.signForm.userMail) {
+        this.signValidation.emailEqual = 'メールアドレスが一致しません';
+        console.log('email equal NG');
+      } else {
+        UserMailChecking = true;
+        console.log('email equal OK');
+      }
+      if (UserMailChecking === true) {
+        this.signValidation.emailEqual = '';
+      }
+      return UserMailChecking;
+    },
+    // Password validation Check
+    checkPass() {
+      let UserPass = false;
+      this.signValidation.password = '';
+      this.signValidation.passwordType = '';
+      this.signValidation.passwordLength = '';
+      if (!this.signForm.userPass) {
+        this.signValidation.password = '未入力です';
+        console.log('pass NG nodata');
+      } else if (!this.checkPassString(this.signForm.userPass)) {
+        this.signValidation.passwordType = '半角英数で入力してください';
+        console.log('pass NG type');
+      } else if (!this.checkMinCount(this.signForm.userPass)) {
+        this.signValidation.passwordLength = '8文字以上入力してください';
+        console.log('pass NG length');
+      } else {
+        UserPass = true;
+        console.log('pass OK');
+      }
+      if (UserPass === true) {
+        this.signValidation.password = '';
+        this.signValidation.passwordType = '';
+        this.signValidation.passwordLength = '';
+      }
+      return UserPass;
+    },
+    // Password(check) validation Check
+    checkPassCheck() {
+      let UserPassCheck = false;
+      this.signValidation.passwordCheck = '';
+      this.signValidation.passwordTypeCheck = '';
+      this.signValidation.passwordLengthCheck = '';
+      if (!this.signForm.userPassCheck) {
+        this.signValidation.passwordCheck = '未入力です';
+        console.log('pass check NG no data');
+      } else if (!this.checkPassString(this.signForm.userPassCheck)) {
+        this.signValidation.passwordTypeCheck = '半角英数で入力してください';
+        console.log('pass check NG type');
+      } else if (!this.checkMinCount(this.signForm.userPassCheck)) {
+        this.signValidation.passwordLengthCheck = '8文字以上入力してください';
+        console.log('pass check NG length');
+      } else {
+        UserPassCheck = true;
+        console.log('pass check OK');
+      }
+      if (UserPassCheck === true) {
+        this.signValidation.passwordCheck = '';
+        this.signValidation.passwordTypeCheck = '';
+        this.signValidation.passwordLengthCheck = '';
+      }
+      return UserPassCheck;
+    },
+    checkPassEqual() {
+      let UserPassChecking = false;
+      this.signValidation.passwordEqual = '';
+      // Password Checking
+      if (this.signForm.userPassCheck !== this.signForm.userPass) {
+        this.signValidation.passwordEqual = 'パスワードが一致しません';
+        console.log('pass equal NG');
+      } else {
+        UserPassChecking = true;
+        console.log('pass equal OK');
+      }
+      if (UserPassChecking === true) {
+        this.signValidation.passwordEqual = '';
+      }
+      return UserPassChecking;
+    },
+    // Email string Check
+    checkEmailString(inputdata) {
+      const re = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]+.[A-Za-z0-9]+$/;
+      return re.test(inputdata);
+    },
+    // Password string Check
+    checkPassString(inputdata) {
+      const re = /^[A-Za-z0-9]*$/;
+      return re.test(inputdata);
+    },
+    // Minimum number of characters Check
+    checkMinCount(inputdata) {
+      const re = /(?=^.{8,}$)/i;
+      return re.test(inputdata);
+    },
+    // Maxnum number of characters Check
+    checkMaxCount(inputdata) {
+      const re = /(?=^.{0,10}$)/i;
+      return re.test(inputdata);
+    },
+    // Send Username
     sendUsername() {
       this.$emit('inputUsername', this.toUsername);
       console.log(this.toUsername);
@@ -261,7 +570,7 @@ export default {
 }
 .panel .register input[type=submit] {
   align-self: flex-start;
-  margin-top: 20px;
+  margin-top: 25px;
   padding: 10px 0;
   width: 150px;
   background: transparent;
@@ -431,7 +740,7 @@ input {
   background: none;
   border: #d5bdb9 solid 1px;
   color: #d5bdb9;
-  top: 350px;
+  top: 450px;
   right: 30px;
   cursor: pointer;
   transition: transform 0.4s;
@@ -447,7 +756,7 @@ input {
   box-shadow: 5px 14px 20px 0 #986055; /*影の色*/
   width: 100%;
   width: 340px;
-  height: 440px;
+  height: 550px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -512,7 +821,7 @@ input {
   text-align: center;
   font-weight: 100;
   letter-spacing: 2px;
-  margin-top: 0;
+  margin-top: 0px;
   color: #d5bdb9;
   font-family: 'Lora', serif;
   font-weight: bold;
@@ -624,39 +933,13 @@ input[type=radio] {
       transform: translateY(5px);
   }
 }
-.error-message {
-  display: inline-block;
-  position: absolute;
-  left: -5px;
-  bottom: -35px;
-  background: rgba(215, 102, 102, 0.9);
-  padding: 0.8em;
-  z-index: 2;
-  color: #FFF;
-  font-size: 13px;
-  font-size: 0.8125rem;
-  border-radius: 0.25em;
-  visibility: hidden;
-  /* prevent click and touch events */
-  pointer-events: none;
-  opacity: 0;
-  -webkit-transition: opacity 0.2s 0, visibility 0 0.2s;
-  -moz-transition: opacity 0.2s 0, visibility 0 0.2s;
-  transition: opacity 0.2s 0, visibility 0 0.2s;
+.error {
+  color: #c94940;
+  font-size: 5px;
 }
-.error-message::after {
-  /* triangle */
-  content: "";
-  position: absolute;
-  left: 22px;
-  bottom: 100%;
-  height: 0;
-  width: 0;
-  border-bottom: 8px solid rgba(215, 102, 102, 0.9);
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-}
-.msgShow {
-  visibility: visible;
+.error-register {
+  color: #c94940;
+  font-size: 10px;
+  text-align: center;
 }
 </style>
