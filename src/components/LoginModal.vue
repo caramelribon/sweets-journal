@@ -8,29 +8,51 @@
         <div class="login is-active">
           <div class="w-full max-w-xm">
             <h1 class="m-2">LOGIN</h1>
-            <div class="group mb-4">
-              <i class="fa fa-envelope" aria-hidden="true"></i>
-              <input
-                v-model="usermail"
-                required
-                type="text"
-                id="emailLogin"
-                placeholder="E-Mail"
-                name="mailLogin"/>
-              <label for="emailLogin"></label>
-            </div>
-            <div class="group mb-6">
-              <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-              <input
-                v-model="userpass"
-                required
-                type="password"
-                id="passwordLogin"
-                placeholder="Password"
-                name="pswLogin"/>
-              <label for="passwordLogin"></label>
-            </div>
-            <input type="submit" value="LOGIN" @click="onClickLogIn"/>
+            <p class="error-login">{{ loginError }}</p>
+            <form class="w-full" @submit.prevent="onLogIn">
+              <div class="group mb-4">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <input
+                  v-model="loginForm.userMail"
+                  required
+                  type="text"
+                  id="emailLogin"
+                  placeholder="E-Mail"
+                  name="mailLogin"/>
+                <label for="emailLogin"></label>
+                <span class="error-email flex px-1">
+                  <p class="error">
+                    {{ loginValidation.email }}
+                  </p>
+                  <p class="error px-1">
+                    {{ loginValidation.emailType }}
+                  </p>
+                </span>
+              </div>
+              <div class="group mb-6">
+                <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                <input
+                  v-model="loginForm.userPass"
+                  required
+                  type="password"
+                  id="passwordLogin"
+                  placeholder="Password"
+                  name="pswLogin"/>
+                <label for="passwordLogin"></label>
+                <span class="error-password flex mx-1">
+                  <p class="error">
+                    {{ loginValidation.password }}
+                  </p>
+                  <p class="error px-1">
+                    {{ loginValidation.passwordType }}
+                  </p>
+                  <p class="error">
+                    {{ loginValidation.passwordLength }}
+                  </p>
+                </span>
+              </div>
+              <input type="submit" value="LOGIN" @click="checkValidationLogin"/>
+            </form>
             <label class="button-open lora" for="switch-open">
               SIGN UP
               <i class="fa fa-user-plus" aria-hidden="true"></i>
@@ -46,8 +68,8 @@
           <div class="inner">
             <h1 classs="beige">REGISTER</h1>
             <p class="error-register">{{ signupError }}</p>
-            <!-- user name -->
             <form class="w-full" @submit.prevent="onSignUp">
+              <!-- user name -->
               <div class="group"><i class="fa fa-user" aria-hidden="true"></i>
                 <input
                   type="text"
@@ -97,13 +119,13 @@
                 <label for="emailCheck"></label>
                 <!-- error message (email) -->
                 <span class="error-email flex px-1">
-                  <p class="error" v-if="signValidation.emailCheck !== null">
+                  <p class="error">
                     {{ signValidation.emailCheck }}
                   </p>
-                  <p class="error px-1" v-if="signValidation.emailTypeCheck !== null">
+                  <p class="error px-1">
                     {{ signValidation.emailTypeCheck }}
                   </p>
-                  <p class="error" v-if="signValidation.emailEqual !== null">
+                  <p class="error">
                     {{ signValidation.emailEqual }}
                   </p>
                 </span>
@@ -120,16 +142,16 @@
                 />
                 <label for="password"></label>
                 <span class="error-email flex mx-1">
-                    <p class="error" v-if="signValidation.password !== null">
+                    <p class="error">
                       {{ signValidation.password }}
                     </p>
-                    <p class="error px-1" v-if="signValidation.passwordType !== null">
+                    <p class="error px-1">
                       {{ signValidation.passwordType }}
                     </p>
-                    <p class="error" v-if="signValidation.passwordLength !== null">
+                    <p class="error">
                       {{ signValidation.passwordLength }}
                     </p>
-                    <p class="error px-1" v-if="signValidation.passwordEqual !== null">
+                    <p class="error px-1">
                       {{ signValidation.passwordEqual }}
                     </p>
                 </span>
@@ -146,21 +168,21 @@
                 />
                 <label for="passwordCheck"></label>
                 <span class="error-email flex px-1">
-                    <p class="error" v-show="signValidation.passwordCheck !== null">
+                    <p class="error">
                       {{ signValidation.passwordCheck }}
                     </p>
-                    <p class="error px-1" v-show="signValidation.passwordTypeCheck !== null">
+                    <p class="error px-1">
                       {{ signValidation.passwordTypeCheck }}
                     </p>
-                    <p class="error" v-show="signValidation.passwordLengthCheck !== null">
+                    <p class="error">
                       {{ signValidation.passwordLengthCheck }}
                     </p>
-                    <p class="error px-1" v-show="signValidation.passwordEqual !== null">
+                    <p class="error px-1">
                       {{ signValidation.passwordEqual }}
                     </p>
                 </span>
               </div>
-              <input type="submit" value="REGISTER" @click="checkValidation"/>
+              <input type="submit" value="REGISTER" @click="checkValidationSign"/>
             </form>
           </div>
         </div>
@@ -176,9 +198,19 @@ import firebase from 'firebase/app';
 export default {
   data() {
     return {
-      usermail: '',
-      userpass: '',
-      toUsername: null,
+      loginError: '',
+      loginForm: {
+        userMail: null,
+        userPass: null,
+      },
+      loginValidation: {
+        email: '',
+        emailType: '',
+        password: '',
+        passwordType: '',
+        passwordLength: '',
+      },
+      signupError: '',
       signForm: {
         userMail: null,
         userMailCheck: null,
@@ -202,35 +234,50 @@ export default {
         passwordTypeCheck: '',
         passwordLengthCheck: '',
       },
-      loginValidation: {
-        email: '',
-        emailEqual: '',
-        emailType: '',
-        password: '',
-        passwordEqual: '',
-        passwordType: '',
-        passwordLength: '',
-      },
-      signupError: '',
+      toUsername: null,
     };
   },
   methods: {
-    onClickLogIn() {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(this.usermail, this.userpass)
-        .then(() => {
-          // ログインに成功したときの処理
-          console.log('ログインしました');
-        })
-        .catch((error) => {
-          // ログインに失敗したときの処理
-          console.error('ログインエラー', error);
-        });
+    async onLogIn() {
+      this.loginError = '';
+      const result = await this.checkValidationLogin();
+      if (result === true) {
+        console.log('All OK');
+        // Login
+        firebase
+          .auth()
+          .signInWithEmailAndPassword(this.loginForm.userMail, this.loginForm.userPass)
+          .then(() => {
+            // ログインに成功したときの処理
+            console.log('ログインしました');
+          })
+          .catch((error) => {
+            // ログインに失敗したときの処理
+            this.loginError = 'ログインできませんでした';
+            console.error('ログインエラー', error);
+          });
+      } else {
+        this.loginError = 'フォームに誤りがあります';
+        console.log(this.loginError);
+      }
+    },
+    async checkValidationLogin() {
+      let valid = false;
+      const resultEmail = await this.checkEmailLogin();
+      const resultPass = await this.checkPassLogin();
+      if (resultEmail === true && resultPass === true) {
+        valid = true;
+        console.log('OK');
+      } else {
+        valid = false;
+        this.loginError = 'フォームに誤りがあります';
+        console.log('NG');
+      }
+      return valid;
     },
     async onSignUp() {
       this.signupError = '';
-      const result = await this.checkValidation();
+      const result = await this.checkValidationSign();
       if (result === true) {
         console.log('All OK');
         // Signup
@@ -260,7 +307,7 @@ export default {
           })
           .catch((error) => {
             // 登録に失敗したときの処理
-            alert('登録できませんでした', error);
+            this.signupError = '登録できませんでした';
             console.error('登録エラー', error);
           });
       } else {
@@ -268,13 +315,13 @@ export default {
         console.log(this.signupError);
       }
     },
-    async checkValidation() {
+    async checkValidationSign() {
       let valid = false;
       const resultUsername = await this.checkUsername();
-      const resultEmail = await this.checkEmail();
+      const resultEmail = await this.checkEmailSign();
       const resultEmailCheck = await this.checkEmailCheck();
       const resultEmailEqual = await this.checkEmailEqual();
-      const resultPass = await this.checkPass();
+      const resultPass = await this.checkPassSign();
       const resultPassCheck = await this.checkPassCheck();
       const resultPassEqual = await this.checkPassEqual();
       if (resultUsername === true && resultEmail === true
@@ -287,6 +334,53 @@ export default {
         console.log('NG');
       }
       return valid;
+    },
+    // Email validation Check
+    checkEmailLogin() {
+      let UserMail = false;
+      this.loginValidation.email = '';
+      this.loginValidation.emailType = '';
+      if (!this.loginForm.userMail) {
+        this.loginValidation.email = '未入力です';
+        console.log('email NG no data');
+      } else if (!this.checkEmailString(this.loginForm.userMail)) {
+        this.loginValidation.emailType = '正しい形式で入力してください';
+        console.log('email NG type');
+      } else {
+        UserMail = true;
+        console.log('email OK');
+      }
+      if (UserMail === true) {
+        this.loginValidation.email = '';
+        this.loginValidation.emailType = '';
+      }
+      return UserMail;
+    },
+    // Password validation Check
+    checkPassLogin() {
+      let UserPass = false;
+      this.loginValidation.password = '';
+      this.loginValidation.passwordType = '';
+      this.loginValidation.passwordLength = '';
+      if (!this.loginForm.userPass) {
+        this.loginValidation.password = '未入力です';
+        console.log('pass NG nodata');
+      } else if (!this.checkPassString(this.loginForm.userPass)) {
+        this.loginValidation.passwordType = '半角英数で入力してください';
+        console.log('pass NG type');
+      } else if (!this.checkMinCount(this.loginForm.userPass)) {
+        this.loginValidation.passwordLength = '8文字以上入力してください';
+        console.log('pass NG length');
+      } else {
+        UserPass = true;
+        console.log('pass OK');
+      }
+      if (UserPass === true) {
+        this.loginValidation.password = '';
+        this.loginValidation.passwordType = '';
+        this.loginValidation.passwordLength = '';
+      }
+      return UserPass;
     },
     // Username validation Check
     checkUsername() {
@@ -309,8 +403,8 @@ export default {
       }
       return UserName;
     },
-    // Email validation Check
-    checkEmail() {
+    // Email(check) validation Check
+    checkEmailSign() {
       let UserMail = false;
       this.signValidation.email = '';
       this.signValidation.emailType = '';
@@ -368,7 +462,7 @@ export default {
       return UserMailChecking;
     },
     // Password validation Check
-    checkPass() {
+    checkPassSign() {
       let UserPass = false;
       this.signValidation.password = '';
       this.signValidation.passwordType = '';
@@ -556,6 +650,7 @@ export default {
 .register .group input[type=password]:focus + label::before {
   width: 100%;
 }
+
 .panel .login input[type=submit] {
   align-self: flex-start;
   margin-top: 5px;
@@ -580,6 +675,7 @@ export default {
   cursor: pointer;
   font-family: 'Lora', serif;
 }
+
 @-webkit-keyframes loginOpen {
   0% {
     transform: translateX(140px);
@@ -674,12 +770,14 @@ export default {
     transform: translateX(-140px);
   }
 }
+
 * {
   box-sizing: border-box;
 }
 input {
   outline: none;
 }
+
 .panel {
   width: 640px;
   height: auto;
@@ -695,7 +793,7 @@ input {
 }
 .panel .login {
   width: 300px;
-  height: 380px;
+  height: 420px;
   background: #807b77;
   display: flex;
   justify-content: center;
@@ -710,10 +808,6 @@ input {
   border: #f2ebe5 solid 1px;
   color: #f2ebe5;
 }
-.panel .register {
-  transform: translateX(-140px);
-  position: relative;
-}
 .panel .login .button-open {
   position: absolute;
   width: 110px;
@@ -722,7 +816,7 @@ input {
   background: none;
   border: #f2ebe5 solid 1px;
   color: #f2ebe5;
-  top: 270px;
+  top: 320px;
   right: 15px;
   cursor: pointer;
   transition: transform 0.4s;
@@ -731,6 +825,11 @@ input {
   transition: all 0.2s linear;
   margin: 7% auto;
   letter-spacing: 0.05em;
+}
+
+.panel .register {
+  transform: translateX(-140px);
+  position: relative;
 }
 .panel .register .button-close {
   position: absolute;
@@ -767,6 +866,10 @@ input {
   border: #d5bdb9 solid 1px;
   color: #d5bdb9;
 }
+.button-close {
+  visibility: hidden;
+}
+
 .login h1 {
   text-align: center;
   font-weight: 100;
@@ -817,6 +920,7 @@ input {
   background: #f2ebe5; /*navypink入力フォームの上線(入力した後)*/
   transition: width 0.5s;
 }
+
 .register h1 {
   text-align: center;
   font-weight: 100;
@@ -865,9 +969,7 @@ input {
   background: #d5bdb9; /*navypink入力フォームの上線(入力した後)*/
   transition: width 0.5s;
 }
-.button-close {
-  visibility: hidden;
-}
+
 input[id=switch-open]:checked ~ .login {
   filter: blur(5px);
   -webkit-animation: loginOpen forwards 0.8s;
@@ -900,6 +1002,7 @@ input[id=switch-close]:checked ~ .register > .inner {
 input[type=radio] {
   display: none;
 }
+
 /* button hover Animation */
 .panel .login input[type=submit]:hover {
   background-color: #a8a39e;
@@ -933,11 +1036,18 @@ input[type=radio] {
       transform: translateY(5px);
   }
 }
+
+/* error message */
 .error {
   color: #c94940;
   font-size: 5px;
 }
 .error-register {
+  color: #c94940;
+  font-size: 10px;
+  text-align: center;
+}
+.error-login {
   color: #c94940;
   font-size: 10px;
   text-align: center;
