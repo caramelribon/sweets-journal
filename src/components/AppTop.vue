@@ -98,7 +98,7 @@
                                   2xl:w-72
                                   w-40">
                         <select
-                          v-model="type"
+                          v-model="genre"
                           class="sel-form
                                  select-text
                                  block appearance-none
@@ -113,16 +113,64 @@
                                  focus:outline-none">
                           <option
                             value=""
-                            disabled selected
                             class="kaisei-medium lora">
+                            すべて
                           </option>
                           <option
-                            value="restaurant"
-                            class="kaisei-medium lora">Restaurant
+                            value="G005"
+                            class="kaisei-medium lora">洋食
                           </option>
                           <option
-                            value="cafe"
-                            class="kaisei-medium lora">Cafe
+                            value="G004"
+                            class="kaisei-medium lora">和食
+                          </option>
+                          <option
+                            value="G007"
+                            class="kaisei-medium lora">中華
+                          </option>
+                          <option
+                            value="G006"
+                            class="kaisei-medium lora">Italian・French
+                          </option>
+                          <option
+                            value="G017"
+                            class="kaisei-medium lora">韓国料理
+                          </option>
+                          <option
+                            value="G009"
+                            class="kaisei-medium lora">Asian・Ethnic
+                          </option>
+                          <option
+                            value="G010"
+                            class="kaisei-medium lora">各国料理
+                          </option>
+                          <option
+                            value="G003"
+                            class="kaisei-medium lora">創作料理
+                          </option>
+                          <option
+                            value="G001"
+                            class="kaisei-medium lora">居酒屋
+                          </option>
+                          <option
+                            value="G002"
+                            class="kaisei-medium lora">Bar
+                          </option>
+                          <option
+                            value="G016"
+                            class="kaisei-medium lora">お好み焼き
+                          </option>
+                          <option
+                            value="G013"
+                            class="kaisei-medium lora">ラーメン
+                          </option>
+                          <option
+                            value="G014"
+                            class="kaisei-medium lora">カフェ
+                          </option>
+                          <option
+                            value="G015"
+                            class="kaisei-medium lora">その他
                           </option>
                         </select>
                         <span class="select-highlight"></span>
@@ -133,7 +181,7 @@
                                      xl:w-72
                                      2xl:w-72
                                      w-40"></span>
-                        <label class="select-label">Category</label>
+                        <label class="select-label">Genre</label>
                       </div>
                     </div>
                     <div class="area
@@ -166,15 +214,15 @@
                             class="kaisei-medium lora">
                           </option>
                           <option
-                            value="500"
+                            value="2"
                             class="kaisei-medium lora">半径 500 m以内
                           </option>
                           <option
-                            value="1000"
+                            value="3"
                             class="kaisei-medium lora">半径 1 km以内
                           </option>
                           <option
-                            value="3000"
+                            value="5"
                             class="kaisei-medium lora">半径 3 km以内
                           </option>
                         </select>
@@ -454,8 +502,9 @@
 
 <script>
 import $ from 'jquery';
+// import axios from 'axios';
 import firebase from 'firebase/app';
-import GoogleMapsApiLoader from 'google-maps-api-loader';
+// import GoogleMapsApiLoader from 'google-maps-api-loader';
 import {
   getRankingFavorited,
   getRankingMarked,
@@ -480,14 +529,14 @@ export default {
       bookmarks: [],
       currentUID: null,
       favorites: [],
-      google: null,
-      google_shop: null,
+      // google: null,
+      // google_shop: null,
       isActive: true,
       lat: '',
       lng: '',
       loginModal: false,
       radius: '',
-      type: '',
+      genre: '',
       places: [],
       ranking: true,
       swiperOption: {
@@ -525,6 +574,7 @@ export default {
         this.isActive = true;
       }
     });
+    /*
     // 検索用のgoogle
     this.google = await GoogleMapsApiLoader({
       libraries: ['places'],
@@ -534,6 +584,7 @@ export default {
     this.google_shop = await GoogleMapsApiLoader({
       apiKey: process.env.VUE_APP_GOOGLEMAPS_APIKEY,
     });
+    */
     this.wayPoints();
     this.updateButton();
   },
@@ -571,11 +622,13 @@ export default {
     },
     // 現在地の緯度と経度の取得
     async getCurrentLatLng() {
+      /*
       // 検索用のgoogle
       this.google = await GoogleMapsApiLoader({
         libraries: ['places'],
         apiKey: process.env.VUE_APP_GOOGLEMAPS_APIKEY,
       });
+      */
       navigator.geolocation.getCurrentPosition(this.success, this.error);
     },
     // 検索に成功したとき
@@ -590,49 +643,19 @@ export default {
       console.log(err.message);
     },
     // 現在地周辺の地図とお店の取得
-    searchPlace() {
-      this.places = [];
-      this.currentState = 'IS_FETCHING';
-      if (this.radius === '' || this.type === '') {
-        this.currentState = 'IS_FAILED';
-      } else {
-        const currentlatlng = new this.google.maps.LatLng(this.lat, this.lng);
-        const map = new this.google.maps.Map(document.getElementById('map'), {
-          center: currentlatlng,
-          zoom: 15,
-        });
-        // 検索結果からお店の名前をplacesに入れる
-        const callback = (results, status) => {
-          if (status === this.google.maps.places.PlacesServiceStatus.OK) {
-            this.currentState = 'IS_FOUND';
-            for (let i = 0; i < results.length; i += 1) {
-              const place = results[i];
-              const shopid = place.place_id;
-              const shopname = place.name;
-              const photos = place.photos;
-              const url = photos[0].getUrl({ width: 300, height: 400 });
-              const shopadd = place.vicinity;
-              const hairetsu = {
-                id: shopid,
-                name: shopname,
-                add: shopadd,
-                photourl: url,
-              };
-              this.places.push(hairetsu);
-            }
-            console.log(this.places);
-          }
-        };
-        // 検索条件
-        const request = {
-          location: currentlatlng,
-          radius: this.radius,
-          type: [this.type],
-        };
-        // nearbySearchで検索
-        const service = new this.google.maps.places.PlacesService(map);
-        service.nearbySearch(request, callback);
-      }
+    async searchPlace() {
+      $.ajax({
+        url: `https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=${process.env.VUE_APP_HOTPEPPER_APIKEY}&lat=${this.lat}&lng=${this.lng}&range=${this.radius}&genre=${this.genre}&order=4&format=jsonp&count=100`,
+        type: 'GET',
+        dataType: 'jsonp',
+        jsonpCallback: 'callback',
+      }).done((data) => {
+        const results = data;
+        console.log(results);
+        console.log(results.results.results_available);
+      }).fail(() => {
+        console.log('エラー');
+      });
     },
     // お気に入り機能
     async onFavorite(place) {
@@ -698,7 +721,7 @@ export default {
         placeId: id,
       };
       const callback = (result, status) => {
-        if (status === this.google_shop.maps.places.PlacesServiceStatus.OK) {
+        if (status === this.google_shop.maps.places.PlacesResultStatus.OK) {
           console.log(result);
           // placesにデータを保存
           const docRef = dbPlace.doc(id);
@@ -715,7 +738,7 @@ export default {
           });
         }
       };
-      const service = new this.google_shop.maps.places.PlacesService(shop);
+      const service = new this.google_shop.maps.places.PlacesResult(shop);
       service.getDetails(request, callback);
     },
     // お気に入り解除機能
