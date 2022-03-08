@@ -872,16 +872,16 @@ export default {
               console.log('Can not register activities!', err);
             });
             // place_idのお店が登録してあるか確認
-            await this.searchFavPlace(place.id);
+            await this.searchFavPlace(place);
           }
         })
         .catch((error) => {
           console.log('Can not register favorite shop!', error);
         });
     },
-    searchFavPlace(placeId) {
+    searchFavPlace(place) {
       const dbPlace = firebase.firestore().collection('places');
-      const docRef = dbPlace.doc(placeId);
+      const docRef = dbPlace.doc(place.id);
       docRef.get().then(async (doc) => {
         if (doc.exists) {
           // お店の情報がすでに登録されていたら、favorite_countを+1して更新
@@ -891,39 +891,31 @@ export default {
           });
         } else {
           // 登録されていなかったら、お店の情報を登録
-          await this.getFavPlaceData(placeId);
+          await this.getFavPlaceData(place);
           await postPlaceCount();
         }
       }).catch((err) => {
         console.log('Can not search favorited place!', err);
       });
     },
-    getFavPlaceData(id) {
+    getFavPlaceData(place) {
       const dbPlace = firebase.firestore().collection('places');
-      const shop = new this.google_shop.maps.Map(document.getElementById('map'));
-      const request = {
-        placeId: id,
-      };
-      const callback = (result, status) => {
-        if (status === this.google_shop.maps.places.PlacesResultStatus.OK) {
-          console.log(result);
-          // placesにデータを保存
-          const docRef = dbPlace.doc(id);
-          docRef.set({
-            id: result.place_id,
-            name: result.name,
-            add_short: result.vicinity,
-            website: result.website,
-            all_rating: result.rating,
-            favorite_count: 1,
-            bookmark_count: 0,
-            photo_1: result.photos[0].getUrl({ width: 300, height: 400 }),
-            create_at: firebase.firestore.FieldValue.serverTimestamp(),
-          });
-        }
-      };
-      const service = new this.google_shop.maps.places.PlacesResult(shop);
-      service.getDetails(request, callback);
+      // placesにデータを保存
+      const docRef = dbPlace.doc(place.id);
+      docRef.set({
+        id: place.id,
+        name: place.name,
+        address: place.address,
+        access: place.access,
+        average: place.average,
+        catchcopy: place.catchcopy,
+        open: place.open,
+        photo: place.photo,
+        url: place.url,
+        favorite_count: 1,
+        bookmark_count: 0,
+        create_at: firebase.firestore.FieldValue.serverTimestamp(),
+      });
     },
     // お気に入り解除機能
     async offFavorite(place) {
@@ -963,16 +955,16 @@ export default {
               console.log('Can not register activities!', err);
             });
             // place_idのお店が登録してあるか確認
-            await this.searchBmPlace(place.id);
+            await this.searchBmPlace(place);
           }
         })
         .catch((error) => {
           console.log('Can not register bookmark shop!', error);
         });
     },
-    searchBmPlace(placeId) {
+    searchBmPlace(place) {
       const dbPlace = firebase.firestore().collection('places');
-      const docRef = dbPlace.doc(placeId);
+      const docRef = dbPlace.doc(place.id);
       docRef.get().then(async (doc) => {
         if (doc.exists) {
           // お店の情報がすでに登録されていたら、bookmark_countを+1して更新
@@ -982,39 +974,31 @@ export default {
           });
         } else {
           // 登録されていなかったら、お店の情報を登録
-          await this.getBmPlaceData(placeId);
+          await this.getBmPlaceData(place);
           await postPlaceCount();
         }
       }).catch((err) => {
         console.log('Can not search bookmarked place!', err);
       });
     },
-    getBmPlaceData(id) {
+    getBmPlaceData(place) {
       const dbPlace = firebase.firestore().collection('places');
-      const shop = new this.google_shop.maps.Map(document.getElementById('map'));
-      const request = {
-        placeId: id,
-      };
-      const callback = (result, status) => {
-        if (status === this.google_shop.maps.places.PlacesServiceStatus.OK) {
-          console.log(result);
-          // placesにデータを保存
-          const docRef = dbPlace.doc(id);
-          docRef.set({
-            id: result.place_id,
-            name: result.name,
-            add_short: result.vicinity,
-            website: result.website,
-            all_rating: result.rating,
-            favorite_count: 0,
-            bookmark_count: 1,
-            photo_1: result.photos[0].getUrl({ width: 300, height: 400 }),
-            create_at: firebase.firestore.FieldValue.serverTimestamp(),
-          });
-        }
-      };
-      const service = new this.google_shop.maps.places.PlacesService(shop);
-      service.getDetails(request, callback);
+      // placesにデータを保存
+      const docRef = dbPlace.doc(place.id);
+      docRef.set({
+        id: place.id,
+        name: place.name,
+        address: place.address,
+        access: place.access,
+        average: place.average,
+        catchcopy: place.catchcopy,
+        open: place.open,
+        photo: place.photo,
+        url: place.url,
+        favorite_count: 0,
+        bookmark_count: 1,
+        create_at: firebase.firestore.FieldValue.serverTimestamp(),
+      });
     },
     // 気になる解除機能
     async offBookmark(place) {
