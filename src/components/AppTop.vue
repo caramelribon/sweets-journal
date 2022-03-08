@@ -552,6 +552,10 @@ export default {
       userLikedPlaceId: [],
       userBookmarkPlaceId: [],
       currentState: 'IS_INITIALIZED',
+      allDataNum: 1,
+      startNum: 1,
+      countNum: 0,
+      DATA: [],
     };
   },
   async mounted() {
@@ -643,19 +647,64 @@ export default {
       console.log(err.message);
     },
     // 現在地周辺の地図とお店の取得
-    async searchPlace() {
+    searchPlace() {
+      this.startNum = 1;
+      this.allDataNum = 1;
+      this.countNum = 0;
+      this.DATA = [];
       $.ajax({
-        url: `https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=${process.env.VUE_APP_HOTPEPPER_APIKEY}&lat=${this.lat}&lng=${this.lng}&range=${this.radius}&genre=${this.genre}&order=4&format=jsonp&count=100`,
+        url: `https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=${process.env.VUE_APP_HOTPEPPER_APIKEY}&lat=${this.lat}&lng=${this.lng}&range=${this.radius}&genre=${this.genre}&order=4&format=jsonp&start=${this.startNum}&count=5`,
         type: 'GET',
         dataType: 'jsonp',
         jsonpCallback: 'callback',
-      }).done((data) => {
-        const results = data;
-        console.log(results);
-        console.log(results.results.results_available);
+      }).done((res) => {
+        console.log(res);
+        const data = res.results.shop;
+        for (let i = 0; i < data.length; i += 1) {
+          const place = data[i];
+          this.DATA.push(place);
+        }
+        this.allDataNum = res.results.results_available;
+        const getDataNum = Number(res.results.results_returned);
+        this.countNum += getDataNum;
+        this.startNum = this.countNum + 1;
+        console.log(this.allDataNum);
+        console.log(this.countNum);
+        console.log(this.startNum);
+        if (this.allDataNum !== this.countNum) {
+          this.getData();
+        }
       }).fail(() => {
         console.log('エラー');
       });
+    },
+    getData() {
+      $.ajax({
+        url: `https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=${process.env.VUE_APP_HOTPEPPER_APIKEY}&lat=${this.lat}&lng=${this.lng}&range=${this.radius}&genre=${this.genre}&order=4&format=jsonp&start=${this.startNum}&count=5`,
+        type: 'GET',
+        dataType: 'jsonp',
+        jsonpCallback: 'callback',
+      }).done((res) => {
+        console.log(res);
+        const data = res.results.shop;
+        for (let i = 0; i < data.length; i += 1) {
+          const place = data[i];
+          this.DATA.push(place);
+        }
+        this.allDataNum = res.results.results_available;
+        const getDataNum = Number(res.results.results_returned);
+        this.countNum += getDataNum;
+        this.startNum = this.countNum + 1;
+        console.log(this.allDataNum);
+        console.log(this.countNum);
+        console.log(this.startNum);
+        if (this.allDataNum !== this.countNum) {
+          setTimeout(this.getData, 1000);
+        }
+      }).fail(() => {
+        console.log('エラー');
+      });
+      console.log(this.DATA);
     },
     // お気に入り機能
     async onFavorite(place) {
