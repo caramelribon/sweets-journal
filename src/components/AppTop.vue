@@ -130,7 +130,7 @@
                           </option>
                           <option
                             value="G006"
-                            class="kaisei-medium lora">Italian・French
+                            class="kaisei-medium lora">Italian&French
                           </option>
                           <option
                             value="G017"
@@ -138,7 +138,7 @@
                           </option>
                           <option
                             value="G009"
-                            class="kaisei-medium lora">Asian・Ethnic
+                            class="kaisei-medium lora">Asian&Ethnic
                           </option>
                           <option
                             value="G010"
@@ -281,7 +281,6 @@
         </span>
       </div>
       <!-- Place Serch Results (検索結果)-->
-      <div id="map"></div>
       <div
         v-show="currentState === 'IS_FOUND'"
         class="navypink-bg h-auto">
@@ -301,15 +300,18 @@
               <!-- shop layout -->
               <div class="m-4">
                 <!-- shop image -->
-                <div class="place-image">
-                  <img v-bind:src="place.photourl" width="300" height="300">
+                <div class="place-image text-center mx-3">
+                  <img :src="place.photo" width="300" height="300" class="place-photo">
                 </div>
                 <!-- shop description and button(favorite and mark) -->
                 <div class="place-description">
                   <!-- shop name -->
-                  <div class="place-name flex justify-center items-center pb-1 pt-5">
-                    <p class="text-beige text-center kaisei-medium">
+                  <div class="place-name m-3 text-center">
+                    <p class="text-beige text-center kaisei-medium my-5">
                       {{ place.name }}
+                    </p>
+                    <p class="text-beige text-center kaisei-medium text-xs my-4">
+                      {{ place.access }}
                     </p>
                   </div>
                   <!-- button-area-gap -->
@@ -648,21 +650,88 @@ export default {
     },
     // 現在地周辺の地図とお店の取得
     searchPlace() {
+      this.currentState = 'IS_FETCHING';
       this.startNum = 1;
       this.allDataNum = 1;
       this.countNum = 0;
-      this.DATA = [];
+      this.places = [];
       $.ajax({
         url: `https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=${process.env.VUE_APP_HOTPEPPER_APIKEY}&lat=${this.lat}&lng=${this.lng}&range=${this.radius}&genre=${this.genre}&order=4&format=jsonp&start=${this.startNum}&count=5`,
         type: 'GET',
         dataType: 'jsonp',
         jsonpCallback: 'callback',
       }).done((res) => {
+        this.currentState = 'IS_FOUND';
         console.log(res);
         const data = res.results.shop;
         for (let i = 0; i < data.length; i += 1) {
           const place = data[i];
-          this.DATA.push(place);
+          let placeAccess = '';
+          let placeAddress = '';
+          let placeAverage = '';
+          let placeCatch = '';
+          let placeId = '';
+          let placeName = '';
+          let placeOpen = '';
+          let placePhoto = '';
+          let placeUrl = '';
+          if (place.access === null) {
+            placeAccess = '';
+          } else {
+            placeAccess = place.access;
+          }
+          if (place.address === null) {
+            placeAddress = '';
+          } else {
+            placeAddress = place.address;
+          }
+          if (place.budget.average === null) {
+            placeAverage = '';
+          } else {
+            placeAverage = place.budget.average;
+          }
+          if (place.genre.catch === null) {
+            placeCatch = '';
+          } else {
+            placeCatch = place.genre.catch;
+          }
+          if (place.id === null) {
+            placeId = '';
+          } else {
+            placeId = place.id;
+          }
+          if (place.name === null) {
+            placeName = '';
+          } else {
+            placeName = place.name;
+          }
+          if (place.open === null) {
+            placeOpen = '';
+          } else {
+            placeOpen = place.open;
+          }
+          if (place.photo.pc.l === null) {
+            placePhoto = '';
+          } else {
+            placePhoto = place.photo.pc.l;
+          }
+          if (place.urls.pc === null) {
+            placeUrl = '';
+          } else {
+            placeUrl = place.urls.pc;
+          }
+          const placeData = {
+            id: placeId,
+            name: placeName,
+            address: placeAddress,
+            access: placeAccess,
+            average: placeAverage,
+            catchcopy: placeCatch,
+            open: placeOpen,
+            photo: placePhoto,
+            url: placeUrl,
+          };
+          this.places.push(placeData);
         }
         this.allDataNum = res.results.results_available;
         const getDataNum = Number(res.results.results_returned);
@@ -676,6 +745,7 @@ export default {
         }
       }).fail(() => {
         console.log('エラー');
+        this.currentState = 'IS_FAILED';
       });
     },
     getData() {
@@ -689,7 +759,72 @@ export default {
         const data = res.results.shop;
         for (let i = 0; i < data.length; i += 1) {
           const place = data[i];
-          this.DATA.push(place);
+          let placeAccess = '';
+          let placeAddress = '';
+          let placeAverage = '';
+          let placeCatch = '';
+          let placeId = '';
+          let placeName = '';
+          let placeOpen = '';
+          let placePhoto = '';
+          let placeUrl = '';
+          if (place.access === null) {
+            placeAccess = '';
+          } else {
+            placeAccess = place.access;
+          }
+          if (place.address === null) {
+            placeAddress = '';
+          } else {
+            placeAddress = place.address;
+          }
+          if (place.budget.average === null) {
+            placeAverage = '';
+          } else {
+            placeAverage = place.budget.average;
+          }
+          if (place.genre.catch === null) {
+            placeCatch = '';
+          } else {
+            placeCatch = place.genre.catch;
+          }
+          if (place.id === null) {
+            placeId = '';
+          } else {
+            placeId = place.id;
+          }
+          if (place.name === null) {
+            placeName = '';
+          } else {
+            placeName = place.name;
+          }
+          if (place.open === null) {
+            placeOpen = '';
+          } else {
+            placeOpen = place.open;
+          }
+          if (place.photo.pc.l === null) {
+            placePhoto = '';
+          } else {
+            placePhoto = place.photo.pc.l;
+          }
+          if (place.urls.pc === null) {
+            placeUrl = '';
+          } else {
+            placeUrl = place.urls.pc;
+          }
+          const placeData = {
+            id: placeId,
+            name: placeName,
+            address: placeAddress,
+            access: placeAccess,
+            average: placeAverage,
+            catchcopy: placeCatch,
+            open: placeOpen,
+            photo: placePhoto,
+            url: placeUrl,
+          };
+          this.places.push(placeData);
         }
         this.allDataNum = res.results.results_available;
         const getDataNum = Number(res.results.results_returned);
@@ -704,7 +839,7 @@ export default {
       }).fail(() => {
         console.log('エラー');
       });
-      console.log(this.DATA);
+      console.log(this.places);
     },
     // お気に入り機能
     async onFavorite(place) {
@@ -1312,7 +1447,6 @@ option {
 }
 .select-text:focus {
   outline: none;
-  border-bottom: 3px solid rgba(0,0,0,0);
 }
 .select .select-text {
   appearance: none;
@@ -1452,19 +1586,9 @@ option {
   display: inline-box;
   float: left;
 }
-.place-name {
-  width: 300px;
-  height: 60px;
-}
-.place-image {
-  -moz-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
-  -webkit-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
-  -ms-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
-  box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
-}
 .button-area-gap {
   width: 300px;
-  height: 5px;
+  height: 10px;
 }
 .button-area {
   width: 300px;
@@ -1713,14 +1837,15 @@ button:disabled {
   transform: translateX(-100%);
 }
 .place-image {
+  width: 300px;
   -moz-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
   -webkit-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
   -ms-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
   box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
 }
 .place-name {
-  width: 260px;
-  height: 60px;
+  width: 300px;
+  height: auto;
 }
 
 /* 回転するアニメーション */
