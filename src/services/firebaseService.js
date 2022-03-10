@@ -38,11 +38,11 @@ export const getRankingMarked = async () => {
 };
 
 export const getFavorite = async (userId) => {
-  const dbFav = firebase.firestore().collection('favorites');
+  const dbFav = firebase.firestore().collection('favorites').where('user_id', '==', userId);
   const dbPlace = firebase.firestore().collection('places');
   const favoriteData = [];
   await dbFav
-    .where('user_id', '==', userId)
+    .orderBy('create_at', 'desc')
     .get()
     .then((snapShot) => {
       snapShot.forEach((doc) => {
@@ -60,11 +60,11 @@ export const getFavorite = async (userId) => {
 };
 
 export const getBookmark = async (userId) => {
-  const dbBm = firebase.firestore().collection('bookmarks');
+  const dbBm = firebase.firestore().collection('bookmarks').where('user_id', '==', userId);
   const dbPlace = firebase.firestore().collection('places');
   const bookmarkData = [];
   await dbBm
-    .where('user_id', '==', userId)
+    .orderBy('create_at', 'desc')
     .get()
     .then((snapShot) => {
       snapShot.forEach((doc) => {
@@ -309,27 +309,30 @@ const getActivityDetailData = async (doc) => {
   const createdate = `${createtime.getFullYear()}/${createtime.getMonth() + 1}/${createtime.getDate()} ${createtime.getHours()}:${createtime.getMinutes()}:${createtime.getSeconds()}`;
 
   // 取得したuser_idからusernameを取得
-  const userinfo = await dbUser.doc(userid).get();
+  const userInfo = await dbUser.doc(userid).get();
 
   // 取得したplace_idからplaceの情報を取得
-  const placeinfo = await dbPlace.doc(placeid).get();
+  const placeInfo = await dbPlace.doc(placeid).get();
 
-  if (!placeinfo.data() || !userinfo.data()) {
+  if (!placeInfo.data() || !userInfo.data()) {
     return null;
   }
 
   return {
     action: useraction,
     created_at: createdate,
-    userName: userinfo.data().username,
-    placeId: placeinfo.data().id,
-    placeName: placeinfo.data().name,
-    placeAdd: placeinfo.data().add_short,
-    placePhoto: placeinfo.data().photo_1,
-    placeWebsite: placeinfo.data().website,
-    placeRating: placeinfo.data().all_rating,
-    placeFavCount: placeinfo.data().favorite_count,
-    placeBmCount: placeinfo.data().bookmark_count,
+    userName: userInfo.data().username,
+    id: placeInfo.data().id,
+    name: placeInfo.data().name,
+    address: placeInfo.data().address,
+    access: placeInfo.data().access,
+    average: placeInfo.data().average,
+    catchcopy: placeInfo.data().catchcopy,
+    open: placeInfo.data().open,
+    photo: placeInfo.data().photo,
+    url: placeInfo.data().url,
+    favorite_count: placeInfo.data().favorite_count,
+    bookmark_count: placeInfo.data().bookmark_count,
   };
 };
 
@@ -422,3 +425,44 @@ export async function getPlaces(limit, pagingToken) {
       });
   });
 }
+
+/*
+export async function getRankingFavorited(limit, pagingToken) {
+  const dbPlace = firebase.firestore().collection('places');
+  return new Promise((resolve, reject) => {
+    let query = dbPlace.orderBy('favorite_count', 'desc').limit(limit);
+
+    if (pagingToken !== null) {
+      const [seconds, nanoseconds] = pagingToken.split(':');
+      const timestamp = new firebase.firestore.Timestamp(seconds, nanoseconds);
+      query = query.startAfter(timestamp);
+    }
+
+    query.get()
+      .then(async (snapshot) => {
+        // limitよりも多い件数データがあるならnextTokenを作成しておく
+        let nextToken = null;
+        if (snapshot.docs.length >= limit) {
+          const last = snapshot.docs[snapshot.docs.length - 1];
+          const lastData = last.data();
+          const time = lastData.create_at;
+          nextToken = `${time.seconds}:${time.nanoseconds}`;
+        }
+        const infoPromises = [];
+        for (let i = 0; i < snapshot.docs.length; i += 1) {
+          const doc = snapshot.docs[i];
+          infoPromises.push(doc.data());
+        }
+        // 全ての詳細データが取得するまで待つ
+        const infos = await Promise.all(infoPromises);
+
+        // console.log(infos, nextToken);
+        resolve({ BuffData: infos, nextPageToken: nextToken });
+      })
+      .catch((err) => {
+        console.log('Error firebase', err);
+        reject(new Error('Error firebase'));
+      });
+  });
+}
+*/

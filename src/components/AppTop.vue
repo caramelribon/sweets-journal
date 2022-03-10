@@ -285,6 +285,35 @@
         v-show="currentState === 'IS_FOUND'"
         class="navypink-bg h-auto">
         <p class="place-title text-center p-10">Places</p>
+        <p class="animate__animated
+                   invisible
+                   text-beige
+                   text-center
+                   my-5
+                   kaisei-medium
+                   sm:text-base
+                   md:text-2xl
+                   lg:text-2xl
+                   xl:text-2xl
+                   2xl:text-2xl"
+            v-show="resultState === 'GET_DATA'">
+          現在地から{{ radiusShow }}にある{{ genreShow }}のお店一覧です
+        </p>
+        <p
+          class="animate__animated
+                 invisible
+                 text-beige
+                 text-center
+                 my-5
+                 kaisei-medium
+                 sm:text-base
+                 md:text-2xl
+                 lg:text-2xl
+                 xl:text-2xl
+                 2xl:text-2xl"
+          v-show="resultState === 'NO_DATA'">
+          現在地から{{ radiusShow }}に{{ genreShow }}のお店はありませんでした
+        </p>
         <div class="animate__animated invisible">
           <div
             id="shop"
@@ -537,6 +566,8 @@ export default {
       loginModal: false,
       radius: '',
       genre: '',
+      radiusShow: '',
+      genreShow: '',
       places: [],
       ranking: true,
       swiperOption: {
@@ -556,6 +587,7 @@ export default {
       startNum: 1,
       countNum: 0,
       DATA: [],
+      resultState: '',
     };
   },
   async mounted() {
@@ -639,12 +671,62 @@ export default {
     success(position) {
       this.lat = position.coords.latitude;
       this.lng = position.coords.longitude;
+      this.radiusCheck();
+      this.genreCheck();
       this.searchPlace();
     },
     // 検索に失敗したとき
     error(err) {
       this.currentState = 'IS_FAILED';
       console.log(err.message);
+    },
+    radiusCheck() {
+      this.radiusShow = '';
+      if (this.radius === '2') {
+        this.radiusShow = '半径500m以内';
+      } else if (this.radius === '3') {
+        this.radiusShow = '半径1km以内';
+      } else if (this.radius === '5') {
+        this.radiusShow = '半径3km以内';
+      }
+      console.log(this.radiusShow);
+    },
+    genreCheck() {
+      this.genreShow = '';
+      if (this.genre === 'G001') {
+        this.genreShow = '居酒屋';
+      } else if (this.genre === 'G004') {
+        this.genreShow = '和食';
+      } else if (this.genre === 'G005') {
+        this.genreShow = '洋食';
+      } else if (this.genre === 'G006') {
+        this.genreShow = 'Italian&French';
+      } else if (this.genre === 'G007') {
+        this.genreShow = '中華';
+      } else if (this.genre === 'G008') {
+        this.genreShow = '焼肉';
+      } else if (this.genre === 'G017') {
+        this.genreShow = '韓国料理';
+      } else if (this.genre === 'G003') {
+        this.genreShow = '創作料理';
+      } else if (this.genre === 'G002') {
+        this.genreShow = 'Bar';
+      } else if (this.genre === 'G009') {
+        this.genreShow = 'Asian&Ethnic';
+      } else if (this.genre === 'G010') {
+        this.genreShow = '各国料理';
+      } else if (this.genre === 'G013') {
+        this.genreShow = 'ラーメン';
+      } else if (this.genre === 'G016') {
+        this.genreShow = 'お好み焼き系';
+      } else if (this.genre === 'G014') {
+        this.genreShow = 'カフェ';
+      } else if (this.genre === 'G015') {
+        this.genreShow = 'その他';
+      } else if (this.genre === '') {
+        this.genreShow = 'すべて';
+      }
+      console.log(this.genreShow);
     },
     // 現在地周辺の地図とお店の取得
     searchPlace() {
@@ -741,6 +823,12 @@ export default {
         if (this.allDataNum !== this.countNum) {
           this.getData();
         }
+        if (this.allDataNum === 0) {
+          this.resultState = 'NO_DATA';
+        } else {
+          this.resultState = 'GET_DATA';
+        }
+        console.log(this.resultState);
       }).fail(() => {
         console.log('エラー');
         this.currentState = 'IS_FAILED';
@@ -864,6 +952,7 @@ export default {
             dbFav.doc().set({
               user_id: this.currentUID,
               place_id: place.id,
+              create_at: firebase.firestore.FieldValue.serverTimestamp(),
             });
             // No:アクティビティ登録
             await postFavActivity(place.id, this.currentUID).catch((err) => {
@@ -947,6 +1036,7 @@ export default {
             dbBm.doc().set({
               user_id: this.currentUID,
               place_id: place.id,
+              create_at: firebase.firestore.FieldValue.serverTimestamp(),
             });
             // No:アクティビティ登録
             await postBmActivity(place.id, this.currentUID).catch((err) => {

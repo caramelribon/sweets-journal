@@ -64,14 +64,24 @@
             <div class="m-4 card animate__animated animate__fadeInUp">
               <!-- shop image -->
               <div class="card-header">
-                <img :src="favorite.photo_1" width="300" height="300" class="card-image">
+                <img :src="favorite.photo" width="300" height="300" class="card-image">
               </div>
               <!-- shop description and button(favorite and mark) -->
               <section class="card-body">
                 <div class="shop-description">
                   <!-- shop name -->
-                  <div class="place-name flex justify-center items-center p-1">
-                    <p class="text-center text-navyblue kaisei-medium">{{ favorite.name }}</p>
+                  <div class="place-info m-3 text-center">
+                    <div class="my-3">
+                      <p class="text-navyblue text-center kaisei-medium">
+                        {{ favorite.name }}
+                      </p>
+                      <p class="text-navyblue text-center kaisei-medium text-xs my-2">
+                        {{ favorite.catchcopy }}
+                      </p>
+                    </div>
+                    <p class="text-navyblue kaisei-medium text-xs my-3">
+                      {{ favorite.access }}
+                    </p>
                   </div>
                   <!-- button (favorite and mark) -->
                   <div class="flex justify-end items-center">
@@ -104,29 +114,18 @@
                   </div>
                 </div>
                 <ul class="card-information">
-                  <li class="text-navyblue kaisei-medium text-sm">
-                    {{ favorite.add_short }}
+                  <li class="text-navyblue kaisei-medium text-xs">
+                    {{ favorite.address }}
                   </li>
-                  <li class="text-navyblue kaisei-medium">
-                    <i class="fas fa-star icon-color-yellow"></i> {{ favorite.all_rating }}
+                  <li class="text-navyblue kaisei-medium text-xs">
+                    予算:{{ favorite.average }}
                   </li>
-                  <!--
-                  <li class="text-navyblue kaisei-medium">
-                    <div class="flex justify-start items-center">
-                      <div class="favorited_users">
-                        <i class="fas fa-heart liked"></i> {{ favorite.favorite_count }}
-                        <i class="fas fa-users icon-color-blue"></i>
-                      </div>
-                      <div class="bookmarked_users mx-5">
-                        <i class="fas fa-bookmark bookmarked"></i> {{ favorite.bookmark_count }}
-                        <i class="fas fa-users icon-color-blue"></i>
-                      </div>
-                    </div>
+                  <li class="text-navyblue kaisei-medium text-xs">
+                    Open:{{ favorite.open }}
                   </li>
-                  -->
-                  <li class="text-navyblue kaisei-medium">
-                    <a :href="favorite.website" target="_blank">
-                      website <i class="fas fa-external-link-alt icon-color-blue"></i>
+                  <li class="text-navyblue kaisei-medium text-xs">
+                    <a :href="favorite.url" target="_blank">
+                      さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
                     </a>
                   </li>
                 </ul>
@@ -142,14 +141,24 @@
             <div class="m-4 card animate__animated animate__fadeInUp">
               <!-- shop image -->
               <div class="card-header">
-                <img :src="bookmark.photo_1" width="300" height="300" class="card-image">
+                <img :src="bookmark.photo" width="300" height="300" class="card-image">
               </div>
               <!-- shop description and button(favorite and mark) -->
               <section class="card-body">
                 <div class="shop-description">
                   <!-- shop name -->
-                  <div class="place-name flex justify-center items-center p-1">
-                    <p class="text-center text-navyblue kaisei-medium">{{ bookmark.name }}</p>
+                  <div class="place-info m-3 text-center">
+                    <div class="my-3">
+                      <p class="text-navyblue text-center kaisei-medium">
+                        {{ bookmark.name }}
+                      </p>
+                      <p class="text-navyblue text-center kaisei-medium text-xs my-2">
+                        {{ bookmark.catchcopy }}
+                      </p>
+                    </div>
+                    <p class="text-navyblue kaisei-medium text-xs my-3">
+                      {{ bookmark.access }}
+                    </p>
                   </div>
                   <!-- button (favorite and mark) -->
                   <div class="flex justify-end items-center">
@@ -181,30 +190,19 @@
                     </div>
                   </div>
                 </div>
-                <ul class="card-information text-navyblue">
+                <ul class="card-information">
                   <li class="text-navyblue kaisei-medium text-sm">
-                    {{ bookmark.add_short }}
+                    {{ bookmark.address }}
+                  </li>
+                  <li class="text-navyblue kaisei-medium text-sm">
+                    予算:{{ bookmark.average }}
+                  </li>
+                  <li class="text-navyblue kaisei-medium text-sm">
+                    Open:{{ bookmark.open }}
                   </li>
                   <li class="text-navyblue kaisei-medium">
-                    <i class="fas fa-star icon-color-yellow"></i> {{ bookmark.all_rating }}
-                  </li>
-                  <!--
-                  <li class="text-navyblue kaisei-medium">
-                    <div class="flex justify-start items-center">
-                      <div class="favorited_users">
-                        <i class="fas fa-heart liked"></i> {{ bookmark.favorite_count }}
-                        <i class="fas fa-users icon-color-blue"></i>
-                      </div>
-                      <div class="bookmarked_users mx-5">
-                        <i class="fas fa-bookmark bookmarked"></i> {{ bookmark.bookmark_count }}
-                        <i class="fas fa-users icon-color-blue"></i>
-                      </div>
-                    </div>
-                  </li>
-                  -->
-                  <li class="text-navyblue kaisei-medium">
-                    <a :href="bookmark.website" target="_blank">
-                      website <i class="fas fa-external-link-alt icon-color-blue"></i>
+                    <a :href="bookmark.url" target="_blank">
+                      さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
                     </a>
                   </li>
                 </ul>
@@ -420,7 +418,7 @@ export default {
   transform: translateX(-50%) translateY(-50%) scale(1.5);
 }
 .card:hover .card-body {
-  height: 250px;
+  height: auto;
 }
 .card:hover .card-body .card-information li {
   transform: translateX(0);
@@ -449,7 +447,7 @@ export default {
   position: relative;
   background-color: #9e9a95;
   height: 200px;
-  margin: -20px -20px 20px -20px;
+  margin: -20px -20px 5px -20px;
   transition: height 0.5s;
   overflow: hidden;
 }
@@ -464,7 +462,7 @@ export default {
   transition: transform 0.5s;
 }
 .card .card-body {
-  height: 100px;
+  height: 180px;
   transition: height 0.5s;
   overflow: hidden;
 }
@@ -478,16 +476,20 @@ export default {
   transition-delay: 0.5s;
   transform: translateX(-100%);
 }
-
 .place-image {
+  width: 300px;
   -moz-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
   -webkit-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
   -ms-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
   box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
 }
 .place-name {
-  width: 260px;
-  height: 60px;
+  width: 300px;
+  height: auto;
+}
+.place-info {
+  width: auto;
+  height: auto;
 }
 
 .kaisei-medium {

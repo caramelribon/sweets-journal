@@ -78,14 +78,24 @@
           <div class="card">
             <!-- shop image -->
             <div class="card-header">
-              <img :src="activity.placePhoto" width="300" height="300" class="card-image">
+              <img :src="activity.photo" width="300" height="300" class="card-image">
             </div>
             <!-- shop description and button(favorite and mark) -->
             <section class="card-body">
               <div class="shop-description">
                 <!-- shop name -->
-                <div class="place-name flex justify-center items-center p-1">
-                  <p class="text-center text-navyblue kaisei-medium">{{ activity.placeName }}</p>
+                <div class="place-info m-3 text-center">
+                  <div class="my-3">
+                    <p class="text-navyblue text-center kaisei-medium">
+                      {{ activity.name }}
+                    </p>
+                    <p class="text-navyblue text-center kaisei-medium text-xs my-2">
+                      {{ activity.catchcopy }}
+                    </p>
+                  </div>
+                  <p class="text-navyblue kaisei-medium text-xs my-3">
+                    {{ activity.access }}
+                  </p>
                 </div>
                 <!-- button (favorite and mark) -->
                 <div class="flex justify-end items-center">
@@ -93,7 +103,7 @@
                   <div class="p-2">
                     <button
                       @click="onFavorite(activity)"
-                      v-if="userLikedPlaceId.indexOf(activity.placeId) === -1">
+                      v-if="userLikedPlaceId.indexOf(activity.id) === -1">
                         <i class="far fa-heart fa-lg"></i>
                     </button>
                     <button
@@ -106,7 +116,7 @@
                   <div class="p-2">
                     <button
                       @click="onBookmark(activity)"
-                      v-if="userBookmarkPlaceId.indexOf(activity.placeId) === -1">
+                      v-if="userBookmarkPlaceId.indexOf(activity.id) === -1">
                       <i class="far fa-bookmark fa-lg"></i>
                     </button>
                     <button
@@ -118,29 +128,18 @@
                 </div>
               </div>
               <ul class="card-information">
-                <li class="text-navyblue kaisei-medium text-sm">
-                  {{ activity.placeAdd }}
+                <li class="text-navyblue kaisei-medium text-xs">
+                  {{ activity.address }}
                 </li>
-                <li class="text-navyblue kaisei-medium">
-                  <i class="fas fa-star icon-color-yellow"></i> {{ activity.placeRating }}
+                <li class="text-navyblue kaisei-medium text-xs">
+                  予算:{{ activity.average }}
                 </li>
-                <!--
-                <li class="text-navyblue kaisei-medium">
-                  <div class="flex justify-start items-center">
-                    <div class="favorited_users">
-                      <i class="fas fa-heart liked"></i> {{ activity.placeFavCount }}
-                      <i class="fas fa-users icon-color-blue"></i>
-                    </div>
-                    <div class="bookmarked_users mx-5">
-                      <i class="fas fa-bookmark bookmarked"></i> {{ activity.placeBmCount }}
-                      <i class="fas fa-users icon-color-blue"></i>
-                    </div>
-                  </div>
+                <li class="text-navyblue kaisei-medium text-xs">
+                  Open:{{ activity.open }}
                 </li>
-                -->
-                <li class="text-navyblue kaisei-medium">
-                  <a :href="activity.placeWebsite" target="_blank">
-                    website <i class="fas fa-external-link-alt icon-color-blue"></i>
+                <li class="text-navyblue kaisei-medium text-xs">
+                  <a :href="activity.url" target="_blank">
+                    さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
                   </a>
                 </li>
               </ul>
@@ -501,6 +500,7 @@ footer{
   background-color: #5e636f;
   background: linear-gradient(to right, #636772, #5c626f, #4f5666);
 }
+
 .card {
   padding: 20px;
   width: 300px;
@@ -518,7 +518,7 @@ footer{
   transform: translateX(-50%) translateY(-50%) scale(1.5);
 }
 .card:hover .card-body {
-  height: 250px;
+  height: auto;
 }
 .card:hover .card-body .card-information li {
   transform: translateX(0);
@@ -547,7 +547,7 @@ footer{
   position: relative;
   background-color: #9e9a95;
   height: 200px;
-  margin: -20px -20px 20px -20px;
+  margin: -20px -20px 5px -20px;
   transition: height 0.5s;
   overflow: hidden;
 }
@@ -562,7 +562,7 @@ footer{
   transition: transform 0.5s;
 }
 .card .card-body {
-  height: 100px;
+  height: 180px;
   transition: height 0.5s;
   overflow: hidden;
 }
@@ -577,21 +577,28 @@ footer{
   transform: translateX(-100%);
 }
 .place-image {
+  width: 300px;
   -moz-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
   -webkit-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
   -ms-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
   box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
 }
 .place-name {
-  width: 260px;
-  height: 60px;
+  width: 300px;
+  height: auto;
 }
+.place-info {
+  width: auto;
+  height: auto;
+}
+
 .liked {
   color: #ff8882;
 }
 .bookmarked {
   color: #efdc71;
 }
+
 .page-top {
   position: fixed;
   right: -10px;
