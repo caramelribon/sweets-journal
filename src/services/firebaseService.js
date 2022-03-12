@@ -7,7 +7,7 @@ export const getRankingFavoritedTop = async () => {
   await dbPlace
     .orderBy('favorite_count', 'desc')
     .orderBy('create_at', 'desc')
-    .limit(3)
+    .limit(7)
     .get()
     .then((snapShot) => {
       snapShot.forEach((doc) => {
@@ -27,7 +27,7 @@ export const getRankingBookmarkedTop = async () => {
   await dbPlace
     .orderBy('bookmark_count', 'desc')
     .orderBy('create_at', 'desc')
-    .limit(3)
+    .limit(7)
     .get()
     .then((snapShot) => {
       snapShot.forEach((doc) => {
@@ -335,7 +335,7 @@ const getActivityDetailData = async (doc) => {
 
   return {
     action: useraction,
-    created_at: createdate,
+    create_at: createdate,
     userName: userInfo.data().username,
     id: placeInfo.data().id,
     name: placeInfo.data().name,

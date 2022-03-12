@@ -1,5 +1,5 @@
 <template>
-  <div class="user-profile lightblue-bg">
+  <div class="user-profile navyblue-bg">
     <!-- username -->
     <div class="p-10">
       <p  class="text-center
@@ -9,7 +9,7 @@
                  lg:text-8xl
                  xl:text-9xl
                  2xl:text-9xl
-                 user-name">
+                 title">
         Ranking
       </p>
       <div class="animate__animated animate__fadeInUp mt-24 mb-2">
@@ -60,76 +60,83 @@
       <section v-show="activeTab === 'favorite'">
         <div class="flex p-5 items-start justify-center flex-row flex-wrap">
           <div v-for="(favorite, index) in favorites" :key="index">
-            <!-- shop layout -->
-            <div class="m-4 card animate__animated animate__fadeInUp">
-              <!-- shop image -->
-              <div class="card-header">
-                <img :src="favorite.photo" width="300" height="300" class="card-image">
+            <div class="ranking-fav mt-10">
+              <div class="ranking-no animate__animated animate__fadeInUp">
+                <p class="parisienne text-center text-navypink text-5xl">
+                  No.{{ favorite.no }}
+                </p>
               </div>
-              <!-- shop description and button(favorite and mark) -->
-              <section class="card-body">
-                <div class="shop-description">
-                  <!-- shop name -->
-                  <div class="place-info m-2 text-center">
-                    <div class="my-1">
-                      <p class="text-navyblue text-center kaisei-medium">
-                        {{ favorite.name }}
-                      </p>
-                      <p class="text-navyblue text-center kaisei-medium text-xs my-2">
-                        {{ favorite.catchcopy }}
-                      </p>
-                    </div>
-                    <p class="text-navyblue kaisei-medium text-xs my-2">
-                      {{ favorite.access }}
-                    </p>
-                  </div>
-                  <!-- button (favorite and mark) -->
-                  <div class="flex justify-end items-center">
-                    <!-- favorite button -->
-                    <div class="p-2">
-                      <button
-                        @click="onFavorite(favorite)"
-                        v-if="userLikedPlaceId.indexOf(favorite.id) === -1">
-                          <i class="far fa-heart fa-lg"></i>
-                      </button>
-                      <button
-                        @click="offFavorite(favorite)"
-                        v-else>
-                          <i class="fas fa-heart fa-lg liked"></i>
-                      </button>
-                    </div>
-                    <!-- mark button -->
-                    <div class="p-2">
-                      <button
-                        @click="onBookmark(favorite)"
-                        v-if="userBookmarkPlaceId.indexOf(favorite.id) === -1">
-                        <i class="far fa-bookmark fa-lg"></i>
-                      </button>
-                      <button
-                        @click="offBookmark(favorite)"
-                        v-else>
-                        <i class="fas fa-bookmark fa-lg bookmarked"></i>
-                      </button>
-                    </div>
-                  </div>
+              <!-- shop layout -->
+              <div class="m-4 card animate__animated animate__fadeInUp">
+                <!-- shop image -->
+                <div class="card-header">
+                  <img :src="favorite.photo" width="300" height="300" class="card-image">
                 </div>
-                <ul class="card-information">
-                  <li class="text-navyblue kaisei-medium text-xs">
-                    {{ favorite.address }}
-                  </li>
-                  <li class="text-navyblue kaisei-medium text-xs">
-                    予算:{{ favorite.average }}
-                  </li>
-                  <li class="text-navyblue kaisei-medium text-xs">
-                    Open:{{ favorite.open }}
-                  </li>
-                  <li class="text-navyblue kaisei-medium text-xs">
-                    <a :href="favorite.url" target="_blank">
-                      さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
-                    </a>
-                  </li>
-                </ul>
-              </section>
+                <!-- shop description and button(favorite and mark) -->
+                <section class="card-body">
+                  <div class="shop-description">
+                    <!-- shop name -->
+                    <div class="place-info m-2 text-center">
+                      <div class="my-1">
+                        <p class="text-navyblue text-center kaisei-medium">
+                          {{ favorite.name }}
+                        </p>
+                        <p class="text-navyblue text-center kaisei-medium text-xs my-2">
+                          {{ favorite.catchcopy }}
+                        </p>
+                      </div>
+                      <p class="text-navyblue kaisei-medium text-xs my-2">
+                        {{ favorite.access }}
+                      </p>
+                    </div>
+                    <!-- button (favorite and mark) -->
+                    <div class="flex justify-end items-center">
+                      <!-- favorite button -->
+                      <div class="p-2">
+                        <button
+                          @click="onFavorite(favorite)"
+                          v-if="userLikedPlaceId.indexOf(favorite.id) === -1">
+                            <i class="far fa-heart fa-lg"></i>
+                        </button>
+                        <button
+                          @click="offFavorite(favorite)"
+                          v-else>
+                            <i class="fas fa-heart fa-lg liked"></i>
+                        </button>
+                      </div>
+                      <!-- mark button -->
+                      <div class="p-2">
+                        <button
+                          @click="onBookmark(favorite)"
+                          v-if="userBookmarkPlaceId.indexOf(favorite.id) === -1">
+                          <i class="far fa-bookmark fa-lg"></i>
+                        </button>
+                        <button
+                          @click="offBookmark(favorite)"
+                          v-else>
+                          <i class="fas fa-bookmark fa-lg bookmarked"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <ul class="card-information">
+                    <li class="text-navyblue kaisei-medium text-xs">
+                      {{ favorite.address }}
+                    </li>
+                    <li class="text-navyblue kaisei-medium text-xs">
+                      予算:{{ favorite.average }}
+                    </li>
+                    <li class="text-navyblue kaisei-medium text-xs">
+                      Open:{{ favorite.open }}
+                    </li>
+                    <li class="text-navyblue kaisei-medium text-xs">
+                      <a :href="favorite.url" target="_blank">
+                        さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </section>
+              </div>
             </div>
           </div>
         </div>
@@ -137,76 +144,83 @@
       <section v-show="activeTab === 'bookmark'">
         <div class="flex p-5 items-start justify-center flex-row flex-wrap">
           <div v-for="(bookmark, index) in bookmarks" :key="index">
-            <!-- shop layout -->
-            <div class="m-4 card animate__animated animate__fadeInUp">
-              <!-- shop image -->
-              <div class="card-header">
-                <img :src="bookmark.photo" width="300" height="300" class="card-image">
+            <div class="ranking-bm mt-10">
+              <div class="ranking-no animate__animated animate__fadeInUp">
+                <p class="parisienne text-center text-navypink text-5xl">
+                  No.{{ bookmark.no }}
+                </p>
               </div>
-              <!-- shop description and button(favorite and mark) -->
-              <section class="card-body">
-                <div class="shop-description">
-                  <!-- shop name -->
-                  <div class="place-info m-2 text-center">
-                    <div class="my-1">
-                      <p class="text-navyblue text-center kaisei-medium">
-                        {{ bookmark.name }}
-                      </p>
-                      <p class="text-navyblue text-center kaisei-medium text-xs my-2">
-                        {{ bookmark.catchcopy }}
-                      </p>
-                    </div>
-                    <p class="text-navyblue kaisei-medium text-xs my-2">
-                      {{ bookmark.access }}
-                    </p>
-                  </div>
-                  <!-- button (favorite and mark) -->
-                  <div class="flex justify-end items-center">
-                    <!-- favorite button -->
-                    <div class="p-2">
-                      <button
-                        @click="onFavorite(bookmark)"
-                        v-if="userLikedPlaceId.indexOf(bookmark.id) === -1">
-                          <i class="far fa-heart fa-lg"></i>
-                      </button>
-                      <button
-                        @click="offFavorite(bookmark)"
-                        v-else>
-                          <i class="fas fa-heart fa-lg liked"></i>
-                      </button>
-                    </div>
-                    <!-- mark button -->
-                    <div class="p-2">
-                      <button
-                        @click="onBookmark(bookmark)"
-                        v-if="userBookmarkPlaceId.indexOf(bookmark.id) === -1">
-                        <i class="far fa-bookmark fa-lg"></i>
-                      </button>
-                      <button
-                        @click="offBookmark(bookmark)"
-                        v-else>
-                        <i class="fas fa-bookmark fa-lg bookmarked"></i>
-                      </button>
-                    </div>
-                  </div>
+              <!-- shop layout -->
+              <div class="m-4 card animate__animated animate__fadeInUp">
+                <!-- shop image -->
+                <div class="card-header">
+                  <img :src="bookmark.photo" width="300" height="300" class="card-image">
                 </div>
-                <ul class="card-information">
-                  <li class="text-navyblue kaisei-medium text-sm">
-                    {{ bookmark.address }}
-                  </li>
-                  <li class="text-navyblue kaisei-medium text-sm">
-                    予算:{{ bookmark.average }}
-                  </li>
-                  <li class="text-navyblue kaisei-medium text-sm">
-                    Open:{{ bookmark.open }}
-                  </li>
-                  <li class="text-navyblue kaisei-medium">
-                    <a :href="bookmark.url" target="_blank">
-                      さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
-                    </a>
-                  </li>
-                </ul>
-              </section>
+                <!-- shop description and button(favorite and mark) -->
+                <section class="card-body">
+                  <div class="shop-description">
+                    <!-- shop name -->
+                    <div class="place-info m-2 text-center">
+                      <div class="my-1">
+                        <p class="text-navyblue text-center kaisei-medium">
+                          {{ bookmark.name }}
+                        </p>
+                        <p class="text-navyblue text-center kaisei-medium text-xs my-2">
+                          {{ bookmark.catchcopy }}
+                        </p>
+                      </div>
+                      <p class="text-navyblue kaisei-medium text-xs my-2">
+                        {{ bookmark.access }}
+                      </p>
+                    </div>
+                    <!-- button (favorite and mark) -->
+                    <div class="flex justify-end items-center">
+                      <!-- favorite button -->
+                      <div class="p-2">
+                        <button
+                          @click="onFavorite(bookmark)"
+                          v-if="userLikedPlaceId.indexOf(bookmark.id) === -1">
+                            <i class="far fa-heart fa-lg"></i>
+                        </button>
+                        <button
+                          @click="offFavorite(bookmark)"
+                          v-else>
+                            <i class="fas fa-heart fa-lg liked"></i>
+                        </button>
+                      </div>
+                      <!-- mark button -->
+                      <div class="p-2">
+                        <button
+                          @click="onBookmark(bookmark)"
+                          v-if="userBookmarkPlaceId.indexOf(bookmark.id) === -1">
+                          <i class="far fa-bookmark fa-lg"></i>
+                        </button>
+                        <button
+                          @click="offBookmark(bookmark)"
+                          v-else>
+                          <i class="fas fa-bookmark fa-lg bookmarked"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <ul class="card-information">
+                    <li class="text-navyblue kaisei-medium text-sm">
+                      {{ bookmark.address }}
+                    </li>
+                    <li class="text-navyblue kaisei-medium text-sm">
+                      予算:{{ bookmark.average }}
+                    </li>
+                    <li class="text-navyblue kaisei-medium text-sm">
+                      Open:{{ bookmark.open }}
+                    </li>
+                    <li class="text-navyblue kaisei-medium">
+                      <a :href="bookmark.url" target="_blank">
+                        さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </section>
+              </div>
             </div>
           </div>
         </div>
@@ -301,29 +315,63 @@ export default {
     },
     async firstData() {
       // 最初のfavoriteデータの取得
-      let dataFavorite = [];
-      dataFavorite = await getRankingFavorited(100);
-      this.favorites = dataFavorite.Data;
+      const dataFavorite = await getRankingFavorited(100).catch((err) => {
+        console.log('Can not get data of favorite ranking', err);
+      });
+      const rankingFav = dataFavorite.Data;
+      for (let i = 0; i < rankingFav.length; i += 1) {
+        const dataFav = rankingFav[i];
+        const placeData = {
+          id: dataFav.id,
+          name: dataFav.name,
+          address: dataFav.address,
+          access: dataFav.access,
+          average: dataFav.average,
+          catchcopy: dataFav.catchcopy,
+          open: dataFav.open,
+          photo: dataFav.photo,
+          url: dataFav.url,
+          no: i + 1,
+        };
+        this.favorites.push(placeData);
+      }
       // 最初のboookmarkデータの取得
-      let dataBookmark = [];
-      dataBookmark = await getRankingBookmarked(100);
-      this.bookmarks = dataBookmark.Data;
+      const dataBookmark = await getRankingBookmarked(100).catch((err) => {
+        console.log('Can not get data of bookmark ranking', err);
+      });
+      const rankingBm = dataBookmark.Data;
+      for (let i = 0; i < rankingBm.length; i += 1) {
+        const dataBm = rankingBm[i];
+        const placeData = {
+          id: dataBm.id,
+          name: dataBm.name,
+          address: dataBm.address,
+          access: dataBm.access,
+          average: dataBm.average,
+          catchcopy: dataBm.catchcopy,
+          open: dataBm.open,
+          photo: dataBm.photo,
+          url: dataBm.url,
+          no: i + 1,
+        };
+        this.bookmarks.push(placeData);
+      }
     },
     // お気に入り機能
     async onFavorite(place) {
       // userLikedPlaceIdにplace.idを追加
-      this.userLikedPlaceId.push(place.placeId);
+      this.userLikedPlaceId.push(place.id);
       // このお店がfavorites→user.uid&place.idにあるか検索
       const dbFav = firebase.firestore().collection('favorites');
       await dbFav
         .where('user_id', '==', this.userUID)
-        .where('place_id', '==', place.placeId)
+        .where('place_id', '==', place.id)
         .get()
         .then(async (doc) => {
           if (doc.exists) {
             // Yes:お気に入り解除
             this.userLikedPlaceId = await delFavorite(
-              place.placeId,
+              place.id,
               this.userUID,
               this.userLikedPlaceId,
             ).catch((err) => {
@@ -333,10 +381,10 @@ export default {
             // No:お気に入り登録
             dbFav.doc().set({
               user_id: this.userUID,
-              place_id: place.placeId,
+              place_id: place.id,
             });
             // No:アクティビティ登録
-            await postFavActivity(place.placeId, this.userUID).catch((err) => {
+            await postFavActivity(place.id, this.userUID).catch((err) => {
               console.log('Can not register activities!', err);
             });
           }
@@ -348,7 +396,7 @@ export default {
     // お気に入り解除機能
     async offFavorite(place) {
       this.userLikedPlaceId = await delFavorite(
-        place.placeId,
+        place.id,
         this.userUID,
         this.userLikedPlaceId,
       ).catch((err) => {
@@ -358,18 +406,18 @@ export default {
     // 気になる機能
     async onBookmark(place) {
       // userBookmarkPlaceIdにplace.idを追加
-      this.userBookmarkPlaceId.push(place.placeId);
+      this.userBookmarkPlaceId.push(place.id);
       // このお店がbookmarks→user.uid&place.idにあるか検索
       const dbBm = firebase.firestore().collection('bookmarks');
       await dbBm
         .where('user_id', '==', this.userUID)
-        .where('place_id', '==', place.placeId)
+        .where('place_id', '==', place.id)
         .get()
         .then(async (doc) => {
           if (doc.exists) {
             // Yes:気になる解除
             this.userBookmarkPlaceId = await delBookmark(
-              place.placeId,
+              place.id,
               this.userUID,
               this.userBookmarkPlaceId,
             ).catch((err) => {
@@ -379,10 +427,10 @@ export default {
             // No:気になる登録
             dbBm.doc().set({
               user_id: this.userUID,
-              place_id: place.placeId,
+              place_id: place.id,
             });
             // No:アクティビティ登録
-            await postBmActivity(place.placeId, this.userUID).catch((err) => {
+            await postBmActivity(place.id, this.userUID).catch((err) => {
               console.log('Can not register activities!', err);
             });
           }
@@ -394,7 +442,7 @@ export default {
     // 気になる解除機能
     async offBookmark(place) {
       this.userBookmarkPlaceId = await delBookmark(
-        place.placeId,
+        place.id,
         this.userUID,
         this.userBookmarkPlaceId,
       ).catch((err) => {
@@ -423,6 +471,7 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Antic+Didone&family=Elsie&family=Italiana&family=Kaisei+Decol:wght@400;500;700&family=Lobster&family=Lora:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Antic+Didone&family=Elsie&family=Italiana&family=Kaisei+Decol:wght@400;500;700&family=Lobster&family=Lora:wght@400;700&family=Parisienne&display=swap');
 .kaisei-medium {
   font-family: 'Kaisei Decol', serif;
   font-weight: medium;
@@ -599,16 +648,16 @@ footer{
   color: #f2ebe5;
   font-family: 'Lora', serif;
   font-weight: bold;
-  text-shadow: 0 1px #6e7a7c,
-               0 2px #6a7678,
-               0 3px #687375,
-               0 4px #667173,
-               0 5px #626d6f,
-               0 6px #5f6a6c,
-               0 7px #5d6769,
-               0 8px #596365,
-               0 9px #566062,
-               0 10px 8px #50595b;
+  text-shadow: 0 1px #5f6571,
+               0 2px #5d626e,
+               0 3px #5a5f6b,
+               0 4px #575c68,
+               0 5px #545965,
+               0 6px #515661,
+               0 7px #4e535e,
+               0 8px #4b505b,
+               0 9px #454954,
+               0 10px 8px #41454f;
   text-decoration: none;
   transition: .5s ease all;
 }
@@ -691,5 +740,8 @@ footer {
 }
 .icon-color-yellow {
   color: #efdc71;
+}
+.parisienne {
+  font-family: 'Parisienne', cursive;
 }
 </style>

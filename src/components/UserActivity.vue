@@ -70,7 +70,7 @@
                 {{ activity.action }}
               </p>
               <p class="text-sm mx-1 text-lightgray lora">
-                {{ activity.created_at }}
+                {{ activity.create_at }}
               </p>
             </span>
           </span>
@@ -301,31 +301,32 @@ export default {
       let data = [];
       data = {
         action: 'favorite',
-        created_at: createtime,
+        create_at: createtime,
         userName: this.userName,
-        placeId: place.placeId,
-        placeName: place.placeName,
-        placeAdd: place.placeAdd,
-        placePhoto: place.placePhoto,
-        placeWebsite: place.placeWebsite,
-        placeRating: place.placeRating,
-        placeFavCount: place.placeFavCount + 1,
-        placeBmCount: place.placeBmCount,
+        id: place.id,
+        name: place.name,
+        address: place.address,
+        access: place.access,
+        average: place.average,
+        catchcopy: place.catchcopy,
+        open: place.open,
+        photo: place.photo,
+        url: place.url,
       };
       this.activities.unshift(data);
       // userLikedPlaceIdにplace.idを追加
-      this.userLikedPlaceId.push(place.placeId);
+      this.userLikedPlaceId.push(place.id);
       // このお店がfavorites→user.uid&place.idにあるか検索
       const dbFav = firebase.firestore().collection('favorites');
       await dbFav
         .where('user_id', '==', this.userUID)
-        .where('place_id', '==', place.placeId)
+        .where('place_id', '==', place.id)
         .get()
         .then(async (doc) => {
           if (doc.exists) {
             // Yes:お気に入り解除
             this.userLikedPlaceId = await delFavorite(
-              place.placeId,
+              place.id,
               this.userUID,
               this.userLikedPlaceId,
             ).catch((err) => {
@@ -335,10 +336,10 @@ export default {
             // No:お気に入り登録
             dbFav.doc().set({
               user_id: this.userUID,
-              place_id: place.placeId,
+              place_id: place.id,
             });
             // No:アクティビティ登録
-            await postFavActivity(place.placeId, this.userUID).catch((err) => {
+            await postFavActivity(place.id, this.userUID).catch((err) => {
               console.log('Can not register activities!', err);
             });
           }
@@ -351,7 +352,7 @@ export default {
     async offFavorite(place) {
       this.activities = this.activities.filter((data) => data !== place);
       this.userLikedPlaceId = await delFavorite(
-        place.placeId,
+        place.id,
         this.userUID,
         this.userLikedPlaceId,
       ).catch((err) => {
@@ -372,31 +373,32 @@ export default {
       let data = [];
       data = {
         action: 'mark',
-        created_at: createtime,
+        create_at: createtime,
         userName: this.userName,
-        placeId: place.placeId,
-        placeName: place.placeName,
-        placeAdd: place.placeAdd,
-        placePhoto: place.placePhoto,
-        placeWebsite: place.placeWebsite,
-        placeRating: place.placeRating,
-        placeFavCount: place.placeFavCount,
-        placeBmCount: place.placeBmCount + 1,
+        id: place.id,
+        name: place.name,
+        address: place.address,
+        access: place.access,
+        average: place.average,
+        catchcopy: place.catchcopy,
+        open: place.open,
+        photo: place.photo,
+        url: place.url,
       };
       this.activities.unshift(data);
       // userBookmarkPlaceIdにplace.idを追加
-      this.userBookmarkPlaceId.push(place.placeId);
+      this.userBookmarkPlaceId.push(place.id);
       // このお店がbookmarks→user.uid&place.idにあるか検索
       const dbBm = firebase.firestore().collection('bookmarks');
       await dbBm
         .where('user_id', '==', this.userUID)
-        .where('place_id', '==', place.placeId)
+        .where('place_id', '==', place.id)
         .get()
         .then(async (doc) => {
           if (doc.exists) {
             // Yes:気になる解除
             this.userBookmarkPlaceId = await delBookmark(
-              place.placeId,
+              place.id,
               this.userUID,
               this.userBookmarkPlaceId,
             ).catch((err) => {
@@ -406,10 +408,10 @@ export default {
             // No:気になる登録
             dbBm.doc().set({
               user_id: this.userUID,
-              place_id: place.placeId,
+              place_id: place.id,
             });
             // No:アクティビティ登録
-            await postBmActivity(place.placeId, this.userUID).catch((err) => {
+            await postBmActivity(place.id, this.userUID).catch((err) => {
               console.log('Can not register activities!', err);
             });
           }
@@ -422,7 +424,7 @@ export default {
     async offBookmark(place) {
       this.activities = this.activities.filter((data) => data !== place);
       this.userBookmarkPlaceId = await delBookmark(
-        place.placeId,
+        place.id,
         this.userUID,
         this.userBookmarkPlaceId,
       ).catch((err) => {

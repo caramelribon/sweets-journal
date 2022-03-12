@@ -434,50 +434,57 @@
             <p class="ranking-title p-5 text-center">Favorited Places Ranking</p>
             <swiper :options="swiperOption">
               <swiper-slide
-                v-for="favorite in favorites"
-                :key="favorite.id">
+                v-for="(favorite, index) in favorites"
+                :key="index">
                 <div class="flex p-5 items-start justify-center flex-row flex-wrap">
-                  <!-- shop layout -->
-                  <div class="card">
-                    <!-- shop image -->
-                    <div class="card-header">
-                      <img :src="favorite.photo" width="300" height="300" class="card-image">
+                  <div class="ranking-fav">
+                    <div class="ranking-no my-3">
+                      <p class="parisienne text-center text-nvybrown text-5xl">
+                        No.{{ favorite.no }}
+                      </p>
                     </div>
-                    <!-- shop description and button(favorite and mark) -->
-                    <section class="card-body">
-                      <div class="shop-description">
-                        <!-- shop name -->
-                        <div class="place-info m-2 text-center">
-                          <div class="my-1">
-                            <p class="text-navyblue text-center kaisei-medium">
-                              {{ favorite.name }}
-                            </p>
-                            <p class="text-navyblue text-center kaisei-medium text-xs my-2">
-                              {{ favorite.catchcopy }}
+                    <!-- shop layout -->
+                    <div class="card">
+                      <!-- shop image -->
+                      <div class="card-header">
+                        <img :src="favorite.photo" width="300" height="300" class="card-image">
+                      </div>
+                      <!-- shop description and button(favorite and mark) -->
+                      <section class="card-body">
+                        <div class="shop-description">
+                          <!-- shop name -->
+                          <div class="place-info m-2 text-center">
+                            <div class="my-1">
+                              <p class="text-navyblue text-center kaisei-medium">
+                                {{ favorite.name }}
+                              </p>
+                              <p class="text-navyblue text-center kaisei-medium text-xs my-2">
+                                {{ favorite.catchcopy }}
+                              </p>
+                            </div>
+                            <p class="text-navyblue kaisei-medium text-xs my-2">
+                              {{ favorite.access }}
                             </p>
                           </div>
-                          <p class="text-navyblue kaisei-medium text-xs my-2">
-                            {{ favorite.access }}
-                          </p>
                         </div>
-                      </div>
-                      <ul class="card-information">
-                        <li class="text-navyblue kaisei-medium text-xs">
-                          {{ favorite.address }}
-                        </li>
-                        <li class="text-navyblue kaisei-medium text-xs">
-                          予算:{{ favorite.average }}
-                        </li>
-                        <li class="text-navyblue kaisei-medium text-xs">
-                          Open:{{ favorite.open }}
-                        </li>
-                        <li class="text-navyblue kaisei-medium text-xs">
-                          <a :href="favorite.url" target="_blank">
-                            さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
-                          </a>
-                        </li>
-                      </ul>
-                    </section>
+                        <ul class="card-information">
+                          <li class="text-navyblue kaisei-medium text-xs">
+                            {{ favorite.address }}
+                          </li>
+                          <li class="text-navyblue kaisei-medium text-xs">
+                            予算:{{ favorite.average }}
+                          </li>
+                          <li class="text-navyblue kaisei-medium text-xs">
+                            Open:{{ favorite.open }}
+                          </li>
+                          <li class="text-navyblue kaisei-medium text-xs">
+                            <a :href="favorite.url" target="_blank">
+                              さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </section>
+                    </div>
                   </div>
                 </div>
               </swiper-slide>
@@ -488,50 +495,57 @@
             <p class="ranking-title p-5 text-center">Marked Places Ranking</p>
             <swiper :options="swiperOption">
               <swiper-slide
-                v-for="bookmark in bookmarks"
-                :key="bookmark.id">
+                v-for="(bookmark, index) in bookmarks"
+                :key="index">
                 <div class="flex p-5 items-start justify-center flex-row flex-wrap">
-                  <!-- shop layout -->
-                  <div class="card">
-                    <!-- shop image -->
-                    <div class="card-header">
-                      <img :src="bookmark.photo" width="300" height="300" class="card-image">
+                  <div class="ranking-bm">
+                    <div class="ranking-no my-3">
+                      <p class="parisienne text-center text-nvybrown text-5xl">
+                        No.{{ bookmark.no }}
+                      </p>
                     </div>
-                    <!-- shop description and button(favorite and mark) -->
-                    <section class="card-body">
-                      <div class="shop-description">
-                        <!-- shop name -->
-                        <div class="place-info m-2 text-center">
-                          <div class="my-1">
-                            <p class="text-navyblue text-center kaisei-medium">
-                              {{ bookmark.name }}
-                            </p>
-                            <p class="text-navyblue text-center kaisei-medium text-xs my-2">
-                              {{ bookmark.catchcopy }}
+                    <!-- shop layout -->
+                    <div class="card">
+                      <!-- shop image -->
+                      <div class="card-header">
+                        <img :src="bookmark.photo" width="300" height="300" class="card-image">
+                      </div>
+                      <!-- shop description and button(favorite and mark) -->
+                      <section class="card-body">
+                        <div class="shop-description">
+                          <!-- shop name -->
+                          <div class="place-info m-2 text-center">
+                            <div class="my-1">
+                              <p class="text-navyblue text-center kaisei-medium">
+                                {{ bookmark.name }}
+                              </p>
+                              <p class="text-navyblue text-center kaisei-medium text-xs my-2">
+                                {{ bookmark.catchcopy }}
+                              </p>
+                            </div>
+                            <p class="text-navyblue kaisei-medium text-xs my-2">
+                              {{ bookmark.access }}
                             </p>
                           </div>
-                          <p class="text-navyblue kaisei-medium text-xs my-2">
-                            {{ bookmark.access }}
-                          </p>
                         </div>
-                      </div>
-                      <ul class="card-information">
-                        <li class="text-navyblue kaisei-medium text-sm">
-                          {{ bookmark.address }}
-                        </li>
-                        <li class="text-navyblue kaisei-medium text-sm">
-                          予算:{{ bookmark.average }}
-                        </li>
-                        <li class="text-navyblue kaisei-medium text-sm">
-                          Open:{{ bookmark.open }}
-                        </li>
-                        <li class="text-navyblue kaisei-medium">
-                          <a :href="bookmark.url" target="_blank">
-                            さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
-                          </a>
-                        </li>
-                      </ul>
-                    </section>
+                        <ul class="card-information">
+                          <li class="text-navyblue kaisei-medium text-sm">
+                            {{ bookmark.address }}
+                          </li>
+                          <li class="text-navyblue kaisei-medium text-sm">
+                            予算:{{ bookmark.average }}
+                          </li>
+                          <li class="text-navyblue kaisei-medium text-sm">
+                            Open:{{ bookmark.open }}
+                          </li>
+                          <li class="text-navyblue kaisei-medium">
+                            <a :href="bookmark.url" target="_blank">
+                              さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </section>
+                    </div>
                   </div>
                 </div>
               </swiper-slide>
@@ -1126,19 +1140,51 @@ export default {
     // get Ranking Data
     async createRanking() {
       // Ranking上位のお店の情報を取得
-      this.favorites = await getRankingFavoritedTop().catch((err) => {
+      const rankingFav = await getRankingFavoritedTop().catch((err) => {
         console.log('Can not get data of favorite ranking', err);
       });
-      this.bookmarks = await getRankingBookmarkedTop().catch((err) => {
+      for (let i = 0; i < rankingFav.length; i += 1) {
+        const dataFav = rankingFav[i];
+        const placeData = {
+          id: dataFav.id,
+          name: dataFav.name,
+          address: dataFav.address,
+          access: dataFav.access,
+          average: dataFav.average,
+          catchcopy: dataFav.catchcopy,
+          open: dataFav.open,
+          photo: dataFav.photo,
+          url: dataFav.url,
+          no: i + 1,
+        };
+        this.favorites.push(placeData);
+      }
+      const rankingBm = await getRankingBookmarkedTop().catch((err) => {
         console.log('Can not get data of bookmark ranking', err);
       });
+      for (let i = 0; i < rankingBm.length; i += 1) {
+        const dataBm = rankingBm[i];
+        const placeData = {
+          id: dataBm.id,
+          name: dataBm.name,
+          address: dataBm.address,
+          access: dataBm.access,
+          average: dataBm.average,
+          catchcopy: dataBm.catchcopy,
+          open: dataBm.open,
+          photo: dataBm.photo,
+          url: dataBm.url,
+          no: i + 1,
+        };
+        this.bookmarks.push(placeData);
+      }
     },
   },
 };
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Antic+Didone&family=Elsie&family=Italiana&family=Kaisei+Decol:wght@400;500;700&family=Lobster&family=Lora:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Antic+Didone&family=Elsie&family=Italiana&family=Kaisei+Decol:wght@400;500;700&family=Lobster&family=Lora:wght@400;700&family=Parisienne&display=swap');
 /* background */
 .navypink-bg {
   background-color: #a76e63;
@@ -1959,5 +2005,9 @@ button:disabled {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.parisienne {
+  font-family: 'Parisienne', cursive;
 }
 </style>
