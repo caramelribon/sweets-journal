@@ -38,14 +38,14 @@
                     w-11/12">
           <router-link
             :to="{
-                    name: 'AllPlaces',
+                    name: 'Ranking',
                     query: { userName: userName,  userUID: userUID},
                   }"
             class="block lora-bold text-lightgray text-lg text-center"
           >
-               All Places
+               AllRanking
             <p class="text-xs text-beige kaisei-medium">
-              保存されたお店の一覧はこちら
+              お店のランキングはこちら
             </p>
           </router-link>
         </div>
@@ -84,8 +84,8 @@
             <section class="card-body">
               <div class="shop-description">
                 <!-- shop name -->
-                <div class="place-info m-3 text-center">
-                  <div class="my-3">
+                <div class="place-info m-2 text-center">
+                  <div class="my-1">
                     <p class="text-navyblue text-center kaisei-medium">
                       {{ activity.name }}
                     </p>
@@ -93,7 +93,7 @@
                       {{ activity.catchcopy }}
                     </p>
                   </div>
-                  <p class="text-navyblue kaisei-medium text-xs my-3">
+                  <p class="text-navyblue kaisei-medium text-xs my-2">
                     {{ activity.access }}
                   </p>
                 </div>
@@ -255,8 +255,6 @@ export default {
         this.loading = true;
         this.nextPage(this.dataCount);
       } else if (this.dataCount === 0) {
-        this.noData();
-      } else {
         this.noData();
       }
     },

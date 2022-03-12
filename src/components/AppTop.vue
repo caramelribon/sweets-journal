@@ -390,7 +390,7 @@
         class="beige-bg h-auto">
         <p class="small-title-beige text-center p-10">Ranking</p>
         <div class="animate__animated invisible">
-          <div class="grid grid-rows-2 h-auto">
+          <div class="h-auto py-3">
             <div class="row-span-1">
               <p class="text-nvybrown
                         text-center
@@ -403,8 +403,30 @@
                         kaisei-medium">
                 お気に入りのお店ランキングと気になるお店ランキングの上位のお店です
               </p>
+              <div class="flex justify-center" v-show="this.isActive === false">
+                <div class="flex justify-end items-center
+                            mt-5
+                            sm:w-11/12
+                            md:w-11/12
+                            lg:w-4/5
+                            xl:w-4/5
+                            2xl:w-4/5
+                            w-11/12">
+                  <router-link
+                    :to="{
+                            name: 'Ranking',
+                            query: { userName: userName,  userUID: currentUID},
+                          }"
+                    class="block lora-bold text-lightgray text-lg text-center"
+                  >
+                       AllRanking
+                    <p class="text-xs text-nvybrown kaisei-medium">
+                      お店のランキングはこちら
+                    </p>
+                  </router-link>
+                </div>
+              </div>
             </div>
-            <div class="row-span-1 bg-none"></div>
           </div>
           <!-- Favorite -->
           <div class="ranking pb-10">
@@ -424,8 +446,8 @@
                     <section class="card-body">
                       <div class="shop-description">
                         <!-- shop name -->
-                        <div class="place-info m-3 text-center">
-                          <div class="my-3">
+                        <div class="place-info m-2 text-center">
+                          <div class="my-1">
                             <p class="text-navyblue text-center kaisei-medium">
                               {{ favorite.name }}
                             </p>
@@ -433,7 +455,7 @@
                               {{ favorite.catchcopy }}
                             </p>
                           </div>
-                          <p class="text-navyblue kaisei-medium text-xs my-3">
+                          <p class="text-navyblue kaisei-medium text-xs my-2">
                             {{ favorite.access }}
                           </p>
                         </div>
@@ -478,8 +500,8 @@
                     <section class="card-body">
                       <div class="shop-description">
                         <!-- shop name -->
-                        <div class="place-info m-3 text-center">
-                          <div class="my-3">
+                        <div class="place-info m-2 text-center">
+                          <div class="my-1">
                             <p class="text-navyblue text-center kaisei-medium">
                               {{ bookmark.name }}
                             </p>
@@ -487,7 +509,7 @@
                               {{ bookmark.catchcopy }}
                             </p>
                           </div>
-                          <p class="text-navyblue kaisei-medium text-xs my-3">
+                          <p class="text-navyblue kaisei-medium text-xs my-2">
                             {{ bookmark.access }}
                           </p>
                         </div>
@@ -535,8 +557,8 @@ import $ from 'jquery';
 import firebase from 'firebase/app';
 // import GoogleMapsApiLoader from 'google-maps-api-loader';
 import {
-  getRankingFavorited,
-  getRankingMarked,
+  getRankingFavoritedTop,
+  getRankingBookmarkedTop,
   getFavPlaceId,
   getBmPlaceId,
   postFavActivity,
@@ -588,6 +610,7 @@ export default {
       countNum: 0,
       DATA: [],
       resultState: '',
+      userName: '',
     };
   },
   async mounted() {
@@ -596,6 +619,7 @@ export default {
       if (user) {
         // ログイン中
         this.currentUID = user.uid;
+        this.userName = user.name;
         this.isActive = false;
         // ログインユーザがfavoriteしたplaceのidを取得
         this.userLikedPlaceId = await getFavPlaceId(user.uid).catch((err) => {
@@ -1101,11 +1125,11 @@ export default {
     // get Ranking Data
     async createRanking() {
       // Ranking上位のお店の情報を取得
-      this.favorites = await getRankingFavorited().catch((err) => {
-        console.log('データを取得できませんでした', err);
+      this.favorites = await getRankingFavoritedTop().catch((err) => {
+        console.log('Can not get data of favorite ranking', err);
       });
-      this.bookmarks = await getRankingMarked().catch((err) => {
-        console.log('データを取得できませんでした', err);
+      this.bookmarks = await getRankingBookmarkedTop().catch((err) => {
+        console.log('Can not get data of bookmark ranking', err);
       });
     },
   },

@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import AppTop from '@/components/AppTop.vue';
-import UserFavorite from '@/components/UserFavorite.vue';
+import UserProfile from '@/components/UserProfile.vue';
 import UserActivity from '@/components/UserActivity.vue';
-import AllPlaces from '@/components/AllPlaces.vue';
+import AllRanking from '@/components/AllRanking.vue';
 
 Vue.use(Router);
 
@@ -16,7 +16,7 @@ const routes = [
   {
     path: '/user/:userId',
     name: 'Profile',
-    component: UserFavorite,
+    component: UserProfile,
     props: true,
   },
   {
@@ -26,9 +26,9 @@ const routes = [
     props: true,
   },
   {
-    path: '/activity/places',
-    name: 'AllPlaces',
-    component: AllPlaces,
+    path: '/ranking',
+    name: 'Ranking',
+    component: AllRanking,
     props: true,
   },
 ];

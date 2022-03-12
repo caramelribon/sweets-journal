@@ -1,11 +1,12 @@
 import firebase from 'firebase/app';
 
 // eslint-disable-next-line
-export const getRankingFavorited = async () => {
+export const getRankingFavoritedTop = async () => {
   const dbPlace = firebase.firestore().collection('places');
   const rankingData = [];
   await dbPlace
     .orderBy('favorite_count', 'desc')
+    .orderBy('create_at', 'desc')
     .limit(3)
     .get()
     .then((snapShot) => {
@@ -19,11 +20,13 @@ export const getRankingFavorited = async () => {
   return rankingData;
 };
 
-export const getRankingMarked = async () => {
+// eslint-disable-next-line
+export const getRankingBookmarkedTop = async () => {
   const dbPlace = firebase.firestore().collection('places');
   const rankingData = [];
   await dbPlace
     .orderBy('bookmark_count', 'desc')
+    .orderBy('create_at', 'desc')
     .limit(3)
     .get()
     .then((snapShot) => {
@@ -37,6 +40,7 @@ export const getRankingMarked = async () => {
   return rankingData;
 };
 
+// eslint-disable-next-line
 export const getFavorite = async (userId) => {
   const dbFav = firebase.firestore().collection('favorites').where('user_id', '==', userId);
   const dbPlace = firebase.firestore().collection('places');
@@ -59,6 +63,7 @@ export const getFavorite = async (userId) => {
   return favoriteData;
 };
 
+// eslint-disable-next-line
 export const getBookmark = async (userId) => {
   const dbBm = firebase.firestore().collection('bookmarks').where('user_id', '==', userId);
   const dbPlace = firebase.firestore().collection('places');
@@ -81,6 +86,7 @@ export const getBookmark = async (userId) => {
   return bookmarkData;
 };
 
+// eslint-disable-next-line
 export const getFavPlaceId = async (userId) => {
   const dbFav = firebase.firestore().collection('favorites');
   const favPlaceId = [];
@@ -98,6 +104,7 @@ export const getFavPlaceId = async (userId) => {
   return favPlaceId;
 };
 
+// eslint-disable-next-line
 export const getBmPlaceId = async (userId) => {
   const dbBm = firebase.firestore().collection('bookmarks');
   const bmPlaceId = [];
@@ -115,6 +122,7 @@ export const getBmPlaceId = async (userId) => {
   return bmPlaceId;
 };
 
+// eslint-disable-next-line
 export const postFavActivity = async (placeId, userId) => {
   const dbAct = firebase.firestore().collection('activities').doc();
   const dbActCount = firebase.firestore().collection('activityCount').doc('count');
@@ -134,6 +142,7 @@ export const postFavActivity = async (placeId, userId) => {
   });
 };
 
+// eslint-disable-next-line
 export const delFavActivity = async (placeId, userId) => {
   const dbAct = firebase.firestore().collection('activities');
   const dbActCount = firebase.firestore().collection('activityCount').doc('count');
@@ -162,6 +171,7 @@ export const delFavActivity = async (placeId, userId) => {
   });
 };
 
+// eslint-disable-next-line
 export const delFavorite = async (placeId, userId, userLikedPlaceId) => {
   const dbFav = firebase.firestore().collection('favorites');
   const dbPlace = firebase.firestore().collection('places');
@@ -201,6 +211,7 @@ export const delFavorite = async (placeId, userId, userLikedPlaceId) => {
   return userLikedPlaceIdRenew;
 };
 
+// eslint-disable-next-line
 export const postBmActivity = async (placeId, userId) => {
   const dbAct = firebase.firestore().collection('activities').doc();
   const dbActCount = firebase.firestore().collection('activityCount').doc('count');
@@ -220,6 +231,7 @@ export const postBmActivity = async (placeId, userId) => {
   });
 };
 
+// eslint-disable-next-line
 export const delBmActivity = async (placeId, userId) => {
   const dbAct = firebase.firestore().collection('activities');
   const dbActCount = firebase.firestore().collection('activityCount').doc('count');
@@ -248,6 +260,7 @@ export const delBmActivity = async (placeId, userId) => {
   });
 };
 
+// eslint-disable-next-line
 export const delBookmark = async (placeId, userId, userBookmarkPlaceId) => {
   const dbBm = firebase.firestore().collection('bookmarks');
   const dbPlace = firebase.firestore().collection('places');
@@ -287,6 +300,7 @@ export const delBookmark = async (placeId, userId, userBookmarkPlaceId) => {
   return userBookmarkPlaceIdRenew;
 };
 
+// eslint-disable-next-line
 export const postPlaceCount = async () => {
   const dbplaceCount = firebase.firestore().collection('placeCount').doc('count');
   // placeCountを+1して更新
@@ -298,6 +312,7 @@ export const postPlaceCount = async () => {
   });
 };
 
+// eslint-disable-next-line
 const getActivityDetailData = async (doc) => {
   const dbUser = firebase.firestore().collection('users');
   const dbPlace = firebase.firestore().collection('places');
@@ -336,6 +351,7 @@ const getActivityDetailData = async (doc) => {
   };
 };
 
+// eslint-disable-next-line
 export async function getActivity(limit, pagingToken) {
   const dbAct = firebase.firestore().collection('activities');
   return new Promise((resolve, reject) => {
@@ -387,6 +403,7 @@ export async function getActivity(limit, pagingToken) {
   });
 }
 
+// eslint-disable-next-line
 export async function getPlaces(limit, pagingToken) {
   const dbPlace = firebase.firestore().collection('places');
   return new Promise((resolve, reject) => {
@@ -426,38 +443,26 @@ export async function getPlaces(limit, pagingToken) {
   });
 }
 
-/*
-export async function getRankingFavorited(limit, pagingToken) {
+// eslint-disable-next-line
+export async function getRankingFavorited(limit) {
   const dbPlace = firebase.firestore().collection('places');
   return new Promise((resolve, reject) => {
-    let query = dbPlace.orderBy('favorite_count', 'desc').limit(limit);
-
-    if (pagingToken !== null) {
-      const [seconds, nanoseconds] = pagingToken.split(':');
-      const timestamp = new firebase.firestore.Timestamp(seconds, nanoseconds);
-      query = query.startAfter(timestamp);
-    }
-
+    const query = dbPlace
+      .orderBy('favorite_count', 'desc')
+      .orderBy('create_at', 'desc')
+      .limit(limit);
     query.get()
       .then(async (snapshot) => {
-        // limitよりも多い件数データがあるならnextTokenを作成しておく
-        let nextToken = null;
-        if (snapshot.docs.length >= limit) {
-          const last = snapshot.docs[snapshot.docs.length - 1];
-          const lastData = last.data();
-          const time = lastData.create_at;
-          nextToken = `${time.seconds}:${time.nanoseconds}`;
-        }
         const infoPromises = [];
         for (let i = 0; i < snapshot.docs.length; i += 1) {
           const doc = snapshot.docs[i];
           infoPromises.push(doc.data());
         }
         // 全ての詳細データが取得するまで待つ
-        const infos = await Promise.all(infoPromises);
+        const favoriteData = await Promise.all(infoPromises);
 
         // console.log(infos, nextToken);
-        resolve({ BuffData: infos, nextPageToken: nextToken });
+        resolve({ Data: favoriteData });
       })
       .catch((err) => {
         console.log('Error firebase', err);
@@ -465,4 +470,31 @@ export async function getRankingFavorited(limit, pagingToken) {
       });
   });
 }
-*/
+
+// eslint-disable-next-line
+export async function getRankingBookmarked(limit) {
+  const dbPlace = firebase.firestore().collection('places');
+  return new Promise((resolve, reject) => {
+    const query = dbPlace
+      .orderBy('bookmark_count', 'desc')
+      .orderBy('create_at', 'desc')
+      .limit(limit);
+    query.get()
+      .then(async (snapshot) => {
+        const infoPromises = [];
+        for (let i = 0; i < snapshot.docs.length; i += 1) {
+          const doc = snapshot.docs[i];
+          infoPromises.push(doc.data());
+        }
+        // 全ての詳細データが取得するまで待つ
+        const bookmarkData = await Promise.all(infoPromises);
+
+        // console.log(infos, nextToken);
+        resolve({ Data: bookmarkData });
+      })
+      .catch((err) => {
+        console.log('Error firebase', err);
+        reject(new Error('Error firebase'));
+      });
+  });
+}

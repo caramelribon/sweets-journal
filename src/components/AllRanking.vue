@@ -59,7 +59,7 @@
     <section class="tabs-content p-5">
       <section v-show="activeTab === 'favorite'">
         <div class="flex p-5 items-start justify-center flex-row flex-wrap">
-          <div v-for="favorite in favorites" :key="favorite.id">
+          <div v-for="(favorite, index) in favorites" :key="index">
             <!-- shop layout -->
             <div class="m-4 card animate__animated animate__fadeInUp">
               <!-- shop image -->
@@ -70,8 +70,8 @@
               <section class="card-body">
                 <div class="shop-description">
                   <!-- shop name -->
-                  <div class="place-info m-3 text-center">
-                    <div class="my-3">
+                  <div class="place-info m-2 text-center">
+                    <div class="my-1">
                       <p class="text-navyblue text-center kaisei-medium">
                         {{ favorite.name }}
                       </p>
@@ -79,7 +79,7 @@
                         {{ favorite.catchcopy }}
                       </p>
                     </div>
-                    <p class="text-navyblue kaisei-medium text-xs my-3">
+                    <p class="text-navyblue kaisei-medium text-xs my-2">
                       {{ favorite.access }}
                     </p>
                   </div>
@@ -136,7 +136,7 @@
       </section>
       <section v-show="activeTab === 'bookmark'">
         <div class="flex p-5 items-start justify-center flex-row flex-wrap">
-          <div v-for="bookmark in bookmarks" :key="bookmark.id">
+          <div v-for="(bookmark, index) in bookmarks" :key="index">
             <!-- shop layout -->
             <div class="m-4 card animate__animated animate__fadeInUp">
               <!-- shop image -->
@@ -147,8 +147,8 @@
               <section class="card-body">
                 <div class="shop-description">
                   <!-- shop name -->
-                  <div class="place-info m-3 text-center">
-                    <div class="my-3">
+                  <div class="place-info m-2 text-center">
+                    <div class="my-1">
                       <p class="text-navyblue text-center kaisei-medium">
                         {{ bookmark.name }}
                       </p>
@@ -156,7 +156,7 @@
                         {{ bookmark.catchcopy }}
                       </p>
                     </div>
-                    <p class="text-navyblue kaisei-medium text-xs my-3">
+                    <p class="text-navyblue kaisei-medium text-xs my-2">
                       {{ bookmark.access }}
                     </p>
                   </div>
@@ -228,7 +228,8 @@
 import $ from 'jquery';
 import firebase from 'firebase/app';
 import {
-  getPlaces,
+  getRankingFavorited,
+  getRankingBookmarked,
   getFavPlaceId,
   getBmPlaceId,
   postFavActivity,
@@ -248,39 +249,46 @@ export default {
     return {
       favorites: [],
       bookmarks: [],
-      nextData: [],
-      pagingToken: null,
+      nextDataFavorite: [],
+      nextDataBookmark: [],
+      lastFavCount: null,
+      lastFavDate: null,
+      lastBmCount: null,
+      lastBmDate: null,
       // ロード中のアニメーション
-      loading: false,
-      // 非同期で取得中 通常: false, 通信中: true
-      itemLoading: false,
+      loadingFav: false,
+      loadingBm: false,
       // データがあるかどうか
-      nodata: false,
+      noDataFav: false,
+      noDataBm: false,
       // Placesのデータの数
-      dataCount: 1,
+      dataFavCount: 1,
+      dataBmCount: 1,
       // Intersection Obsever
-      observer: null,
+      observerFav: null,
+      observerBm: null,
       userLikedPlaceId: [],
       userBookmarkPlaceId: [],
       userName: this.$route.query.userName,
       userUID: this.$route.query.userUID,
+      activeTab: 'favorite',
     };
   },
   mounted() {
-    const options = {
-      rootMargin: '0px',
-      threshold: 0.1,
-    };
-    this.observer = new IntersectionObserver(this.infiniteScroll, options);
-    // 監視される要素をtargetにする
-    const target = document.getElementById('observe_element');
-    // 監視対象を監視している
-    this.observer.observe(target);
     this.updateButton();
   },
   methods: {
     // dataの取得
     async getData() {
+      // データ数の取得
+      const docRef = await firebase.firestore().collection('placeCount').doc('count');
+      docRef.get().then((doc) => {
+        console.log(doc.data().placeCount);
+        this.dataFavCount = doc.data().placeCount + 1;
+        this.dataBmCount = doc.data().placeCount + 1;
+      });
+      console.log(this.dataFavCount);
+      console.log(this.dataBmCount);
       // login userがfavoriteしたplaceのidを取得
       this.userLikedPlaceId = await getFavPlaceId(this.userUID).catch((err) => {
         console.log('Can not catch place_id login user favorited', err);
@@ -289,65 +297,17 @@ export default {
       this.userBookmarkPlaceId = await getBmPlaceId(this.userUID).catch((err) => {
         console.log('Can not catch place_id login user bookmarked', err);
       });
-      // データ数の取得
-      const docRef = await firebase.firestore().collection('placeCount').doc('count');
-      docRef.get().then((doc) => {
-        this.dataCount = doc.data().placeCount + 1;
-      });
-      console.log(this.dataCount);
-      // 最初のデータの取得
-      let data = [];
-      data = await getPlaces(5, this.pagingToken);
-      this.places = data.BuffData;
-      this.pagingToken = data.nextPageToken;
-      this.dataCount -= 5;
-      console.log(this.places);
-      console.log(this.dataCount);
+      setTimeout(this.firstData, 300);
     },
-    // infinite scroll
-    infiniteScroll() {
-      if (this.dataCount >= 5) {
-        // データが5件以上あるときは、5件づつ取得する
-        this.loading = true;
-        this.nextPage(5);
-      } else if (this.dataCount < 5 && this.dataCount > 0) {
-        // データが5件より少なかったら、残りのデータを取得する
-        this.loading = true;
-        this.nextPage(this.dataCount);
-      } else if (this.dataCount === 0) {
-        this.noData();
-      } else {
-        this.noData();
-      }
-    },
-    async nextPage(num) {
-      // 読込中は再読み込み防止
-      if (this.itemLoading) return;
-      // 取得データがもう存在しない場合は行わない
-      if (this.isLastPage) return;
-      // 次のデータを取得
-      await getPlaces(num, this.pagingToken)
-        .then((data) => {
-          this.places = this.places.concat(data.BuffData);
-          this.pagingToken = data.nextPageToken;
-          this.dataCount -= num;
-          console.log(this.dataCount);
-          // ローディングアニメーション非表示
-          this.loading = false;
-          // 読込中 false
-          this.itemLoading = false;
-        }).catch((error) => {
-          // エラー出力
-          console.log('データを取得できませんでした。', error);
-          // ローディングアニメーション非表示
-          this.loading = false;
-          // 読込中 false
-          this.itemLoading = false;
-        });
-    },
-    // when no data
-    noData() {
-      this.nodata = true;
+    async firstData() {
+      // 最初のfavoriteデータの取得
+      let dataFavorite = [];
+      dataFavorite = await getRankingFavorited(100);
+      this.favorites = dataFavorite.Data;
+      // 最初のboookmarkデータの取得
+      let dataBookmark = [];
+      dataBookmark = await getRankingBookmarked(100);
+      this.bookmarks = dataBookmark.Data;
     },
     // お気に入り機能
     async onFavorite(place) {
@@ -510,6 +470,7 @@ footer{
   background-color: #5e636f;
   background: linear-gradient(to right, #636772, #5c626f, #4f5666);
 }
+
 .card {
   padding: 20px;
   width: 300px;
@@ -527,7 +488,7 @@ footer{
   transform: translateX(-50%) translateY(-50%) scale(1.5);
 }
 .card:hover .card-body {
-  height: 250px;
+  height: auto;
 }
 .card:hover .card-body .card-information li {
   transform: translateX(0);
@@ -556,7 +517,7 @@ footer{
   position: relative;
   background-color: #9e9a95;
   height: 200px;
-  margin: -20px -20px 20px -20px;
+  margin: -20px -20px 5px -20px;
   transition: height 0.5s;
   overflow: hidden;
 }
@@ -571,7 +532,7 @@ footer{
   transition: transform 0.5s;
 }
 .card .card-body {
-  height: 100px;
+  height: 180px;
   transition: height 0.5s;
   overflow: hidden;
 }
@@ -586,21 +547,108 @@ footer{
   transform: translateX(-100%);
 }
 .place-image {
+  width: 300px;
   -moz-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
   -webkit-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
   -ms-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
   box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);
 }
 .place-name {
-  width: 260px;
-  height: 60px;
+  width: 300px;
+  height: auto;
 }
+.place-info {
+  width: auto;
+  height: auto;
+}
+
+.user-action {
+  display: inline-block;
+  transform-origin: left top;
+  transform: rotate( 90deg );
+}
+.lora-bold {
+  font-family: 'Lora', serif;
+  font-weight: bold;
+}
+.lora {
+  font-family: 'Lora', serif;
+}
+.user-name {
+  text-shadow: 0 1px #5f6571,
+               0 2px #5a5f6b,
+               0 3px #545965,
+               0 4px #515661,
+               0 5px #4b505b,
+               0 6px 5px #41454f;
+}
+
 .liked {
   color: #ff8882;
 }
 .bookmarked {
   color: #efdc71;
 }
+
+.tabs-menu{
+  list-style:none;
+}
+.tabs-menu li {
+  display: block;
+  float: left;
+  color: #f2ebe5;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #6e7a7c,
+               0 2px #6a7678,
+               0 3px #687375,
+               0 4px #667173,
+               0 5px #626d6f,
+               0 6px #5f6a6c,
+               0 7px #5d6769,
+               0 8px #596365,
+               0 9px #566062,
+               0 10px 8px #50595b;
+  text-decoration: none;
+  transition: .5s ease all;
+}
+/* タブにマウスを乗せたらカーソルの形を変える */
+.tabs-menu li:hover {
+  cursor: pointer;
+  transform: translate(0px, 10px);
+  text-shadow: none;
+}
+/* 非選択のタブにマウスを乗せたら色を変える */
+.tabs-menu li:not(.active):hover {
+  transform: translate(0px, 10px);
+  text-shadow: none;
+}
+/* 選択中のタブ */
+.tabs-menu .active {
+  transform: translate(0px, 10px);
+  text-shadow: none;
+}
+
+.lightblue-bg {
+  background-color: #717d7f;
+  background: linear-gradient(to right, #747e80, #697779, #5f7174);
+}
+.user-name {
+  color: #f2ebe5;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-shadow: 0 1px #6e7a7c,
+               0 2px #6a7678,
+               0 3px #687375,
+               0 4px #667173,
+               0 5px #626d6f,
+               0 6px #5f6a6c,
+               0 7px #5d6769,
+               0 8px #596365,
+               0 9px #566062,
+               0 10px 8px #50595b;
+}
+
 .page-top {
   position: fixed;
   right: -10px;
@@ -626,30 +674,22 @@ footer{
   transform: rotate(-35deg);
   transform-origin: left top;
 }
+.user-profile {
+  min-height: 100vh;
+  position: relative;/*←相対位置*/
+  padding-bottom: 60px;/*←footerの高さ*/
+  box-sizing: border-box;
+}
+footer {
+  width: 100%;
+  position: absolute;/*←絶対位置*/
+  text-align: center;
+  bottom: 0; /*下に固定*/
+}
 .icon-color-blue {
   color: #4f5666;
 }
 .icon-color-yellow {
   color: #efdc71;
-}
-.user-action {
-  display: inline-block;
-  transform-origin: left top;
-  transform: rotate( 90deg );
-}
-.lora-bold {
-  font-family: 'Lora', serif;
-  font-weight: bold;
-}
-.lora {
-  font-family: 'Lora', serif;
-}
-.user-name {
-  text-shadow: 0 1px #5f6571,
-               0 2px #5a5f6b,
-               0 3px #545965,
-               0 4px #515661,
-               0 5px #4b505b,
-               0 6px 5px #41454f;
 }
 </style>

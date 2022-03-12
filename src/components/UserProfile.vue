@@ -70,8 +70,8 @@
               <section class="card-body">
                 <div class="shop-description">
                   <!-- shop name -->
-                  <div class="place-info m-3 text-center">
-                    <div class="my-3">
+                  <div class="place-info m-2 text-center">
+                    <div class="my-1">
                       <p class="text-navyblue text-center kaisei-medium">
                         {{ favorite.name }}
                       </p>
@@ -79,7 +79,7 @@
                         {{ favorite.catchcopy }}
                       </p>
                     </div>
-                    <p class="text-navyblue kaisei-medium text-xs my-3">
+                    <p class="text-navyblue kaisei-medium text-xs my-2">
                       {{ favorite.access }}
                     </p>
                   </div>
@@ -147,8 +147,8 @@
               <section class="card-body">
                 <div class="shop-description">
                   <!-- shop name -->
-                  <div class="place-info m-3 text-center">
-                    <div class="my-3">
+                  <div class="place-info m-2 text-center">
+                    <div class="my-1">
                       <p class="text-navyblue text-center kaisei-medium">
                         {{ bookmark.name }}
                       </p>
@@ -156,7 +156,7 @@
                         {{ bookmark.catchcopy }}
                       </p>
                     </div>
-                    <p class="text-navyblue kaisei-medium text-xs my-3">
+                    <p class="text-navyblue kaisei-medium text-xs my-2">
                       {{ bookmark.access }}
                     </p>
                   </div>
@@ -594,7 +594,7 @@ export default {
   padding-bottom: 60px;/*←footerの高さ*/
   box-sizing: border-box;
 }
-footer{
+footer {
   width: 100%;
   position: absolute;/*←絶対位置*/
   text-align: center;
