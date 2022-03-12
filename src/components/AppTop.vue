@@ -3,7 +3,7 @@
     <!-- title -->
     <div class="h-auto navypink-bg relative w-full title">
       <div class="flex justify-center items-center pt-20">
-        <p class="sweets">Sweets</p>
+        <p class="sweets">Food</p>
       </div>
       <div class="flex justify-center items-center pb-20">
         <p class="journal">Journal</p>
@@ -20,7 +20,7 @@
                lg:text-3xl
                xl:text-4xl
                animate__animated animate__fadeInUp">
-        <p>あなたが気に入った・気になる「スイーツのお店」を伝えよう</p>
+        <p>あなたが気に入った・気になる「お店」を伝えよう</p>
       </div>
       <div class="scrolldown lora"><span>Scroll</span></div>
     </div>
@@ -42,7 +42,7 @@
                       2xl:text-4xl
                       lora-bold
                       text-center">
-              Welcome to the Sweets Journal
+              Welcome to the Food Journal
             </p>
             <div class="mx-20 sm:mx-20 md:mx-32 lg:mx-52 xl:mx-52 2xl:mx-52 pb-20">
               <p class="text-nvybrown
@@ -53,10 +53,11 @@
                         2xl:text-2xl
                         kaisei-medium
                         mb-10">
-                Sweets Journalでは、旅先で現在地周辺のカフェやレストランを見つけることができます。<br>
+                Food Journalでは、旅先で現在地周辺のカフェやレストランを見つけることができます。<br>
                 また、会員登録をすると、<br>
                 ・気に入ったお店や気になるお店を保存できる<br>
                 ・全会員の保存したお店をリアルタイムでみることができる<br>
+                ・お店のランキングをみることができる<br>
                 といった機能がつきます!!<br>
                 会員登録することで、他の会員がどんなお店に注目しているのかもわかりますよ♪<br>
                 ぜひ、皆さんの旅先でお店を探したり、素敵なお店を保存したりしてみてください<br>
