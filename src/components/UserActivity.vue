@@ -1,5 +1,8 @@
 <template>
-  <div class="user-activities navyblue-bg">
+  <div
+    class="user-activities
+           navyblue-bg"
+  >
     <!-- title -->
     <div class="p-10">
       <p
@@ -14,54 +17,104 @@
       >
         User Activity
       </p>
-      <div class="animate__animated animate__fadeInUp mt-7">
-        <p  class="text-beige
-                   text-center
-                   kaisei-medium
-                   sm:text-base
-                   md:text-2xl
-                   lg:text-2xl
-                   xl:text-2xl
-                   2xl:text-2xl"
+      <div
+        class="animate__animated
+               animate__fadeInUp
+               mt-7"
+      >
+        <p
+          class="text-beige
+                 text-center
+                 kaisei-medium
+                 sm:text-base
+                 md:text-2xl
+                 lg:text-2xl
+                 xl:text-2xl
+                 2xl:text-2xl"
         >
           全ユーザのアクティビティです
         </p>
       </div>
-      <div class="flex justify-center">
-        <div class="flex justify-end items-center
-                    mt-5
-                    sm:w-11/12
-                    md:w-11/12
-                    lg:w-4/5
-                    xl:w-4/5
-                    2xl:w-4/5
-                    w-11/12">
+      <div
+        class="flex
+               justify-center"
+      >
+        <div
+          class="flex
+                 justify-end
+                 items-center
+                 mt-5
+                 sm:w-11/12
+                 md:w-11/12
+                 lg:w-4/5
+                 xl:w-4/5
+                 2xl:w-4/5
+                 w-11/12"
+        >
           <router-link
             :to="{
                     name: 'Ranking',
                     query: { userName: userName,  userUID: userUID},
                   }"
-            class="block lora-bold text-lightgray text-lg text-center"
+            class="block
+                   lora-bold
+                   text-lightgray
+                   text-lg
+                   text-center"
           >
                AllRanking
-            <p class="text-xs text-beige kaisei-medium">
+            <p
+              class="text-xs
+                     text-beige
+                     kaisei-medium"
+            >
               お店のランキングはこちら
             </p>
           </router-link>
         </div>
       </div>
     </div>
-    <div class="flex p-5 items-start justify-center flex-row flex-wrap">
-      <div v-for="(activity, index) in activities" :key="index">
-        <div class="relative m-7 animate__animated animate__fadeInUp">
+    <div
+      class="flex
+             items-start
+             justify-center
+             flex-row
+             flex-wrap
+             p-5"
+    >
+      <div
+        v-for="(activity, index) in activities"
+        :key="index"
+      >
+        <div
+          class="relative
+                 m-7
+                 animate__animated
+                 animate__fadeInUp"
+        >
           <!-- User Action -->
-          <span class="absolute user-action">
-            <span class="flex justify-start items-center">
-              <p class="text-xl mx-1 text-lightgray lora-bold user-name">
+          <span
+            class="absolute
+                   user-action"
+          >
+            <span
+              class="flex
+                     justify-start
+                     items-center"
+            >
+              <p
+                class="text-xl
+                       mx-1
+                       text-lightgray
+                       lora-bold
+                       user-name"
+              >
                 {{ activity.userName }}
               </p>
               <p
-                class="text-sm lora mx-1"
+                class="text-sm
+                       lora
+                       mx-1"
                 :class="{
                           liked: activity.action === 'favorite',
                           bookmarked: activity.action === 'mark'
@@ -69,7 +122,12 @@
               >
                 {{ activity.action }}
               </p>
-              <p class="text-sm mx-1 text-lightgray lora">
+              <p
+                class="text-sm
+                       mx-1
+                       text-lightgray
+                       lora"
+              >
                 {{ activity.create_at }}
               </p>
             </span>
@@ -78,37 +136,67 @@
           <div class="card">
             <!-- shop image -->
             <div class="card-header">
-              <img :src="activity.photo" width="300" height="300" class="card-image">
+              <img
+                :src="activity.photo"
+                width="300"
+                height="300"
+                class="card-image"
+              >
             </div>
             <!-- shop description and button(favorite and mark) -->
             <section class="card-body">
               <div class="shop-description">
                 <!-- shop name -->
-                <div class="place-info m-2 text-center">
+                <div
+                  class="place-info
+                         m-2
+                         text-center"
+                >
                   <div class="my-1">
-                    <p class="text-navyblue text-center kaisei-medium">
+                    <p
+                      class="text-navyblue
+                             text-center
+                             kaisei-medium"
+                    >
                       {{ activity.name }}
                     </p>
-                    <p class="text-navyblue text-center kaisei-medium text-xs my-2">
+                    <p
+                      class="text-navyblue
+                             text-center
+                             kaisei-medium
+                             text-xs
+                             my-2"
+                    >
                       {{ activity.catchcopy }}
                     </p>
                   </div>
-                  <p class="text-navyblue kaisei-medium text-xs my-2">
+                  <p
+                    class="text-navyblue
+                           kaisei-medium
+                           text-xs
+                           my-2"
+                  >
                     {{ activity.access }}
                   </p>
                 </div>
                 <!-- button (favorite and mark) -->
-                <div class="flex justify-end items-center">
+                <div
+                  class="flex
+                         justify-end
+                         items-center"
+                >
                   <!-- favorite button -->
                   <div class="p-2">
                     <button
                       @click="onFavorite(activity)"
-                      v-if="userLikedPlaceId.indexOf(activity.id) === -1">
+                      v-if="userLikedPlaceId.indexOf(activity.id) === -1"
+                    >
                         <i class="far fa-heart fa-lg"></i>
                     </button>
                     <button
                       @click="offFavorite(activity)"
-                      v-else>
+                      v-else
+                    >
                         <i class="fas fa-heart fa-lg liked"></i>
                     </button>
                   </div>
@@ -116,29 +204,50 @@
                   <div class="p-2">
                     <button
                       @click="onBookmark(activity)"
-                      v-if="userBookmarkPlaceId.indexOf(activity.id) === -1">
+                      v-if="userBookmarkPlaceId.indexOf(activity.id) === -1"
+                    >
                       <i class="far fa-bookmark fa-lg"></i>
                     </button>
                     <button
                       @click="offBookmark(activity)"
-                      v-else>
+                      v-else
+                    >
                       <i class="fas fa-bookmark fa-lg bookmarked"></i>
                     </button>
                   </div>
                 </div>
               </div>
               <ul class="card-information">
-                <li class="text-navyblue kaisei-medium text-xs">
+                <li
+                  class="text-navyblue
+                         kaisei-medium
+                         text-xs"
+                >
                   {{ activity.address }}
                 </li>
-                <li class="text-navyblue kaisei-medium text-xs">
+                <li
+                  class="text-navyblue
+                         kaisei-medium
+                         text-xs"
+                >
                   予算:{{ activity.average }}
                 </li>
-                <li class="text-navyblue kaisei-medium text-xs">
+                <li
+                  class="text-navyblue
+                         kaisei-medium
+                         text-xs"
+                >
                   Open:{{ activity.open }}
                 </li>
-                <li class="text-navyblue kaisei-medium text-xs">
-                  <a :href="activity.url" target="_blank">
+                <li
+                  class="text-navyblue
+                         kaisei-medium
+                         text-xs"
+                >
+                  <a
+                    :href="activity.url"
+                    target="_blank"
+                  >
                     さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
                   </a>
                 </li>
@@ -148,21 +257,47 @@
         </div>
       </div>
     </div>
-    <div id="observe_element" class="m-2"></div>
-    <div class="loader-wrap" v-show="loading">
+    <div
+      id="observe_element"
+      class="m-2"
+    ></div>
+    <div
+      class="loader-wrap"
+      v-show="loading"
+    >
       <div class="text"></div>
     </div>
-    <div class="loader-wrap" v-show="noData">
-      <div class="text no-data text-center">no data</div>
+    <div
+      class="loader-wrap"
+      v-show="noData"
+    >
+      <div
+        class="text
+               no-data
+               text-center"
+      >
+        no data
+      </div>
     </div>
     <!-- footer -->
     <footer>
-      <p class="text-beige text-center p-5 lora">
+      <p
+        class="text-beige
+               text-center
+               p-5
+               lora"
+      >
         <i class="far fa-copyright copyright"></i>
         2022 Wakana T
       </p>
     </footer>
-    <a href="#" class="page-top" @click.prevent="pageTop">Top</a>
+    <a
+      href="#"
+      class="page-top"
+      @click.prevent="pageTop"
+    >
+      Top
+    </a>
   </div>
 </template>
 
@@ -189,16 +324,16 @@ export default {
   data() {
     return {
       activities: [],
-      nextData: [],
-      pagingToken: null,
-      // ロード中のアニメーション
-      loading: false,
-      // 非同期で取得中 通常: false, 通信中: true
-      itemLoading: false,
-      // データがあるかどうか
-      nodata: false,
       // Activityデータの数
       dataCount: 1,
+      // 非同期で取得中 通常: false, 通信中: true
+      itemLoading: false,
+      // ロード中のアニメーション
+      loading: false,
+      nextData: [],
+      // データがあるかどうか
+      nodata: false,
+      pagingToken: null,
       // Intersection Obsever
       observer: null,
       userLikedPlaceId: [],

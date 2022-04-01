@@ -1,11 +1,27 @@
 <template>
   <div class="bg-beige">
     <!-- title -->
-    <div class="h-auto navypink-bg relative w-full title">
-      <div class="flex justify-center items-center pt-20">
-        <p class="sweets">Food</p>
+    <div
+      class="relative
+             h-auto
+             w-full
+             navypink-bg
+             title"
+    >
+      <div
+        class="flex
+               justify-center
+               items-center
+               pt-20"
+      >
+        <p class="sweets">SWEETS</p>
       </div>
-      <div class="flex justify-center items-center pb-20">
+      <div
+        class="flex
+               justify-center
+               items-center
+               pb-20"
+      >
         <p class="journal">Journal</p>
       </div>
       <div
@@ -19,41 +35,70 @@
                md:text-2xl
                lg:text-3xl
                xl:text-4xl
-               animate__animated animate__fadeInUp">
+               animate__animated
+               animate__fadeInUp"
+      >
         <p>あなたが気に入った・気になる「お店」を伝えよう</p>
       </div>
-      <div class="scrolldown lora"><span>Scroll</span></div>
+      <div
+        class="scrolldown
+               lora"
+      >
+        <span>Scroll</span>
+      </div>
     </div>
     <div class="contents">
       <!-- About -->
       <div class="beige-bg">
-        <p class="small-title-beige text-center p-10">About</p>
+        <p
+          class="text-center
+                 p-10
+                small-title-beige"
+        >
+          About
+        </p>
         <div class="h-auto">
-          <div class="bg-none animate__animated invisible">
-            <p class="mt-3
-                      mb-8
-                      mx-20
-                      text-nvybrown
-                      text-2xl
-                      sm:text-3xl
-                      md:text-3xl
-                      lg:text-4xl
-                      xl:text-4xl
-                      2xl:text-4xl
-                      lora-bold
-                      text-center">
-              Welcome to the Food Journal
+          <div
+            class="bg-none
+                   animate__animated
+                   invisible"
+          >
+            <p
+              class="mt-3
+                     mb-8
+                     mx-20
+                     text-nvybrown
+                     text-2xl
+                     sm:text-3xl
+                     md:text-3xl
+                     lg:text-4xl
+                     xl:text-4xl
+                     2xl:text-4xl
+                     lora-bold
+                     text-center"
+            >
+              Welcome to the Sweets Journal
             </p>
-            <div class="mx-20 sm:mx-20 md:mx-32 lg:mx-52 xl:mx-52 2xl:mx-52 pb-20">
-              <p class="text-nvybrown
-                        sm:text-base
-                        md:text-2xl
-                        lg:text-2xl
-                        xl:text-2xl
-                        2xl:text-2xl
-                        kaisei-medium
-                        mb-10">
-                Food Journalでは、旅先で現在地周辺のカフェやレストランを見つけることができます。<br>
+            <div
+              class="mx-20
+                     sm:mx-20
+                     md:mx-32
+                     lg:mx-52
+                     xl:mx-52
+                     2xl:mx-52
+                     pb-20"
+            >
+              <p
+                class="text-nvybrown
+                       sm:text-base
+                       md:text-2xl
+                       lg:text-2xl
+                       xl:text-2xl
+                       2xl:text-2xl
+                       kaisei-medium
+                       mb-10"
+              >
+                Sweets Journalでは、旅先で現在地周辺のカフェやレストランを見つけることができます。<br>
                 また、会員登録をすると、<br>
                 ・気に入ったお店や気になるお店を保存できる<br>
                 ・全会員の保存したお店をリアルタイムでみることができる<br>
@@ -68,28 +113,54 @@
         </div>
       </div>
       <!-- Search -->
-      <div class="navypink-bg h-auto">
-        <p class="small-title-navypink text-center p-10">Search</p>
-        <div class="h-auto animate__animated invisible">
-          <p  class="text-beige
-                     text-center
-                     my-5
-                     kaisei-medium
-                     sm:text-base
-                     md:text-2xl
-                     lg:text-2xl
-                     xl:text-2xl
-                     2xl:text-2xl"
+      <div
+        class="navypink-bg
+               h-auto"
+      >
+        <p
+          class="small-title-navypink
+                 text-center
+                 p-10"
+        >
+          Search
+        </p>
+        <div
+          class="h-auto
+                 animate__animated
+                 invisible"
+        >
+          <p
+            class="text-beige
+                   text-center
+                   my-5
+                   kaisei-medium
+                   sm:text-base
+                   md:text-2xl
+                   lg:text-2xl
+                   xl:text-2xl
+                   2xl:text-2xl"
           >
             旅先で、現在地周辺のお店を探してみてください
           </p>
-          <div class="bg-none pt-10 pb-24">
+          <div
+            class="bg-none
+                   pt-10
+                   pb-24"
+          >
             <!-- search area (検索エリア) -->
             <div class="search-area">
               <div class="search-form">
                 <form class="pt-16">
-                  <div class="flex justify-center items-center">
-                    <div class="flex justify-center items-center">
+                  <div
+                    class="flex
+                           justify-center
+                           items-center"
+                  >
+                    <div
+                      class="flex
+                             justify-center
+                             items-center"
+                    >
                       <div class="relative
                                   select
                                   sm:w-40
@@ -97,7 +168,8 @@
                                   lg:w-72
                                   xl:w-72
                                   2xl:w-72
-                                  w-40">
+                                  w-40"
+                      >
                         <select
                           v-model="genre"
                           class="sel-form
@@ -111,90 +183,143 @@
                                  w-40
                                  leading-tight
                                  px-5 py-3
-                                 focus:outline-none">
+                                 focus:outline-none"
+                        >
                           <option
                             value=""
-                            class="kaisei-medium lora">
+                            class="kaisei-medium
+                                   lora"
+                          >
                             すべて
                           </option>
                           <option
                             value="G005"
-                            class="kaisei-medium lora">洋食
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            洋食
                           </option>
                           <option
                             value="G004"
-                            class="kaisei-medium lora">和食
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            和食
                           </option>
                           <option
                             value="G007"
-                            class="kaisei-medium lora">中華
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            中華
                           </option>
                           <option
                             value="G006"
-                            class="kaisei-medium lora">Italian&French
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            Italian&French
                           </option>
                           <option
                             value="G017"
-                            class="kaisei-medium lora">韓国料理
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            韓国料理
                           </option>
                           <option
                             value="G009"
-                            class="kaisei-medium lora">Asian&Ethnic
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            Asian&Ethnic
                           </option>
                           <option
                             value="G010"
-                            class="kaisei-medium lora">各国料理
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            各国料理
                           </option>
                           <option
                             value="G003"
-                            class="kaisei-medium lora">創作料理
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            創作料理
                           </option>
                           <option
                             value="G001"
-                            class="kaisei-medium lora">居酒屋
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            居酒屋
                           </option>
                           <option
                             value="G002"
-                            class="kaisei-medium lora">Bar
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            Bar
                           </option>
                           <option
                             value="G016"
-                            class="kaisei-medium lora">お好み焼き
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            お好み焼き
                           </option>
                           <option
                             value="G013"
-                            class="kaisei-medium lora">ラーメン
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            ラーメン
                           </option>
                           <option
                             value="G014"
-                            class="kaisei-medium lora">カフェ
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            カフェ
                           </option>
                           <option
                             value="G015"
-                            class="kaisei-medium lora">その他
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            その他
                           </option>
                         </select>
                         <span class="select-highlight"></span>
-                        <span class="select-bar
-                                     sm:w-40
-                                     md:w-56
-                                     lg:w-72
-                                     xl:w-72
-                                     2xl:w-72
-                                     w-40"></span>
+                        <span
+                          class="select-bar
+                                 sm:w-40
+                                 md:w-56
+                                 lg:w-72
+                                 xl:w-72
+                                 2xl:w-72
+                                 w-40"></span>
                         <label class="select-label">Genre</label>
                       </div>
                     </div>
-                    <div class="area
-                                flex justify-center items-center px-10">
-                      <div class="relative
-                                  select
-                                  sm:w-40
-                                  md:w-56
-                                  lg:w-72
-                                  xl:w-72
-                                  2xl:w-72
-                                  w-40">
+                    <div
+                      class="area
+                             flex
+                             justify-center
+                             items-center
+                             px-10"
+                    >
+                      <div
+                        class="relative
+                               select
+                               sm:w-40
+                               md:w-56
+                               lg:w-72
+                               xl:w-72
+                               2xl:w-72
+                               w-40"
+                      >
                         <select
                           v-model="radius"
                           class="select-text
@@ -212,19 +337,30 @@
                           <option
                             value=""
                             hidden disabled selected
-                            class="kaisei-medium lora">
+                            class="kaisei-medium
+                                   lora"
+                          >
                           </option>
                           <option
                             value="2"
-                            class="kaisei-medium lora">半径 500 m以内
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            半径 500 m以内
                           </option>
                           <option
                             value="3"
-                            class="kaisei-medium lora">半径 1 km以内
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            半径 1 km以内
                           </option>
                           <option
                             value="5"
-                            class="kaisei-medium lora">半径 3 km以内
+                            class="kaisei-medium
+                                   lora"
+                          >
+                            半径 3 km以内
                           </option>
                         </select>
                         <span class="select-highlight"></span>
@@ -238,7 +374,11 @@
                         <label class="select-label">Area</label>
                       </div>
                     </div>
-                    <div class="flex justify-center items-center">
+                    <div
+                      class="flex
+                             justify-center
+                             items-center"
+                    >
                       <button
                         type="submit"
                         @click.prevent="getCurrentLatLng"
@@ -247,7 +387,8 @@
                                bg-none
                                text-white
                                text-center
-                               uppercase">
+                               uppercase"
+                      >
                         〇
                       </button>
                     </div>
@@ -259,8 +400,14 @@
         </div>
         <!-- fetching status -->
         <span v-show="currentState === 'IS_FETCHING'">
-          <div class="py-12 text-center">
-            <span class="material-icons md-48">
+          <div
+            class="py-12
+                   text-center"
+          >
+            <span
+              class="material-icons
+                     md-48"
+            >
               loop
             </span>
           </div>
@@ -276,28 +423,40 @@
                    md:text-2xl
                    lg:text-2xl
                    xl:text-2xl
-                   2xl:text-2xl">
-            データの取得に失敗しました<br>categoryとareaの両方を選択しているか確認してください
+                   2xl:text-2xl"
+          >
+            データの取得に失敗しました<br>
+            categoryとareaの両方を選択しているか確認してください
           </p>
         </span>
       </div>
       <!-- Place Serch Results (検索結果)-->
       <div
         v-show="currentState === 'IS_FOUND'"
-        class="navypink-bg h-auto">
-        <p class="place-title text-center p-10">Places</p>
-        <p class="animate__animated
-                   invisible
-                   text-beige
-                   text-center
-                   my-5
-                   kaisei-medium
-                   sm:text-base
-                   md:text-2xl
-                   lg:text-2xl
-                   xl:text-2xl
-                   2xl:text-2xl"
-            v-show="resultState === 'GET_DATA'">
+        class="navypink-bg
+               h-auto"
+      >
+        <p
+          class="place-title
+                 text-center
+                 p-10"
+        >
+          Places
+        </p>
+        <p
+          class="animate__animated
+                 invisible
+                 text-beige
+                 text-center
+                 my-5
+                 kaisei-medium
+                 sm:text-base
+                 md:text-2xl
+                 lg:text-2xl
+                 xl:text-2xl
+                 2xl:text-2xl"
+          v-show="resultState === 'GET_DATA'"
+        >
           現在地から{{ radiusShow }}にある{{ genreShow }}のお店一覧です
         </p>
         <p
@@ -312,10 +471,14 @@
                  lg:text-2xl
                  xl:text-2xl
                  2xl:text-2xl"
-          v-show="resultState === 'NO_DATA'">
+          v-show="resultState === 'NO_DATA'"
+        >
           現在地から{{ radiusShow }}に{{ genreShow }}のお店はありませんでした
         </p>
-        <div class="animate__animated invisible">
+        <div
+          class="animate__animated
+                 invisible"
+        >
           <div
             id="shop"
             class="flex
@@ -326,31 +489,66 @@
                    px-5
                    navypink-bg
                    h-auto">
-            <div v-for="(place, index) in places" :key="index">
+            <div
+              v-for="(place, index) in places"
+              :key="index"
+            >
               <!-- shop layout -->
               <div class="m-4">
                 <!-- shop image -->
-                <div class="place-image text-center mx-3">
-                  <img :src="place.photo" width="300" height="300" class="place-photo">
+                <div
+                  class="place-image
+                         text-center
+                         mx-3"
+                >
+                  <img
+                    :src="place.photo"
+                    width="300"
+                    height="300"
+                    class="place-photo"
+                  >
                 </div>
                 <!-- shop description and button(favorite and mark) -->
                 <div class="place-description">
                   <!-- shop name -->
-                  <div class="place-name m-3 text-center">
-                    <p class="text-beige text-center kaisei-medium my-5">
+                  <div
+                    class="place-name
+                           m-3
+                           text-center"
+                  >
+                    <p
+                      class="text-beige
+                             text-center
+                             kaisei-medium
+                             my-5"
+                    >
                       {{ place.name }}
                     </p>
-                    <p class="text-beige text-center kaisei-medium text-xs my-4">
+                    <p
+                      class="text-beige
+                             text-center
+                             kaisei-medium
+                             text-xs
+                             my-4"
+                    >
                       {{ place.access }}
                     </p>
                   </div>
                   <!-- button-area-gap -->
                   <div class="button-area-gap"></div>
                   <!-- button (favorite and mark) -->
-                  <div class="button-area grid grid-cols-6">
+                  <div
+                    class="button-area
+                           grid
+                           grid-cols-6"
+                  >
                     <div class="col-span-4"></div>
                     <!-- favorite button -->
-                    <div class="flex justify-center items-center">
+                    <div
+                      class="flex
+                             justify-center
+                             items-center"
+                    >
                       <button
                         @click="onFavorite(place)"
                         :disabled="isActive"
@@ -365,7 +563,11 @@
                       </button>
                     </div>
                     <!-- mark button -->
-                    <div class="flex justify-center items-center">
+                    <div
+                      class="flex
+                             justify-center
+                             items-center"
+                    >
                       <button
                         @click="onBookmark(place)"
                         :disabled="isActive"
@@ -388,40 +590,72 @@
       </div>
       <!-- Ranking (ランキング) -->
       <div
-        class="beige-bg h-auto">
-        <p class="small-title-beige text-center p-10">Ranking</p>
-        <div class="animate__animated invisible">
-          <div class="h-auto py-3">
+        class="beige-bg
+               h-auto"
+      >
+        <p
+          class="small-title-beige
+                 text-center
+                 p-10"
+        >
+          Ranking
+        </p>
+        <div
+          class="animate__animated
+                 invisible"
+        >
+          <div
+            class="h-auto
+                   py-3"
+          >
             <div class="row-span-1">
-              <p class="text-nvybrown
-                        text-center
-                        sm:text-base
-                        md:text-2xl
-                        lg:text-2xl
-                        xl:text-2xl
-                        2xl:text-2xl
-                        my-5
-                        kaisei-medium">
+              <p
+                class="text-nvybrown
+                       text-center
+                       sm:text-base
+                       md:text-2xl
+                       lg:text-2xl
+                       xl:text-2xl
+                       2xl:text-2xl
+                       my-5
+                       kaisei-medium"
+              >
                 お気に入りのお店ランキングと気になるお店ランキングの上位のお店です
               </p>
-              <div class="flex justify-center" v-show="this.isActive === false">
-                <div class="flex justify-end items-center
-                            mt-5
-                            sm:w-11/12
-                            md:w-11/12
-                            lg:w-4/5
-                            xl:w-4/5
-                            2xl:w-4/5
-                            w-11/12">
+              <div
+                class="flex
+                       justify-center"
+                v-show="this.isActive === false"
+              >
+                <div
+                  class="flex
+                         justify-end
+                         items-center
+                         mt-5
+                         sm:w-11/12
+                         md:w-11/12
+                         lg:w-4/5
+                         xl:w-4/5
+                         2xl:w-4/5
+                         w-11/12"
+                >
                   <router-link
                     :to="{
                             name: 'Ranking',
                             query: { userName: userName,  userUID: currentUID},
                           }"
-                    class="block lora-bold text-lightgray text-lg text-center"
+                    class="block
+                           lora-bold
+                           text-lightgray
+                           text-lg
+                           text-center"
                   >
                        AllRanking
-                    <p class="text-xs text-nvybrown kaisei-medium">
+                    <p
+                      class="text-xs
+                             text-nvybrown
+                             kaisei-medium"
+                    >
                       お店のランキングはこちら
                     </p>
                   </router-link>
@@ -430,77 +664,182 @@
             </div>
           </div>
           <!-- Favorite -->
-          <div class="ranking pb-10">
-            <p class="ranking-title p-5 text-center">Favorited Places Ranking</p>
-            <swiper :options="swiperOption">
+          <div
+            class="ranking
+                   pb-10"
+          >
+            <p
+              class="ranking-title
+                     p-5
+                     text-center"
+            >
+              Favorits
+            </p>
+            <swiper :options="swiperOptionFav">
               <swiper-slide
                 v-for="(favorite, index) in favorites"
-                :key="index">
-                <div class="flex p-5 items-start justify-center flex-row flex-wrap">
+                :key="index"
+              >
+                <div
+                  class="flex
+                         items-start
+                         justify-center
+                         flex-row
+                         flex-wrap
+                         p-5"
+                >
                   <div class="ranking-fav">
-                    <div class="ranking-no my-3">
-                      <p class="parisienne text-center text-nvybrown text-5xl">
+                    <div
+                      class="ranking-no
+                             my-3"
+                    >
+                      <p
+                        class="parisienne
+                               text-center
+                               text-nvybrown
+                               text-5xl"
+                      >
                         No.{{ favorite.no }}
                       </p>
                     </div>
                     <!-- shop layout -->
-                    <div class="card">
+                    <div class="bg-none">
                       <!-- shop image -->
-                      <div class="card-header">
-                        <img :src="favorite.photo" width="300" height="300" class="card-image">
-                      </div>
-                      <!-- shop description and button(favorite and mark) -->
-                      <section class="card-body">
-                        <div class="shop-description">
-                          <!-- shop name -->
-                          <div class="place-info m-2 text-center">
-                            <div class="my-1">
-                              <p class="text-navyblue text-center kaisei-medium">
-                                {{ favorite.name }}
-                              </p>
-                              <p class="text-navyblue text-center kaisei-medium text-xs my-2">
-                                {{ favorite.catchcopy }}
+                      <div class="flex justify-center items-center">
+                        <div>
+                          <img
+                            :src="favorite.photo"
+                            width="300"
+                            height="300"
+                          >
+                        </div>
+                        <!-- shop description and button(favorite and mark) -->
+                        <div class="w-1/3">
+                          <div class="shop-description">
+                            <!-- shop name -->
+                            <div
+                              class="place-info
+                                     m-2
+                                     text-center"
+                            >
+                              <div class="my-1">
+                                <p
+                                  class="text-navyblue
+                                         text-center
+                                         kaisei-medium"
+                                >
+                                  {{ favorite.name }}
+                                </p>
+                                <p
+                                  class="text-navyblue
+                                         text-center
+                                         kaisei-medium
+                                         text-xs
+                                         my-2"
+                                >
+                                  {{ favorite.catchcopy }}
+                                </p>
+                              </div>
+                              <p
+                                class="text-navyblue
+                                       kaisei-medium
+                                       text-xs
+                                       my-2"
+                              >
+                                {{ favorite.access }}
                               </p>
                             </div>
-                            <p class="text-navyblue kaisei-medium text-xs my-2">
-                              {{ favorite.access }}
-                            </p>
                           </div>
+                          <ul class="card-information my-3">
+                            <li
+                              class="text-navyblue
+                                     kaisei-medium
+                                     text-xs
+                                     mx-8"
+                            >
+                              {{ favorite.address }}
+                            </li>
+                            <li
+                              class="text-navyblue
+                                     kaisei-medium
+                                     text-xs
+                                     mx-8"
+                            >
+                              予算:{{ favorite.average }}
+                            </li>
+                            <li
+                              class="text-navyblue
+                                     kaisei-medium
+                                     text-xs
+                                     mx-8"
+                            >
+                              Open:{{ favorite.open }}
+                            </li>
+                            <li
+                              class="text-navyblue
+                                     kaisei-medium
+                                     text-xs
+                                     mx-8"
+                            >
+                              <a
+                                :href="favorite.url"
+                                target="_blank"
+                                class="text-sm
+                                       text-lgtpink
+                                       my-2"
+                              >
+                                さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
+                              </a>
+                            </li>
+                          </ul>
                         </div>
-                        <ul class="card-information">
-                          <li class="text-navyblue kaisei-medium text-xs">
-                            {{ favorite.address }}
-                          </li>
-                          <li class="text-navyblue kaisei-medium text-xs">
-                            予算:{{ favorite.average }}
-                          </li>
-                          <li class="text-navyblue kaisei-medium text-xs">
-                            Open:{{ favorite.open }}
-                          </li>
-                          <li class="text-navyblue kaisei-medium text-xs">
-                            <a :href="favorite.url" target="_blank">
-                              さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
-                            </a>
-                          </li>
-                        </ul>
-                      </section>
+                      </div>
                     </div>
                   </div>
                 </div>
               </swiper-slide>
+              <!-- pagination -->
+              <div class="swiper-pagination"></div>
+              <!-- 左右の矢印ボタン -->
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-button-next"></div>
             </swiper>
           </div>
           <!-- Bookmark -->
-          <div class="ranking pb-10">
-            <p class="ranking-title p-5 text-center">Marked Places Ranking</p>
+          <div
+            class="ranking
+                   pb-10"
+          >
+            <p
+              class="ranking-title
+                     p-5
+                     text-center"
+            >
+              Marks
+            </p>
             <swiper :options="swiperOption">
               <swiper-slide
                 v-for="(bookmark, index) in bookmarks"
                 :key="index">
-                <div class="flex p-5 items-start justify-center flex-row flex-wrap">
+                <div
+                  class="flex
+                         items-start
+                         justify-center
+                         flex-row
+                         flex-wrap
+                         p-5"
+                >
                   <div class="ranking-bm">
-                    <div class="ranking-no my-3">
-                      <p class="parisienne text-center text-nvybrown text-5xl">
+                    <div
+                      class="ranking-no
+                             my-3"
+                    >
+                      <p
+                        class="parisienne
+                               text-center
+                               text-nvybrown
+                               text-5xl"
+                      >
                         No.{{ bookmark.no }}
                       </p>
                     </div>
@@ -508,38 +847,80 @@
                     <div class="card">
                       <!-- shop image -->
                       <div class="card-header">
-                        <img :src="bookmark.photo" width="300" height="300" class="card-image">
+                        <img
+                          :src="bookmark.photo"
+                          width="300"
+                          height="300"
+                          class="card-image"
+                        >
                       </div>
                       <!-- shop description and button(favorite and mark) -->
                       <section class="card-body">
                         <div class="shop-description">
                           <!-- shop name -->
-                          <div class="place-info m-2 text-center">
+                          <div
+                            class="place-info
+                                   m-2
+                                   text-center"
+                          >
                             <div class="my-1">
-                              <p class="text-navyblue text-center kaisei-medium">
+                              <p
+                                class="text-navyblue
+                                       text-center
+                                       kaisei-medium"
+                              >
                                 {{ bookmark.name }}
                               </p>
-                              <p class="text-navyblue text-center kaisei-medium text-xs my-2">
+                              <p
+                                class="text-navyblue
+                                       text-center
+                                       kaisei-medium
+                                       text-xs
+                                       my-2"
+                              >
                                 {{ bookmark.catchcopy }}
                               </p>
                             </div>
-                            <p class="text-navyblue kaisei-medium text-xs my-2">
+                            <p
+                              class="text-navyblue
+                                     kaisei-medium
+                                     text-xs
+                                     my-2"
+                            >
                               {{ bookmark.access }}
                             </p>
                           </div>
                         </div>
                         <ul class="card-information">
-                          <li class="text-navyblue kaisei-medium text-sm">
+                          <li
+                            class="text-navyblue
+                                   kaisei-medium
+                                   text-sm"
+                          >
                             {{ bookmark.address }}
                           </li>
-                          <li class="text-navyblue kaisei-medium text-sm">
+                          <li
+                            class="text-navyblue
+                                   kaisei-medium
+                                   text-sm"
+                          >
                             予算:{{ bookmark.average }}
                           </li>
-                          <li class="text-navyblue kaisei-medium text-sm">
+                          <li
+                            class="text-navyblue
+                                   kaisei-medium
+                                   text-sm"
+                          >
                             Open:{{ bookmark.open }}
                           </li>
-                          <li class="text-navyblue kaisei-medium">
-                            <a :href="bookmark.url" target="_blank">
+                          <li
+                            class="text-navyblue
+                                   kaisei-medium"
+                          >
+                            <a
+                              :href="bookmark.url"
+                              target="_blank"
+                            >
                               さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
                             </a>
                           </li>
@@ -554,32 +935,45 @@
         </div>
       </div>
       <!-- footer -->
-      <footer class="navypink-bg h-auto">
-        <p class="text-beige text-center p-5 lora">
+      <footer
+        class="navypink-bg
+               h-auto"
+      >
+        <p
+          class="text-beige
+                 text-center
+                 p-5
+                 lora"
+        >
           <i class="far fa-copyright copyright"></i>
           2022 Wakana T
         </p>
       </footer>
     </div>
     <!-- top page icon -->
-    <a href="#" class="page-top lora" @click.prevent="pageTop">Top</a>
+    <a
+      href="#"
+      class="page-top
+             lora"
+      @click.prevent="pageTop"
+    >
+      Top
+    </a>
   </div>
 </template>
 
 <script>
 import $ from 'jquery';
-// import axios from 'axios';
 import firebase from 'firebase/app';
-// import GoogleMapsApiLoader from 'google-maps-api-loader';
 import {
-  getRankingFavoritedTop,
   getRankingBookmarkedTop,
-  getFavPlaceId,
+  getRankingFavoritedTop,
   getBmPlaceId,
-  postFavActivity,
-  delFavorite,
+  getFavPlaceId,
   postBmActivity,
   delBookmark,
+  postFavActivity,
+  delFavorite,
   postPlaceCount,
 } from '@/services/firebaseService';
 
@@ -592,40 +986,61 @@ export default {
   },
   data() {
     return {
+      allDataNum: 1,
       bookmarks: [],
+      countNum: 0,
+      currentState: 'IS_INITIALIZED',
       currentUID: null,
+      DATA: [],
       favorites: [],
-      // google: null,
-      // google_shop: null,
+      genre: '',
+      genreShow: '',
       isActive: true,
       lat: '',
       lng: '',
       loginModal: false,
-      radius: '',
-      genre: '',
-      radiusShow: '',
-      genreShow: '',
       places: [],
+      radius: '',
+      radiusShow: '',
       ranking: true,
-      swiperOption: {
+      resultState: '',
+      startNum: 1,
+      swiperOptionFav: {
+        effect: 'slide',
         speed: 1000,
-        spaceBetween: 30,
         centeredSlides: true,
         loop: true,
-        autoplay: {
-          delay: 5000,
-          disableOnInteraction: false,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          type: 'bullets',
+          clickable: true,
+          hideOnClick: true,
+        },
+        slidesPerView: 1,
+        spaceBetween: 5,
+      },
+      swiperOption: {
+        speed: 1000,
+        centeredSlides: true,
+        loop: true,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          type: 'bullets',
+          clickable: true,
+          hideOnClick: true,
         },
       },
       userLikedPlaceId: [],
-      userBookmarkPlaceId: [],
-      currentState: 'IS_INITIALIZED',
-      allDataNum: 1,
-      startNum: 1,
-      countNum: 0,
-      DATA: [],
-      resultState: '',
       userName: '',
+      userBookmarkPlaceId: [],
     };
   },
   async mounted() {
@@ -1906,7 +2321,8 @@ button:disabled {
 /* card layout */
 .card {
   padding: 20px;
-  width: 300px;
+  width: 700px;
+  height: auto;
   background-color: #FFF;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   cursor: pointer;
@@ -1914,15 +2330,7 @@ button:disabled {
 .card:hover {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
-.card:hover .card-header {
-  height: 50px;
-}
-.card:hover .card-header .card-image {
-  transform: translateX(-50%) translateY(-50%) scale(1.5);
-}
-.card:hover .card-body {
-  height: auto;
-}
+/*
 .card:hover .card-body .card-information li {
   transform: translateX(0);
   transition-timing-function: cubic-bezier(0, 1.5, 1, 1);
@@ -1946,28 +2354,21 @@ button:disabled {
 .card:hover .card-body .card-information li:nth-child(6) {
   transition-delay: 1.5s;
 }
+*/
 .card .card-header {
   position: relative;
   background-color: #9e9a95;
-  height: 200px;
   margin: -20px -20px 5px -20px;
   transition: height 0.5s;
-  overflow: hidden;
 }
 .card .card-header .card-image {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateY(-50%) translateX(-50%);
   display: block;
   width: 300px;
   height: auto;
-  transition: transform 0.5s;
 }
 .card .card-body {
-  height: 120px;
-  transition: height 0.5s;
-  overflow: hidden;
+  height: 300px;
+  width: 300px;
 }
 .card .card-body .card-information {
   margin-top: 10px;
@@ -1975,10 +2376,9 @@ button:disabled {
 }
 .card .card-body .card-information li {
   margin-top: 5px;
-  transition-duration: 0;
-  transition-delay: 0.5s;
-  transform: translateX(-100%);
+  margin-left: 35px;
 }
+
 .place-image {
   width: 300px;
   -moz-box-shadow: 10px 10px 15px -4px rgba(54, 52, 51, 0.8);

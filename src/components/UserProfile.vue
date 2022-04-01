@@ -1,33 +1,49 @@
 <template>
-  <div class="user-profile lightblue-bg">
+  <div
+    class="user-profile
+           lightblue-bg"
+  >
     <!-- username -->
     <div class="p-10">
-      <p  class="text-center
-                 text-6xl
-                 sm:text-6xl
-                 md:text-7xl
-                 lg:text-8xl
-                 xl:text-9xl
-                 2xl:text-9xl
-                 user-name">
+      <p
+        class="text-center
+               text-6xl
+               sm:text-6xl
+               md:text-7xl
+               lg:text-8xl
+               xl:text-9xl
+               2xl:text-9xl
+               user-name"
+      >
         {{ userName }}
       </p>
-      <div class="animate__animated animate__fadeInUp mt-24 mb-2">
-        <p  class="text-beige
-                   text-center
-                   kaisei-medium
-                   sm:text-base
-                   md:text-2xl
-                   lg:text-2xl
-                   xl:text-2xl
-                   2xl:text-2xl"
+      <div
+        class="animate__animated
+               animate__fadeInUp
+               mt-24
+               mb-2"
+      >
+        <p
+          class="text-beige
+                 text-center
+                 kaisei-medium
+                 sm:text-base
+                 md:text-2xl
+                 lg:text-2xl
+                 xl:text-2xl
+                 2xl:text-2xl"
         >
           あなたが気になる・お気に入りしたお店です
         </p>
       </div>
     </div>
     <!-- tab -->
-    <ul class="tabs-menu flex justify-center items-center">
+    <ul
+      class="tabs-menu
+             flex
+             justify-center
+             items-center"
+    >
       <li
         class="text-4xl
                sm:text-4xl
@@ -56,45 +72,93 @@
       </li>
     </ul>
     <!-- tab contents -->
-    <section class="tabs-content p-5">
+    <section
+      class="tabs-content
+             p-5"
+    >
       <section v-show="activeTab === 'favorite'">
-        <div class="flex p-5 items-start justify-center flex-row flex-wrap">
-          <div v-for="favorite in favorites" :key="favorite.id">
+        <div
+          class="flex
+                 items-start
+                 justify-center
+                 flex-row
+                 flex-wrap
+                 p-5"
+        >
+          <div
+            v-for="favorite in favorites"
+            :key="favorite.id"
+          >
             <!-- shop layout -->
-            <div class="m-4 card animate__animated animate__fadeInUp">
+            <div
+              class="m-4
+                     card
+                     animate__animated
+                     animate__fadeInUp"
+            >
               <!-- shop image -->
               <div class="card-header">
-                <img :src="favorite.photo" width="300" height="300" class="card-image">
+                <img
+                  :src="favorite.photo"
+                  width="300"
+                  height="300"
+                  class="card-image"
+                >
               </div>
               <!-- shop description and button(favorite and mark) -->
               <section class="card-body">
                 <div class="shop-description">
                   <!-- shop name -->
-                  <div class="place-info m-2 text-center">
+                  <div
+                    class="place-info
+                           m-2
+                           text-center"
+                  >
                     <div class="my-1">
-                      <p class="text-navyblue text-center kaisei-medium">
+                      <p
+                        class="text-navyblue
+                               text-center
+                               kaisei-medium"
+                      >
                         {{ favorite.name }}
                       </p>
-                      <p class="text-navyblue text-center kaisei-medium text-xs my-2">
+                      <p
+                        class="text-navyblue
+                               text-center
+                               kaisei-medium
+                               text-xs
+                               my-2"
+                      >
                         {{ favorite.catchcopy }}
                       </p>
                     </div>
-                    <p class="text-navyblue kaisei-medium text-xs my-2">
+                    <p
+                      class="text-navyblue
+                             kaisei-medium
+                             text-xs
+                             my-2"
+                    >
                       {{ favorite.access }}
                     </p>
                   </div>
                   <!-- button (favorite and mark) -->
-                  <div class="flex justify-end items-center">
+                  <div
+                    class="flex
+                           justify-end
+                           items-center"
+                  >
                     <!-- favorite button -->
                     <div class="p-2">
                       <button
                         @click="onFavorite(favorite)"
-                        v-if="userLikedPlaceId.indexOf(favorite.id) === -1">
+                        v-if="userLikedPlaceId.indexOf(favorite.id) === -1"
+                      >
                           <i class="far fa-heart fa-lg"></i>
                       </button>
                       <button
                         @click="offFavorite(favorite)"
-                        v-else>
+                        v-else
+                      >
                           <i class="fas fa-heart fa-lg liked"></i>
                       </button>
                     </div>
@@ -102,29 +166,50 @@
                     <div class="p-2">
                       <button
                         @click="onBookmark(favorite)"
-                        v-if="userBookmarkPlaceId.indexOf(favorite.id) === -1">
+                        v-if="userBookmarkPlaceId.indexOf(favorite.id) === -1"
+                      >
                         <i class="far fa-bookmark fa-lg"></i>
                       </button>
                       <button
                         @click="offBookmark(favorite)"
-                        v-else>
+                        v-else
+                      >
                         <i class="fas fa-bookmark fa-lg bookmarked"></i>
                       </button>
                     </div>
                   </div>
                 </div>
                 <ul class="card-information">
-                  <li class="text-navyblue kaisei-medium text-xs">
+                  <li
+                    class="text-navyblue
+                           kaisei-medium
+                           text-xs"
+                  >
                     {{ favorite.address }}
                   </li>
-                  <li class="text-navyblue kaisei-medium text-xs">
+                  <li
+                    class="text-navyblue
+                           kaisei-medium
+                           text-xs"
+                  >
                     予算:{{ favorite.average }}
                   </li>
-                  <li class="text-navyblue kaisei-medium text-xs">
+                  <li
+                    class="text-navyblue
+                           kaisei-medium
+                           text-xs"
+                  >
                     Open:{{ favorite.open }}
                   </li>
-                  <li class="text-navyblue kaisei-medium text-xs">
-                    <a :href="favorite.url" target="_blank">
+                  <li
+                    class="text-navyblue
+                           kaisei-medium
+                           text-xs"
+                  >
+                    <a
+                      :href="favorite.url"
+                      target="_blank"
+                    >
                       さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
                     </a>
                   </li>
@@ -135,43 +220,87 @@
         </div>
       </section>
       <section v-show="activeTab === 'bookmark'">
-        <div class="flex p-5 items-start justify-center flex-row flex-wrap">
-          <div v-for="bookmark in bookmarks" :key="bookmark.id">
+        <div
+          class="flex
+                 items-start
+                 justify-center
+                 flex-row
+                 flex-wrap
+                 p-5"
+        >
+          <div
+            v-for="bookmark in bookmarks"
+            :key="bookmark.id"
+          >
             <!-- shop layout -->
-            <div class="m-4 card animate__animated animate__fadeInUp">
+            <div
+              class="m-4
+                     card
+                     animate__animated
+                     animate__fadeInUp"
+            >
               <!-- shop image -->
               <div class="card-header">
-                <img :src="bookmark.photo" width="300" height="300" class="card-image">
+                <img
+                  :src="bookmark.photo"
+                  width="300"
+                  height="300"
+                  class="card-image"
+                >
               </div>
               <!-- shop description and button(favorite and mark) -->
               <section class="card-body">
                 <div class="shop-description">
                   <!-- shop name -->
-                  <div class="place-info m-2 text-center">
+                  <div
+                    class="place-info
+                           m-2
+                           text-center"
+                  >
                     <div class="my-1">
-                      <p class="text-navyblue text-center kaisei-medium">
+                      <p class="text-navyblue
+                                text-center
+                                kaisei-medium"
+                      >
                         {{ bookmark.name }}
                       </p>
-                      <p class="text-navyblue text-center kaisei-medium text-xs my-2">
+                      <p
+                        class="text-navyblue
+                               text-center
+                               kaisei-medium
+                               text-xs
+                               my-2"
+                      >
                         {{ bookmark.catchcopy }}
                       </p>
                     </div>
-                    <p class="text-navyblue kaisei-medium text-xs my-2">
+                    <p
+                      class="text-navyblue
+                             kaisei-medium
+                             text-xs
+                             my-2"
+                    >
                       {{ bookmark.access }}
                     </p>
                   </div>
                   <!-- button (favorite and mark) -->
-                  <div class="flex justify-end items-center">
+                  <div
+                    class="flex
+                           justify-end
+                           items-center"
+                  >
                     <!-- favorite button -->
                     <div class="p-2">
                       <button
                         @click="onFavorite(bookmark)"
-                        v-if="userLikedPlaceId.indexOf(bookmark.id) === -1">
+                        v-if="userLikedPlaceId.indexOf(bookmark.id) === -1"
+                      >
                           <i class="far fa-heart fa-lg"></i>
                       </button>
                       <button
                         @click="offFavorite(bookmark)"
-                        v-else>
+                        v-else
+                      >
                           <i class="fas fa-heart fa-lg liked"></i>
                       </button>
                     </div>
@@ -179,29 +308,49 @@
                     <div class="p-2">
                       <button
                         @click="onBookmark(bookmark)"
-                        v-if="userBookmarkPlaceId.indexOf(bookmark.id) === -1">
+                        v-if="userBookmarkPlaceId.indexOf(bookmark.id) === -1"
+                      >
                         <i class="far fa-bookmark fa-lg"></i>
                       </button>
                       <button
                         @click="offBookmark(bookmark)"
-                        v-else>
+                        v-else
+                      >
                         <i class="fas fa-bookmark fa-lg bookmarked"></i>
                       </button>
                     </div>
                   </div>
                 </div>
                 <ul class="card-information">
-                  <li class="text-navyblue kaisei-medium text-sm">
+                  <li
+                    class="text-navyblue
+                           kaisei-medium
+                           text-sm"
+                  >
                     {{ bookmark.address }}
                   </li>
-                  <li class="text-navyblue kaisei-medium text-sm">
+                  <li
+                    class="text-navyblue
+                           kaisei-medium
+                           text-sm"
+                  >
                     予算:{{ bookmark.average }}
                   </li>
-                  <li class="text-navyblue kaisei-medium text-sm">
+                  <li
+                    class="text-navyblue
+                           kaisei-medium
+                           text-sm"
+                  >
                     Open:{{ bookmark.open }}
                   </li>
-                  <li class="text-navyblue kaisei-medium">
-                    <a :href="bookmark.url" target="_blank">
+                  <li
+                    class="text-navyblue
+                           kaisei-medium"
+                  >
+                    <a
+                      :href="bookmark.url"
+                      target="_blank"
+                    >
                       さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
                     </a>
                   </li>
@@ -214,13 +363,24 @@
     </section>
     <!-- footer -->
     <footer>
-      <p class="text-beige text-center p-5 lora">
+      <p
+        class="text-beige
+               text-center
+               p-5
+               lora"
+      >
         <i class="far fa-copyright copyright"></i>
         2022 Wakana T
       </p>
     </footer>
     <!-- top page -->
-    <a href="#" class="page-top" @click.prevent="pageTop">Top</a>
+    <a
+      href="#"
+      class="page-top"
+      @click.prevent="pageTop"
+    >
+      Top
+    </a>
   </div>
 </template>
 
@@ -228,14 +388,14 @@
 import $ from 'jquery';
 import firebase from 'firebase/app';
 import {
-  getFavorite,
   getBookmark,
-  getFavPlaceId,
+  getFavorite,
   getBmPlaceId,
-  postFavActivity,
-  delFavorite,
-  postBmActivity,
+  getFavPlaceId,
   delBookmark,
+  postBmActivity,
+  delFavorite,
+  postFavActivity,
 } from '@/services/firebaseService';
 
 export default {
@@ -247,11 +407,11 @@ export default {
   },
   data() {
     return {
-      favorites: [],
-      bookmarks: [],
-      userLikedPlaceId: [],
-      userBookmarkPlaceId: [],
       activeTab: 'favorite',
+      bookmarks: [],
+      favorites: [],
+      userBookmarkPlaceId: [],
+      userLikedPlaceId: [],
       userName: this.$route.query.userName,
       userUID: this.$route.query.userUID,
     };
@@ -398,7 +558,6 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Antic+Didone&family=Elsie&family=Italiana&family=Kaisei+Decol:wght@400;500;700&family=Lobster&family=Lora:wght@400;700&display=swap');
 /* card layout */
 .card {

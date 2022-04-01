@@ -26,17 +26,25 @@
           />
           <div class="actions-menu">
             <!-- Home Button (ホームボタン) -->
-            <button class="btn btn--home bg-none">
+            <button
+              class="btn
+                     btn--home
+                     bg-none"
+            >
               <router-link
                 to='/'
-                class="block lora-bold text-lightgray text-lg"
+                class="block
+                       lora-bold
+                       text-lightgray
+                       text-lg"
               >
                 Top
               </router-link>
             </button>
             <!-- User Button (ユーザボタン) -->
             <button
-              class="btn btn--user
+              class="btn
+                     btn--user
                      relative"
               @click="openBalloon"
             >
@@ -47,27 +55,43 @@
               class="userinfo
                      absolute
                      z-10
-                     animate__animated animate__fadeIn animate__faster">
+                     animate__animated
+                     animate__fadeIn
+                     animate__faster"
+            >
               <div class="userinfo">
                 <!-- Login User Name (ユーザの名前) -->
                 <div
                   class="mt-2 mx-3
                          border-b
-                         text-center">
+                         text-center"
+                >
                   <i class="user-icon fas fa-user-circle fa-4x"></i>
                   <p
                     class="text-center
                            py-1
                            text-2xl
-                           user-name-login">
+                           user-name-login"
+                  >
                     {{ userName }}
                   </p>
                 </div>
                 <!-- Button Area (ボタンエリア) -->
-                <div class="button mt-2 mx-3">
-                  <div class="flex justify-center items-center">
+                <div
+                  class="button
+                         mt-2
+                         mx-3"
+                >
+                  <div
+                    class="flex
+                           justify-center
+                           items-center"
+                  >
                     <!-- User Profile (ユーザのプロフィールに繋がるボタン) -->
-                    <div class="signup mr-1">
+                    <div
+                      class="signup
+                             mr-1"
+                    >
                       <router-link
                         :to="{
                                 name: 'Profile',
@@ -75,10 +99,17 @@
                                 query: { userName: userName,  userUID: currentUID},
                               }"
                         class="block
-                               leading-none border rounded
-                               px-2 py-2
-                               text-xs text-beige lora-bold
-                               hover:border-transparent hover:text-lightgray hover:bg-beige"
+                               leading-none
+                               border
+                               rounded
+                               px-2
+                               py-2
+                               text-xs
+                               text-beige
+                               lora-bold
+                               hover:border-transparent
+                               hover:text-lightgray
+                               hover:bg-beige"
                       >
                           <p class="moji">Profile</p>
                       </router-link>
@@ -89,12 +120,20 @@
                         <button
                           class=
                            "inline-block
-                            leading-none border rounded
-                            px-2 py-2
-                            text-xs text-beige lora-bold
-                            hover:border-transparent hover:text-lightgray hover:bg-beige"
+                            leading-none
+                            border
+                            rounded
+                            px-2
+                            py-2
+                            text-xs
+                            text-beige
+                            lora-bold
+                            hover:border-transparent
+                            hover:text-lightgray
+                            hover:bg-beige"
                           type="button"
-                          @click="onClickLogOut">
+                          @click="onClickLogOut"
+                        >
                             Logout
                         </button>
                       </router-link>
@@ -102,8 +141,15 @@
                   </div>
                 </div>
                 <!-- Message to LoginUser (ユーザへのメッセージ) -->
-                <div class="mx-2 my-1">
-                  <p class="text-beige text-xs kaisei-medium">
+                <div
+                  class="mx-2
+                         my-1"
+                >
+                  <p
+                    class="text-beige
+                           text-xs
+                           kaisei-medium"
+                  >
                     Thank you for logging in!<br>
                     Please enjoy this app!!
                   </p>
@@ -111,17 +157,29 @@
               </div>
             </span>
             <!-- Activity Button (アクティビティボタン) -->
-            <button class="btn btn--activity">
+            <button
+              class="btn
+                     btn--activity"
+            >
               <router-link
                 :to="{
                       name: 'Activity',
                       query: { userName: userName,  userUID: currentUID},
                      }"
-                class="block lora-bold text-lightgray text-lg">
+                class="block
+                       lora-bold
+                       text-lightgray
+                       text-lg"
+              >
                   Activity
               </router-link>
             </button>
-            <label for="actionMenuButton" class="btn btn--large btn--menu"/>
+            <label
+              for="actionMenuButton"
+              class="btn
+                     btn--large
+                     btn--menu"
+            />
           </div>
         </div>
       </div>
@@ -133,10 +191,15 @@
       v-else
     >
       <div
-        class="flex justify-end items-center
+        class="flex
+               justify-end
+               items-center
                container
                w-full
-               mx-auto mt-0 px-0 py-3"
+               mx-auto
+               mt-0
+               px-0
+               py-3"
       >
           <div class="user-button">
             <!-- User Button (ユーザボタン) -->
@@ -151,31 +214,56 @@
               v-if=userInfoNoLogin
               class="absolute
                      z-10
-                     animate__animated animate__fadeIn animate__faster">
-              <div class="userinfo-nologin relative">
+                     animate__animated
+                     animate__fadeIn
+                     animate__faster"
+            >
+              <div
+                class="userinfo-nologin
+                       relative"
+              >
                   <!-- Guest User (ゲストユーザの印) -->
                   <div class="text-center
-                              mt-3 mx-3
-                              border-b">
+                              mt-3
+                              mx-3
+                              border-b"
+                  >
                     <i class="user-icon fas fa-user-circle fa-4x pt-2"></i>
                     <p class="text-center
                               py-1
                               text-2xl
-                              user-name">
+                              user-name"
+                    >
                       Guest
                     </p>
                   </div>
                   <!-- Buuton Area (ボタンエリア) -->
-                  <div class="button mt-2 mx-3">
-                    <div class="flex justify-center items-center">
+                  <div
+                    class="button
+                           mt-2
+                           mx-3"
+                  >
+                    <div
+                      class="flex
+                             justify-center
+                             items-center"
+                    >
                       <!-- Login Button (ログインボタン) -->
                       <div class="login">
                         <button
                           class="inline-block
-                                 leading-none border border-white rounded
-                                 px-2 py-2
-                                 text-xs text-beige lora-bold
-                                 hover:border-transparent hover:text-navyblue hover:bg-white"
+                                 leading-none
+                                 border
+                                 border-white
+                                 rounded
+                                 px-2
+                                 py-2
+                                 text-xs
+                                 text-beige
+                                 lora-bold
+                                 hover:border-transparent
+                                 hover:text-navyblue
+                                 hover:bg-white"
                           type="button"
                           @click="openLoginForm">
                             Login
@@ -190,8 +278,15 @@
                     </div>
                   </div>
                   <!-- Message to Guest User (ゲストユーザへのメッセージ) -->
-                  <div class="my-1 mx-2">
-                    <p class="text-beige text-xs kaisei-medium">
+                  <div
+                    class="my-1
+                           mx-2"
+                  >
+                    <p
+                      class="text-beige
+                             text-xs
+                             kaisei-medium"
+                    >
                       Please try to register as a member (free of charge).
                     </p>
                   </div>

@@ -1,16 +1,42 @@
 <template>
   <transition name="modal">
-    <div class="overlay" @click="$emit('close')">
-      <div class="panel" @click.stop>
-        <input type="radio" id="switch-open" name="switch"/>
-        <input type="radio" id="switch-close" name="switch"/>
+    <div
+      class="overlay"
+      @click="$emit('close')"
+    >
+      <div
+        class="panel"
+        @click.stop
+      >
+        <input
+          type="radio"
+          id="switch-open"
+          name="switch"
+        />
+        <input
+          type="radio"
+          id="switch-close"
+          name="switch"
+        />
         <!-- Login Form -->
-        <div class="login is-active">
-          <div class="w-full max-w-xm">
+        <div
+          class="login
+                 is-active"
+        >
+          <div
+            class="w-full
+                   max-w-xm"
+          >
             <h1 class="m-2">LOGIN</h1>
             <p class="error-login">{{ loginError }}</p>
-            <form class="w-full" @submit.prevent="onLogIn">
-              <div class="group mb-4">
+            <form
+              class="w-full"
+              @submit.prevent="onLogIn"
+            >
+              <div
+                class="group
+                       mb-4"
+              >
                 <i class="fa fa-envelope" aria-hidden="true"></i>
                 <input
                   v-model="loginForm.userMail"
@@ -18,9 +44,14 @@
                   type="text"
                   id="emailLogin"
                   placeholder="E-Mail"
-                  name="mailLogin"/>
+                  name="mailLogin"
+                />
                 <label for="emailLogin"></label>
-                <span class="error-email flex px-1">
+                <span
+                  class="error-email
+                         flex
+                         px-1"
+                >
                   <p class="error">
                     {{ loginValidation.email }}
                   </p>
@@ -29,7 +60,10 @@
                   </p>
                 </span>
               </div>
-              <div class="group mb-6">
+              <div
+                class="group
+                       mb-6"
+              >
                 <i class="fa fa-unlock-alt" aria-hidden="true"></i>
                 <input
                   v-model="loginForm.userPass"
@@ -37,9 +71,14 @@
                   type="password"
                   id="passwordLogin"
                   placeholder="Password"
-                  name="pswLogin"/>
+                  name="pswLogin"
+                />
                 <label for="passwordLogin"></label>
-                <span class="error-password flex mx-1">
+                <span
+                  class="error-password
+                         flex
+                         mx-1"
+                >
                   <p class="error">
                     {{ loginValidation.password }}
                   </p>
@@ -51,26 +90,45 @@
                   </p>
                 </span>
               </div>
-              <input type="submit" value="LOGIN" @click="checkValidationLogin"/>
+              <input
+                type="submit"
+                value="LOGIN"
+                @click="checkValidationLogin"
+              />
             </form>
-            <label class="button-open lora" for="switch-open">
+            <label
+              class="button-open
+                     lora"
+              for="switch-open"
+            >
               SIGN UP
               <i class="fa fa-user-plus" aria-hidden="true"></i>
             </label>
           </div>
         </div>
         <!-- Sign up Form -->
-        <div class="register is-active">
-          <label class="button-close lora" for="switch-close">
+        <div
+          class="register
+                 is-active"
+        >
+          <label
+            class="button-close
+                   lora"
+            for="switch-close"
+          >
             LOGIN
             <i class="fas fa-user-check" aria-hidden="true"></i>
           </label>
           <div class="inner">
             <h1 classs="beige">REGISTER</h1>
             <p class="error-register">{{ signupError }}</p>
-            <form class="w-full" @submit.prevent="onSignUp">
+            <form
+              class="w-full"
+              @submit.prevent="onSignUp"
+            >
               <!-- user name -->
-              <div class="group"><i class="fa fa-user" aria-hidden="true"></i>
+              <div class="group">
+                <i class="fa fa-user" aria-hidden="true"></i>
                 <input
                   type="text"
                   id="name"
@@ -81,13 +139,18 @@
                 />
                 <label for="name"></label>
                 <!-- error message (name) -->
-                <span class="error-name flex px-1">
+                <span
+                  class="error-name
+                         flex
+                         px-1"
+                >
                   <p class="error">{{ signValidation.name }}</p>
                   <p class="error px-1">{{ signValidation.nameLength }}</p>
                 </span>
               </div>
               <!-- email -->
-              <div class="group"><i class="fa fa-envelope" aria-hidden="true"></i>
+              <div class="group">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
                 <input
                   type="email"
                   id="email"
@@ -98,7 +161,11 @@
                 />
                 <label for="email"></label>
                 <!-- error message (email) -->
-                <span class="error-email flex px-1">
+                <span
+                  class="error-email
+                         flex
+                         px-1"
+                >
                   <p class="error">
                     {{ signValidation.email }}
                   </p>
@@ -107,7 +174,8 @@
                 </span>
               </div>
               <!-- email(checking) -->
-              <div class="group"><i class="fa fa-envelope" aria-hidden="true"></i>
+              <div class="group">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
                 <input
                   type="email"
                   id="emailCheck"
@@ -118,7 +186,11 @@
                 />
                 <label for="emailCheck"></label>
                 <!-- error message (email) -->
-                <span class="error-email flex px-1">
+                <span
+                  class="error-email
+                         flex
+                         px-1"
+                >
                   <p class="error">
                     {{ signValidation.emailCheck }}
                   </p>
@@ -131,7 +203,8 @@
                 </span>
               </div>
               <!-- password -->
-              <div class="group"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
+              <div class="group">
+                <i class="fa fa-unlock-alt" aria-hidden="true"></i>
                 <input
                   type="password"
                   id="password"
@@ -141,7 +214,11 @@
                   placeholder="Password"
                 />
                 <label for="password"></label>
-                <span class="error-email flex mx-1">
+                <span
+                  class="error-email
+                         flex
+                         mx-1"
+                >
                     <p class="error">
                       {{ signValidation.password }}
                     </p>
@@ -157,7 +234,8 @@
                 </span>
               </div>
               <!-- password(checking) -->
-              <div class="group"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
+              <div class="group">
+                <i class="fa fa-unlock-alt" aria-hidden="true"></i>
                 <input
                   type="password"
                   id="passwordCheck"
@@ -167,7 +245,11 @@
                   placeholder="Password (for checking)"
                 />
                 <label for="passwordCheck"></label>
-                <span class="error-email flex px-1">
+                <span
+                  class="error-email
+                         flex
+                         px-1"
+                >
                     <p class="error">
                       {{ signValidation.passwordCheck }}
                     </p>
@@ -182,7 +264,11 @@
                     </p>
                 </span>
               </div>
-              <input type="submit" value="REGISTER" @click="checkValidationSign"/>
+              <input
+                type="submit"
+                value="REGISTER"
+                @click="checkValidationSign"
+              />
             </form>
           </div>
         </div>
@@ -192,7 +278,6 @@
 </template>
 
 <script>
-// import $ from 'jquery';
 import firebase from 'firebase/app';
 
 export default {

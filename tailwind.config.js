@@ -14,6 +14,8 @@ module.exports = {
         'lightgray': '#8d8985',
         'lightgreen': '#969687',
         'nvybrown': '#754035',
+        'lgtpink': '#ff8882',
+        'lgtyellow': '#efdc71',
       },
     },
   },
