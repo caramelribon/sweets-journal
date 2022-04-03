@@ -675,7 +675,7 @@
             >
               Favorits
             </p>
-            <swiper :options="swiperOptionFav">
+            <swiper :options="swiperOption">
               <swiper-slide
                 v-for="(favorite, index) in favorites"
                 :key="index"
@@ -798,11 +798,6 @@
                   </div>
                 </div>
               </swiper-slide>
-              <!-- pagination -->
-              <div class="swiper-pagination"></div>
-              <!-- 左右の矢印ボタン -->
-              <div class="swiper-button-prev"></div>
-              <div class="swiper-button-next"></div>
             </swiper>
           </div>
           <!-- Bookmark -->
@@ -820,7 +815,8 @@
             <swiper :options="swiperOption">
               <swiper-slide
                 v-for="(bookmark, index) in bookmarks"
-                :key="index">
+                :key="index"
+              >
                 <div
                   class="flex
                          items-start
@@ -829,7 +825,7 @@
                          flex-wrap
                          p-5"
                 >
-                  <div class="ranking-bm">
+                  <div class="ranking-fav">
                     <div
                       class="ranking-no
                              my-3"
@@ -844,88 +840,97 @@
                       </p>
                     </div>
                     <!-- shop layout -->
-                    <div class="card">
+                    <div class="bg-none">
                       <!-- shop image -->
-                      <div class="card-header">
-                        <img
-                          :src="bookmark.photo"
-                          width="300"
-                          height="300"
-                          class="card-image"
-                        >
-                      </div>
-                      <!-- shop description and button(favorite and mark) -->
-                      <section class="card-body">
-                        <div class="shop-description">
-                          <!-- shop name -->
-                          <div
-                            class="place-info
-                                   m-2
-                                   text-center"
+                      <div class="flex justify-center items-center">
+                        <div>
+                          <img
+                            :src="bookmark.photo"
+                            width="300"
+                            height="300"
                           >
-                            <div class="my-1">
+                        </div>
+                        <!-- shop description and button(favorite and mark) -->
+                        <div class="w-1/3">
+                          <div class="shop-description">
+                            <!-- shop name -->
+                            <div
+                              class="place-info
+                                     m-2
+                                     text-center"
+                            >
+                              <div class="my-1">
+                                <p
+                                  class="text-navyblue
+                                         text-center
+                                         kaisei-medium"
+                                >
+                                  {{ bookmark.name }}
+                                </p>
+                                <p
+                                  class="text-navyblue
+                                         text-center
+                                         kaisei-medium
+                                         text-xs
+                                         my-2"
+                                >
+                                  {{ bookmark.catchcopy }}
+                                </p>
+                              </div>
                               <p
                                 class="text-navyblue
-                                       text-center
-                                       kaisei-medium"
-                              >
-                                {{ bookmark.name }}
-                              </p>
-                              <p
-                                class="text-navyblue
-                                       text-center
                                        kaisei-medium
                                        text-xs
                                        my-2"
                               >
-                                {{ bookmark.catchcopy }}
+                                {{ bookmark.access }}
                               </p>
                             </div>
-                            <p
+                          </div>
+                          <ul class="card-information my-3">
+                            <li
                               class="text-navyblue
                                      kaisei-medium
                                      text-xs
-                                     my-2"
+                                     mx-8"
                             >
-                              {{ bookmark.access }}
-                            </p>
-                          </div>
+                              {{ bookmark.address }}
+                            </li>
+                            <li
+                              class="text-navyblue
+                                     kaisei-medium
+                                     text-xs
+                                     mx-8"
+                            >
+                              予算:{{ bookmark.average }}
+                            </li>
+                            <li
+                              class="text-navyblue
+                                     kaisei-medium
+                                     text-xs
+                                     mx-8"
+                            >
+                              Open:{{ bookmark.open }}
+                            </li>
+                            <li
+                              class="text-navyblue
+                                     kaisei-medium
+                                     text-xs
+                                     mx-8"
+                            >
+                              <a
+                                :href="bookmark.url"
+                                target="_blank"
+                                class="text-sm
+                                       text-lgtpink
+                                       my-2"
+                              >
+                                さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
+                              </a>
+                            </li>
+                          </ul>
                         </div>
-                        <ul class="card-information">
-                          <li
-                            class="text-navyblue
-                                   kaisei-medium
-                                   text-sm"
-                          >
-                            {{ bookmark.address }}
-                          </li>
-                          <li
-                            class="text-navyblue
-                                   kaisei-medium
-                                   text-sm"
-                          >
-                            予算:{{ bookmark.average }}
-                          </li>
-                          <li
-                            class="text-navyblue
-                                   kaisei-medium
-                                   text-sm"
-                          >
-                            Open:{{ bookmark.open }}
-                          </li>
-                          <li
-                            class="text-navyblue
-                                   kaisei-medium"
-                          >
-                            <a
-                              :href="bookmark.url"
-                              target="_blank"
-                            >
-                              さらに詳しい情報こちら <i class="fas fa-external-link-alt icon-color-blue"></i>
-                            </a>
-                          </li>
-                        </ul>
-                      </section>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1005,37 +1010,14 @@ export default {
       ranking: true,
       resultState: '',
       startNum: 1,
-      swiperOptionFav: {
-        effect: 'slide',
-        speed: 1000,
-        centeredSlides: true,
-        loop: true,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          type: 'bullets',
-          clickable: true,
-          hideOnClick: true,
-        },
-        slidesPerView: 1,
-        spaceBetween: 5,
-      },
       swiperOption: {
         speed: 1000,
+        spaceBetween: 30,
         centeredSlides: true,
         loop: true,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          type: 'bullets',
-          clickable: true,
-          hideOnClick: true,
+        autoplay: {
+          delay: 8000,
+          disableOnInteraction: false,
         },
       },
       userLikedPlaceId: [],
