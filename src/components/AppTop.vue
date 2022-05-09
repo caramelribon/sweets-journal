@@ -31,6 +31,7 @@
                w-full
                text-center
                top-message
+               text-base
                sm:text-base
                md:text-2xl
                lg:text-3xl
@@ -66,7 +67,7 @@
             <p
               class="mt-3
                      mb-8
-                     mx-20
+                     mx-10
                      text-nvybrown
                      text-2xl
                      sm:text-3xl
@@ -80,7 +81,7 @@
               Welcome to the Sweets Journal
             </p>
             <div
-              class="mx-20
+              class="mx-10
                      sm:mx-20
                      md:mx-32
                      lg:mx-52
@@ -133,6 +134,7 @@
             class="text-beige
                    text-center
                    my-5
+                   mx-10
                    kaisei-medium
                    sm:text-base
                    md:text-2xl
@@ -168,7 +170,7 @@
                                   lg:w-72
                                   xl:w-72
                                   2xl:w-72
-                                  w-40"
+                                  w-24"
                       >
                         <select
                           v-model="genre"
@@ -180,7 +182,7 @@
                                  lg:w-72
                                  xl:w-72
                                  2xl:w-72
-                                 w-40
+                                 w-24
                                  leading-tight
                                  px-5 py-3
                                  focus:outline-none"
@@ -299,7 +301,7 @@
                                  lg:w-72
                                  xl:w-72
                                  2xl:w-72
-                                 w-40"></span>
+                                 w-24"></span>
                         <label class="select-label">Genre</label>
                       </div>
                     </div>
@@ -318,7 +320,7 @@
                                lg:w-72
                                xl:w-72
                                2xl:w-72
-                               w-40"
+                               w-24"
                       >
                         <select
                           v-model="radius"
@@ -329,7 +331,7 @@
                                  lg:w-72
                                  xl:w-72
                                  2xl:w-72
-                                 w-40
+                                 w-24
                                  leading-tight
                                  px-4 py-3
                                  rounded-l
@@ -370,7 +372,7 @@
                                      lg:w-72
                                      xl:w-72
                                      2xl:w-72
-                                     w-40"></span>
+                                     w-24"></span>
                         <label class="select-label">Area</label>
                       </div>
                     </div>
@@ -449,7 +451,9 @@
                  text-beige
                  text-center
                  my-5
+                 mx-10
                  kaisei-medium
+                 text-sm
                  sm:text-base
                  md:text-2xl
                  lg:text-2xl
@@ -612,12 +616,14 @@
               <p
                 class="text-nvybrown
                        text-center
+                       text-sm
                        sm:text-base
                        md:text-2xl
                        lg:text-2xl
                        xl:text-2xl
                        2xl:text-2xl
                        my-5
+                       mx-10
                        kaisei-medium"
               >
                 お気に入りのお店ランキングと気になるお店ランキングの上位のお店です
@@ -705,16 +711,17 @@
                     <!-- shop layout -->
                     <div class="bg-none">
                       <!-- shop image -->
-                      <div class="flex justify-center items-center">
+                      <div class="ranking-layout">
                         <div>
                           <img
                             :src="favorite.photo"
+                            class="photo-position"
                             width="300"
                             height="300"
                           >
                         </div>
                         <!-- shop description and button(favorite and mark) -->
-                        <div class="w-1/3">
+                        <div class="place-data">
                           <div class="shop-description">
                             <!-- shop name -->
                             <div
@@ -842,16 +849,17 @@
                     <!-- shop layout -->
                     <div class="bg-none">
                       <!-- shop image -->
-                      <div class="flex justify-center items-center">
+                      <div class="ranking-layout">
                         <div>
                           <img
                             :src="bookmark.photo"
+                            class="photo-position"
                             width="300"
                             height="300"
                           >
                         </div>
                         <!-- shop description and button(favorite and mark) -->
-                        <div class="w-1/3">
+                        <div class="place-data">
                           <div class="shop-description">
                             <!-- shop name -->
                             <div
@@ -1384,14 +1392,22 @@ export default {
               console.log('Can not delete favorited place!', err);
             });
           } else {
+            await firebase.firestore()
+              .collection('users')
+              .doc(this.currentUID)
+              .get()
+              .then((docRef) => {
+                this.userName = docRef.data().username;
+              });
+            console.log(this.userName);
             // No:お気に入り登録
-            dbFav.doc().set({
+            await dbFav.doc().set({
               user_id: this.currentUID,
               place_id: place.id,
               create_at: firebase.firestore.FieldValue.serverTimestamp(),
             });
             // No:アクティビティ登録
-            await postFavActivity(place.id, this.currentUID).catch((err) => {
+            await postFavActivity(place.id, this.currentUID, this.userName).catch((err) => {
               console.log('Can not register activities!', err);
             });
             // place_idのお店が登録してあるか確認
@@ -1468,14 +1484,22 @@ export default {
               console.log('Can not delete bookmarked place!', err);
             });
           } else {
+            await firebase.firestore()
+              .collection('users')
+              .doc(this.currentUID)
+              .get()
+              .then((docRef) => {
+                this.userName = docRef.data().username;
+              });
+            console.log(this.userName);
             // No:気になる登録
-            dbBm.doc().set({
+            await dbBm.doc().set({
               user_id: this.currentUID,
               place_id: place.id,
               create_at: firebase.firestore.FieldValue.serverTimestamp(),
             });
             // No:アクティビティ登録
-            await postBmActivity(place.id, this.currentUID).catch((err) => {
+            await postBmActivity(place.id, this.currentUID, this.userName).catch((err) => {
               console.log('Can not register activities!', err);
             });
             // place_idのお店が登録してあるか確認
@@ -1722,12 +1746,12 @@ export default {
                0 10px 8px #523530;
 }
 
-@media screen and (max-width:640px) {
+@media screen and (max-width:480px) {
   .sweets {
-    font-size: 100px;
+    font-size: 70px;
   }
   .journal {
-    font-size: 100px;
+    font-size: 70px;
   }
   .small-title-beige {
     font-size: 50px;
@@ -1745,17 +1769,69 @@ export default {
     font-size: 30px;
   }
   .select-text {
-    font-size: 20px;
+    font-size: 10px;
   }
   .select-text:focus ~ .select-label, .select-text:valid ~ .select-label {
-    font-size: 30px;
-    top: -70px;
+    font-size: 15px;
+    top: -60px;
   }
   .select:after {
-    top: 17px;
+    top: 5px;
   }
   .select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
-    width: 106%;
+    width: 62%;
+  }
+  .place-data {
+    width: 80%;
+    margin: 0 auto;
+  }
+  .photo-position {
+    text-align: center;
+    margin: 0 auto;
+  }
+}
+@media screen and (min-width:480px) and (max-width:684px) {
+  .sweets {
+    font-size: 100px;
+  }
+  .journal {
+    font-size: 100px;
+  }
+  .small-title-beige {
+    font-size: 50px;
+  }
+  .small-title-navypink {
+    font-size: 50px;
+  }
+  .place-title {
+    font-size: 50px;
+  }
+  .message-about {
+    font-size: 30px;
+  }
+  .ranking-title {
+    font-size: 30px;
+  }
+  .select-text {
+    font-size: 10px;
+  }
+  .select-text:focus ~ .select-label, .select-text:valid ~ .select-label {
+    font-size: 15px;
+    top: -60px;
+  }
+  .select:after {
+    top: 5px;
+  }
+  .select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
+    width: 62%;
+  }
+  .place-data {
+    width: 90%;
+     margin: 0 auto;
+  }
+  .photo-position {
+    text-align: center;
+    margin: 0 auto;
   }
 }
 @media screen and (min-width:640px) and ( max-width:768px) {
@@ -1793,6 +1869,14 @@ export default {
   .select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
     width: 106%;
   }
+  .ranking-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .place-data {
+    width: 33.333333%;
+  }
 }
 @media screen and (min-width:768px) and ( max-width:1024px) {
   .sweets {
@@ -1829,6 +1913,14 @@ export default {
   .select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
     width: 149%;
   }
+  .ranking-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .place-data {
+    width: 33.333333%;
+  }
 }
 @media screen and (min-width:1024px) {
   .sweets {
@@ -1864,6 +1956,14 @@ export default {
   }
   .select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
     width: 192%;
+  }
+  .ranking-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .place-data {
+    width: 33.333333%;
   }
 }
 

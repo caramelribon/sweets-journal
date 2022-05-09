@@ -263,12 +263,6 @@
     ></div>
     <div
       class="loader-wrap"
-      v-show="loading"
-    >
-      <div class="text"></div>
-    </div>
-    <div
-      class="loader-wrap"
       v-show="noData"
     >
       <div
@@ -293,7 +287,8 @@
     </footer>
     <a
       href="#"
-      class="page-top"
+      class="page-top
+             lora"
       @click.prevent="pageTop"
     >
       Top
@@ -304,6 +299,7 @@
 <script>
 import $ from 'jquery';
 import firebase from 'firebase/app';
+import 'firebase/firestore';
 import {
   getActivity,
   getFavPlaceId,
@@ -325,11 +321,7 @@ export default {
     return {
       activities: [],
       // Activityデータの数
-      dataCount: 1,
-      // 非同期で取得中 通常: false, 通信中: true
-      itemLoading: false,
-      // ロード中のアニメーション
-      loading: false,
+      dataCount: 0,
       nextData: [],
       // データがあるかどうか
       nodata: false,
@@ -368,36 +360,37 @@ export default {
       // データ数の取得
       const docRef = await firebase.firestore().collection('activityCount').doc('count');
       docRef.get().then((doc) => {
+        console.log(doc.data().activityCount);
         this.dataCount = doc.data().activityCount + 1;
       });
       console.log(this.dataCount);
+      setTimeout(this.firstGetData, 500);
+    },
+    async firstGetData() {
       // 最初のデータの取得
       let data = [];
-      data = await getActivity(5, this.pagingToken);
+      data = await getActivity(10, this.pagingToken).catch((err) => {
+        console.log('Can not catch first activity data', err);
+      });
       this.activities = data.BuffData;
       this.pagingToken = data.nextPageToken;
-      this.dataCount -= 5;
+      this.dataCount -= 10;
+      console.log(this.activities);
       console.log(this.dataCount);
     },
     // infinite scroll
-    infiniteScroll() {
-      if (this.dataCount >= 5) {
+    async infiniteScroll() {
+      if (this.dataCount >= 10) {
         // データが5件以上あるときは、5件づつ取得する
-        this.loading = true;
-        this.nextPage(5);
-      } else if (this.dataCount < 5 && this.dataCount > 0) {
+        await this.nextPage(10);
+      } else if (this.dataCount < 10 && this.dataCount > 0) {
         // データが5件より少なかったら、残りのデータを取得する
-        this.loading = true;
-        this.nextPage(this.dataCount);
+        await this.nextPage(this.dataCount);
       } else if (this.dataCount === 0) {
         this.noData();
       }
     },
     async nextPage(num) {
-      // 読込中は再読み込み防止
-      if (this.itemLoading) return;
-      // 取得データがもう存在しない場合は行わない
-      if (this.isLastPage) return;
       // 次のデータを取得
       await getActivity(num, this.pagingToken)
         .then((data) => {
@@ -405,17 +398,9 @@ export default {
           this.pagingToken = data.nextPageToken;
           this.dataCount -= num;
           console.log(this.dataCount);
-          // ローディングアニメーション非表示
-          this.loading = false;
-          // 読込中 false
-          this.itemLoading = false;
         }).catch((error) => {
           // エラー出力
           console.log('データを取得できませんでした。', error);
-          // ローディングアニメーション非表示
-          this.loading = false;
-          // 読込中 false
-          this.itemLoading = false;
         });
     },
     // when no data
@@ -472,9 +457,10 @@ export default {
             dbFav.doc().set({
               user_id: this.userUID,
               place_id: place.id,
+              create_at: firebase.firestore.FieldValue.serverTimestamp(),
             });
             // No:アクティビティ登録
-            await postFavActivity(place.id, this.userUID).catch((err) => {
+            await postFavActivity(place.id, this.userUID, this.userName).catch((err) => {
               console.log('Can not register activities!', err);
             });
           }
@@ -544,9 +530,10 @@ export default {
             dbBm.doc().set({
               user_id: this.userUID,
               place_id: place.id,
+              create_at: firebase.firestore.FieldValue.serverTimestamp(),
             });
             // No:アクティビティ登録
-            await postBmActivity(place.id, this.userUID).catch((err) => {
+            await postBmActivity(place.id, this.userUID, this.userName).catch((err) => {
               console.log('Can not register activities!', err);
             });
           }

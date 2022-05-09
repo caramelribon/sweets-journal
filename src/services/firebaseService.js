@@ -123,12 +123,13 @@ export const getBmPlaceId = async (userId) => {
 };
 
 // eslint-disable-next-line
-export const postFavActivity = async (placeId, userId) => {
+export const postFavActivity = async (placeId, userId, userName) => {
   const dbAct = firebase.firestore().collection('activities').doc();
   const dbActCount = firebase.firestore().collection('activityCount').doc('count');
   // activitiesに登録
   await dbAct.set({
     user_id: userId,
+    username: userName,
     place_id: placeId,
     action: 'favorite',
     create_at: firebase.firestore.FieldValue.serverTimestamp(),
@@ -212,13 +213,14 @@ export const delFavorite = async (placeId, userId, userLikedPlaceId) => {
 };
 
 // eslint-disable-next-line
-export const postBmActivity = async (placeId, userId) => {
+export const postBmActivity = async (placeId, userId, userName) => {
   const dbAct = firebase.firestore().collection('activities').doc();
   const dbActCount = firebase.firestore().collection('activityCount').doc('count');
   // activitiesに登録
   await dbAct.set({
     user_id: userId,
     place_id: placeId,
+    username: userName,
     action: 'mark',
     create_at: firebase.firestore.FieldValue.serverTimestamp(),
   });
@@ -314,40 +316,54 @@ export const postPlaceCount = async () => {
 
 // eslint-disable-next-line
 const getActivityDetailData = async (doc) => {
-  const dbUser = firebase.firestore().collection('users');
-  const dbPlace = firebase.firestore().collection('places');
-  const userid = doc.data().user_id;
   const placeid = doc.data().place_id;
+  console.log(placeid);
+  const username = doc.data().username;
   const useraction = doc.data().action;
-
   const createtime = doc.data().create_at.toDate();
   const createdate = `${createtime.getFullYear()}/${createtime.getMonth() + 1}/${createtime.getDate()} ${createtime.getHours()}:${createtime.getMinutes()}:${createtime.getSeconds()}`;
-
-  // 取得したuser_idからusernameを取得
-  const userInfo = await dbUser.doc(userid).get();
-
-  // 取得したplace_idからplaceの情報を取得
-  const placeInfo = await dbPlace.doc(placeid).get();
-
-  if (!placeInfo.data() || !userInfo.data()) {
-    return null;
-  }
+  let placeData = null;
+  let placeId = null;
+  let placeName = null;
+  let placeAddress = null;
+  let placeAccess = null;
+  let placeAverage = null;
+  let placeCatchcopy = null;
+  let placeOpen = null;
+  let placePhoto = null;
+  let placeUrl = null;
+  await firebase.firestore()
+    .collection('places')
+    .doc(placeid)
+    .get()
+    .then((docRef) => {
+      if (docRef !== null) {
+        placeData = docRef.data();
+        placeId = placeData.id;
+        placeName = placeData.name;
+        placeAddress = placeData.address;
+        placeAccess = placeData.access;
+        placeAverage = placeData.average;
+        placeCatchcopy = placeData.catchcopy;
+        placeOpen = placeData.open;
+        placePhoto = placeData.photo;
+        placeUrl = placeData.url;
+      }
+    });
 
   return {
     action: useraction,
     create_at: createdate,
-    userName: userInfo.data().username,
-    id: placeInfo.data().id,
-    name: placeInfo.data().name,
-    address: placeInfo.data().address,
-    access: placeInfo.data().access,
-    average: placeInfo.data().average,
-    catchcopy: placeInfo.data().catchcopy,
-    open: placeInfo.data().open,
-    photo: placeInfo.data().photo,
-    url: placeInfo.data().url,
-    favorite_count: placeInfo.data().favorite_count,
-    bookmark_count: placeInfo.data().bookmark_count,
+    userName: username,
+    id: placeId,
+    name: placeName,
+    address: placeAddress,
+    access: placeAccess,
+    average: placeAverage,
+    catchcopy: placeCatchcopy,
+    open: placeOpen,
+    photo: placePhoto,
+    url: placeUrl,
   };
 };
 
@@ -373,27 +389,16 @@ export async function getActivity(limit, pagingToken) {
           const time = lastData.create_at;
           nextToken = `${time.seconds}:${time.nanoseconds}`;
         }
-
-        // これだとNG。foreachの引数は関数で非同期関数をこちらで呼び出して時間がかかっているにもかかわらず、先に、resolveを実行してしまう。
-        // snapshot.forEach(async (doc) => {
-        //   const info = await getActivityDetailData(doc);
-        //   if (info) {
-        //     infos.push(info);
-        //     console.log('activity pushed');
-        //   }
-        // });
-
-        // 複数の非同期を並列で投げて一気に待つ方法
-        // https://runebook.dev/ja/docs/eslint/rules/no-await-in-loop
         const infoPromises = [];
         for (let i = 0; i < snapshot.docs.length; i += 1) {
           const doc = snapshot.docs[i];
           infoPromises.push(getActivityDetailData(doc));
+          console.log(infoPromises);
         }
         // 全ての詳細データが取得するまで待つ
         const infos = await Promise.all(infoPromises);
 
-        // console.log(infos, nextToken);
+        console.log(infos, nextToken);
         resolve({ BuffData: infos, nextPageToken: nextToken });
       })
       .catch((err) => {

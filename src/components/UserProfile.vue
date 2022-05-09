@@ -376,7 +376,8 @@
     <!-- top page -->
     <a
       href="#"
-      class="page-top"
+      class="page-top
+             lora"
       @click.prevent="pageTop"
     >
       Top
@@ -466,9 +467,10 @@ export default {
             dbFav.doc().set({
               user_id: this.userUID,
               place_id: place.id,
+              create_at: firebase.firestore.FieldValue.serverTimestamp(),
             });
             // No:アクティビティ登録
-            await postFavActivity(place.id, this.userUID).catch((err) => {
+            await postFavActivity(place.id, this.userUID, this.userName).catch((err) => {
               console.log('Can not register activities!', err);
             });
           }
@@ -515,9 +517,10 @@ export default {
             dbBm.doc().set({
               user_id: this.userUID,
               place_id: place.id,
+              create_at: firebase.firestore.FieldValue.serverTimestamp(),
             });
             // No:アクティビティ登録
-            await postBmActivity(place.id, this.userUID).catch((err) => {
+            await postBmActivity(place.id, this.userUID, this.userName).catch((err) => {
               console.log('Can not register activities!', err);
             });
           }
